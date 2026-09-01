@@ -1,0 +1,141 @@
+/* v4.4 token bridge */
+:root, [data-theme="dark"] {
+  --chat-bg-dark: var(--bg-page);
+  --chat-panel-dark: var(--bg-surface);
+  --chat-ai-bg: var(--bubble-ai);
+  --chat-ai-text: var(--text-primary);
+  --chat-user-bg: var(--bubble-user);
+  --chat-user-text: var(--text-inverse);
+  --chat-muted: var(--text-muted);
+  --chat-link: var(--accent);
+  --chat-code-bg: var(--bg-input);
+  --chat-code-text: var(--text-primary);
+}
+/* Vision AI v2.7.9 — chat page colors & output readability */
+:root {
+  --chat-bg-dark: #070b14;
+  --chat-panel-dark: #0c1424;
+  --chat-ai-bg: #162033;
+  --chat-ai-text: #e8eef7;
+  --chat-user-bg: linear-gradient(135deg, #0e7490, #4f46e5);
+  --chat-user-text: #f8fafc;
+  --chat-muted: #94a3b8;
+  --chat-border: rgba(148, 163, 184, 0.16);
+  --chat-link: #67e8f9;
+  --chat-code-bg: #0b1220;
+  --chat-code-text: #e2e8f0;
+}
+
+[data-theme="dark"] .main-content,
+html:not([data-theme="light"]) .main-content {
+  background: transparent !important;
+}
+[data-theme="dark"] .chat-container,
+[data-theme="dark"] #chatOutput,
+html:not([data-theme="light"]) #chatOutput {
+  background: transparent !important;
+  color: var(--chat-ai-text) !important;
+}
+
+/* AI bubbles */
+.message-row.ai .message-bubble,
+.message-row.assistant .message-bubble,
+[data-role="assistant"] .message-bubble {
+  background: var(--chat-ai-bg) !important;
+  color: var(--chat-ai-text) !important;
+  border: 1px solid var(--chat-border) !important;
+  border-radius: 16px 16px 16px 6px !important;
+  line-height: 1.55 !important;
+  font-size: 0.95rem !important;
+}
+.message-row.ai .message-bubble a {
+  color: var(--chat-link) !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.message-row.ai .message-bubble code,
+.message-row.ai .message-bubble pre {
+  background: var(--chat-code-bg) !important;
+  color: var(--chat-code-text) !important;
+  border-radius: 8px;
+}
+.message-row.ai .message-bubble pre {
+  padding: 12px 14px !important;
+  overflow-x: auto;
+  border: 1px solid var(--chat-border);
+}
+.message-row.ai .message-bubble p { margin: 0.4em 0 !important; color: inherit !important; }
+.message-row.ai .message-bubble li { color: inherit !important; }
+
+/* User bubbles */
+.message-row.user .message-bubble {
+  background: var(--chat-user-bg) !important;
+  color: var(--chat-user-text) !important;
+  border: none !important;
+  border-radius: 16px 16px 6px 16px !important;
+  line-height: 1.5 !important;
+}
+
+/* System / meta */
+.message-row.system .message-bubble {
+  background: rgba(34, 211, 238, 0.08) !important;
+  color: var(--chat-muted) !important;
+  border: 1px dashed rgba(34, 211, 238, 0.25) !important;
+  font-size: 0.88rem !important;
+}
+
+/* Message action buttons under bubbles */
+.message-actions button,
+.message-bubble + div button,
+.ai-image-actions .img-act {
+  color: #cbd5e1 !important;
+  background: rgba(15, 23, 42, 0.55) !important;
+  border: 1px solid var(--chat-border) !important;
+}
+
+/* Light theme chat */
+[data-theme="light"] #chatOutput,
+[data-theme="light"] .chat-container {
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .message-row.ai .message-bubble {
+  background: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
+}
+[data-theme="light"] .message-row.ai .message-bubble a { color: #0891b2 !important; }
+[data-theme="light"] .message-row.ai .message-bubble code,
+[data-theme="light"] .message-row.ai .message-bubble pre {
+  background: #f1f5f9 !important;
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .message-row.user .message-bubble {
+  background: linear-gradient(135deg, #0891b2, #4f46e5) !important;
+  color: #fff !important;
+}
+
+/* Composer text */
+#message, textarea#message {
+  color: var(--chat-ai-text) !important;
+  caret-color: #22d3ee;
+}
+[data-theme="light"] #message {
+  color: var(--text-primary) !important;
+}
+#message::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+/* Loading / status line in chat */
+.loading-status, .chat-status, #loadingStatus {
+  color: #67e8f9 !important;
+  font-size: 0.9rem !important;
+}
+
+/* Model badge on AI messages */
+.model-badge, .msg-model {
+  color: #94a3b8 !important;
+  font-size: 0.75rem !important;
+}

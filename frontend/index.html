@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-theme-preset="humanly">
+<head>
+  <script>
+  /* Anti-FOUC: set theme BEFORE first paint (no network wait) */
+  (function () {
+    try {
+      var t = localStorage.getItem('vision_ai_theme') || 'dark';
+      var p = localStorage.getItem('vision_theme_preset') || 'humanly';
+      if (t === 'system') {
+        t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      if (t !== 'light' && t !== 'dark') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.setAttribute('data-theme-preset', p);
+      document.documentElement.style.colorScheme = t === 'light' ? 'light' : 'dark';
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.setAttribute('data-theme-preset', 'humanly');
+      document.documentElement.style.colorScheme = 'dark';
+    }
+  })();
+  </script>
+  <style>
+  /* Critical paint: match default dark shell so CSS load doesn't flash white */
+  html, body {
+    background-color: #0c0e12 !important;
+    color: #e8eef7;
+  }
+  html[data-theme="light"], html[data-theme="light"] body {
+    background-color: #f4f7fb !important;
+    color: #0f172a;
+  }
+  </style>
+
+    <meta name="app-version" content="5.4.0">
+    <meta charset="UTF-8">
+<!-- 🔥 Forces perfect 1:1 mobile scaling -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+    <meta name="theme-color" content="#0c0e12">
+    <meta name="description" content="Vision AI v5.4.0 — Aether Forge: Command Palette, Theme Customizer, Token Meter, Code Actions.">
+    <title>Vision AI v5.4.0 — Aether Forge</title>
+
+    <!-- ✅ PREMIUM FAVICONS (Matches your exact folder structure) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/frontend/static/favicon/apple-touch-icon.png">
+    <link rel="icon" href="/frontend/static/favicon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/frontend/static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/frontend/static/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/frontend/static/favicon/site.webmanifest">
+    <!-- ✅ LEGACY SUPPORT (For older browsers / fallback) -->
+    <link rel="shortcut icon" href="/frontend/static/favicon/favicon.ico">
+    
+    <!-- Markdown Parser -->
+    <script src="/frontend/static/vendor/marked/marked.min.js?v=491" defer></script>
+    <!-- Sanitizer -->
+    <script src="/frontend/static/vendor/dompurify/purify.min.js?v=491" defer></script>
+    <!-- Highlight.js -->
+    <!-- highlight.js self-hosted to avoid Tracking Prevention / CDN blocks -->
+<script src="/frontend/static/js/hljs-lite.js?v=306" defer></script>
+
+    <!-- KaTeX for math / physics formulas -->
+    <link rel="stylesheet" href="/frontend/static/vendor/katex/katex.min.css?v=491">
+    <script src="/frontend/static/vendor/katex/katex.min.js?v=491" defer></script>
+    <script src="/frontend/static/vendor/katex/auto-render.min.js?v=491" defer></script>
+    
+    <!-- UPDATED GLOBAL CSS PATH -->
+
+
+<!-- Preconnect for faster CDN loading -->
+    <link rel="preconnect" href="/">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="/frontend/static/css/tokens.css?v=494">
+  <link rel="stylesheet" href="/frontend/static/css/themes.css?v=494">
+  <link rel="stylesheet" href="/frontend/static/css/base.css?v=480">
+  <link rel="stylesheet" href="/frontend/static/css/layout.css?v=492">
+  <link rel="stylesheet" href="/frontend/static/css/components.css?v=492">
+  <link rel="stylesheet" href="/frontend/static/css/chat.css?v=492">
+  <link rel="stylesheet" href="/frontend/static/css/studio.css?v=480">
+  <link rel="stylesheet" href="/frontend/static/css/theme-bridge.css?v=480">
+  <link rel="stylesheet" href="/frontend/static/css/style.css?v=480">
+  <link rel="stylesheet" href="/frontend/static/css/chat-ui.css?v=480">
+  <link rel="stylesheet" href="/frontend/static/css/pages.css?v=480">
+  <link rel="stylesheet" href="/frontend/static/css/glass-ui.css?v=480">
+  <link rel="stylesheet" href="/frontend/static/css/workspace-ui.css?v=494">
+  <link rel="stylesheet" href="/frontend/static/css/responsive.css?v=480">
+  <link rel="stylesheet" href="/frontend/static/css/accessibility.css?v=480">
+  <link rel="stylesheet" href="/frontend/static/css/modern-ui.css?v=494">
+  <link rel="stylesheet" href="/frontend/static/css/hljs-atom-one-dark.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/polish-v500.css?v=500">
+  <link rel="stylesheet" href="/frontend/static/css/ui-refine.css?v=494">
+  <link rel="stylesheet" href="/frontend/static/css/polish-v510.css?v=510">
+  <!-- Aether Workspace UI v5.0 — Superior design layer (non-breaking) -->
+  <link rel="stylesheet" href="/frontend/static/css/aether-v50.css?v=500">
+<script src="/frontend/static/js/theme-bootstrap.js?v=494"></script>
+</head>
+<body>
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" onclick="closeMobileSidebar()" aria-hidden="true"></div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Chat sidebar">
+        <div class="sidebar-header">
+            <a href="/" class="sidebar-logo" aria-label="Vision AI Home">
+                <span class="icon logo-mark">
+                    <img src="/frontend/static/img/vision-ai-logo-64.png" alt="VISION AI" width="36" height="36">
+                </span>
+                <span class="logo-text">Vision AI</span>
+            </a>
+            <div class="sidebar-actions">
+                <button class="icon-btn" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="search-bar" class="hidden">
+            <input type="text" id="history-search" placeholder="Search history..." aria-label="Search chat history">
+        </div>
+
+        <button class="new-chat-btn" onclick="startNewChat()" aria-label="Start new chat">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span>New chat</span>
+        </button>
+
+        <button class="cache-clear-btn" onclick="clearAllCaches()" title="Clear all caches" aria-label="Clear caches">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            <span class="sidebar-secondary-action">Clear caches</span>
+        </button>
+
+        <div class="history-list" id="historyList" role="list" aria-label="Chat history"></div>
+
+        <nav class="sidebar-nav" aria-label="Workspace navigation">
+            <a class="sidebar-link" href="/skills.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>Skills</span></a>
+            <a class="sidebar-link" href="/upgrade.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><span>Plans</span></a>
+            <a class="sidebar-link" href="/studio.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Studio</span></a>
+            <a class="sidebar-link" href="/boost"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>Boost</span></a>
+            <a class="sidebar-link" href="/settings.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l-1.42-1.42M18.36 5.64l-1.42-1.42"/></svg><span>Settings</span></a>
+        </nav>
+        <div class="sidebar-footer" id="sidebarFooter">
+            <div id="accountArea" class="account-area" aria-label="Account"></div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" role="main">
+        <header class="main-header" role="banner">
+            <!-- Left: menu + brand -->
+            <div class="header-left">
+                <button class="icon-btn header-btn" onclick="toggleSidebar()" title="Toggle Sidebar" aria-label="Toggle sidebar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <a href="/" class="header-brand" title="Vision AI Home" aria-label="Vision AI Home">
+                    <img src="/frontend/static/img/vision-ai-logo-64.png" alt="" width="36" height="36" class="header-brand-logo">
+                    <span class="header-brand-text">Vision AI</span>
+                </a>
+                <button class="icon-btn header-btn header-search-btn" onclick="forceOpenSearch()" title="Search History" aria-label="Search history">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                    </svg>
+                </button>
+            </div>
+
+            <h1 id="chatTitle" aria-live="polite">New Chat</h1>
+
+            <div class="header-right-actions topbar-tools">
+            <div class="theme-picker" id="themePicker">
+              <button type="button" class="theme-picker-btn" id="themePickerBtn" title="Choose theme" aria-haspopup="true" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
+              <div class="theme-picker-panel" role="menu" id="themePickerPanel">
+                <div class="theme-section-label">Appearance</div>
+                <div class="theme-mode-row" role="group" aria-label="Color mode">
+                  <button type="button" data-mode="dark">Dark</button>
+                  <button type="button" data-mode="light">Light</button>
+                  <button type="button" data-mode="system">System</button>
+                </div>
+                <div class="theme-section-label">Themes</div>
+                <button type="button" class="theme-swatch" data-preset="humanly" role="menuitem"><span class="dot"></span> Humanly Teal</button>
+                <button type="button" class="theme-swatch" data-preset="default" role="menuitem"><span class="dot"></span> Vision Default</button>
+                <button type="button" class="theme-swatch" data-preset="nord" role="menuitem"><span class="dot"></span> Nord</button>
+                <button type="button" class="theme-swatch" data-preset="ocean" role="menuitem"><span class="dot"></span> Ocean</button>
+                <button type="button" class="theme-swatch" data-preset="forest" role="menuitem"><span class="dot"></span> Forest</button>
+                <button type="button" class="theme-swatch" data-preset="violet" role="menuitem"><span class="dot"></span> Violet</button>
+                <button type="button" class="theme-swatch" data-preset="rose" role="menuitem"><span class="dot"></span> Rose</button>
+                <button type="button" class="theme-swatch" data-preset="midnight" role="menuitem"><span class="dot"></span> Midnight</button>
+                <button type="button" class="theme-swatch" data-preset="sunset" role="menuitem"><span class="dot"></span> Sunset</button>
+                <button type="button" class="theme-swatch" data-preset="sand" role="menuitem"><span class="dot"></span> Sand (light)</button>
+                <button type="button" class="theme-swatch" data-preset="soft-sepia" role="menuitem"><span class="dot"></span> Soft Sepia</button>
+                <button type="button" class="theme-swatch" data-preset="emerald" role="menuitem"><span class="dot"></span> Emerald</button>
+                <button type="button" class="theme-swatch" data-preset="frost" role="menuitem"><span class="dot"></span> Frost</button>
+                <button type="button" class="theme-swatch" data-preset="ember" role="menuitem"><span class="dot"></span> Ember</button>
+                <button type="button" class="theme-swatch" data-preset="high-contrast" role="menuitem"><span class="dot"></span> High Contrast</button>
+              </div>
+            </div>
+
+            
+                <button type="button" class="icon-btn header-btn header-hide-mobile" onclick="toggleHelpModal()" title="Prompt Studio (Ctrl+K)" aria-label="Prompt Studio"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/><path d="M5 19l1-3 3-1-3-1-1-3-1 3-3 1 3 1 1 3z"/></svg></button>
+                <div class="header-more" id="headerMore">
+                  <button type="button" class="icon-btn header-btn" id="headerMoreBtn" title="More" aria-haspopup="true" aria-expanded="false" aria-label="More tools"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button>
+                  <div class="header-more-panel" id="headerMorePanel" role="menu" hidden>
+                    <a role="menuitem" class="more-link" href="/boost"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> GPU Boost</a>
+                    <a role="menuitem" class="more-link" href="/upgrade.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg> Plans</a>
+                    <a role="menuitem" class="more-link" href="/skills.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Skills</a>
+                    <a role="menuitem" class="more-link" href="/settings.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg> Settings</a>
+                    <a role="menuitem" class="more-link" href="/usage.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg> Usage</a>
+                    <a role="menuitem" class="more-link" href="/studio.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg> Studio</a>
+                    <button type="button" role="menuitem" id="adminCacheChip" hidden onclick="window.open('/admin/search','_blank','noopener')">📊 Cache</button>
+                    <button type="button" role="menuitem" id="adminPayChip" hidden onclick="window.open('/admin/payments','_blank','noopener')">💳 Payments</button>
+                  </div>
+                </div>
+                <span id="gpuWorkerBadge" class="gpu-status-dot" title="GPU worker" hidden></span>
+                <button type="button" class="icon-btn header-btn" onclick="toggleChatFocusMode()" title="Focus / fullscreen" aria-label="Focus mode">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                </button>
+                <select class="model-selector header-hide-mobile" id="modelSelector" aria-label="Select AI model">
+                    <option value="auto">Auto · free cascade</option>
+                    <option value="light">Light · GPT-OSS 20B first</option>
+                    <option value="groq">Groq · GPT-OSS / Compound</option>
+                    <option value="gemini">Gemini · 2.5 Flash/Pro</option>
+                    <option value="openrouter">OpenRouter · live free</option>
+                    <option value="deepseek">DeepSeek</option>
+                    <option value="ollama">Ollama (local)</option>
+                    <option value="lmstudio">LM Studio (local)</option>
+                    <option value="local">OpenAI-compatible</option>
+                    <option value="colab">Colab Boost</option>
+                </select>
+                <span id="quotaBadge" class="quota-badge" hidden title="Remaining free messages"></span>
+                <div class="status" aria-label="Connection status">
+                    <span class="status-dot" id="statusDot" aria-hidden="true"></span>
+                    <span id="statusText">Online</span>
+                </div>
+            </div>
+        </header>
+
+        <button type="button" class="ub-close" onclick="this.closest('.unique-banner').remove()" aria-label="Dismiss">×</button>
+</div>
+
+        <div class="chat-container" id="chatOutput" role="log" aria-live="polite" aria-relevant="additions">
+            <div class="welcome-empty empty-state" id="welcomeEmpty">
+                <div class="welcome-brand">Vision AI</div>
+                <h1>What can I help you with?</h1>
+                <p class="muted">Ask anything · upload files · analyze images · YouTube · voice</p>
+                <div class="suggestion-grid" id="suggestionGrid" role="list">
+                  <button type="button" class="suggestion-chip" data-prompt="Explain quantum tunneling in simple terms" role="listitem">Explain a concept</button>
+                  <button type="button" class="suggestion-chip" data-prompt="Analyze this image and describe what you see" role="listitem">Analyze an image</button>
+                  <button type="button" class="suggestion-chip" data-prompt="Summarize the key points from a PDF I will upload" role="listitem">Solve a PDF</button>
+                  <button type="button" class="suggestion-chip" data-prompt="Write a clean Python function with tests" role="listitem">Write code</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-area composer">
+            <!-- Free/Skills/Plans moved to sidebar + model selector to declutter composer -->
+            <div class="free-tier-bar" id="freeTierBar" hidden aria-hidden="true"></div>
+            <div class="composer-hints" id="composerHints">
+            </div>
+            <div class="input-container composer-shell">
+                <button class="icon-btn tool-btn" type="button" onclick="document.getElementById('fileInput').click()" title="Upload image or file" aria-label="Upload file">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                </button>
+                <button class="icon-btn tool-btn" type="button" id="micBtn" onclick="toggleVoiceInput()" title="Voice input" aria-label="Voice input">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                </button>
+                <div class="composer-main">
+                <textarea id="message" rows="1" placeholder="Ask anything, drop an image, or tap the mic…" aria-label="Message input"></textarea>
+                <div class="input-actions">
+                    <button type="button" class="send-btn stop-btn" id="stopBtn" hidden onclick="stopGeneration()" title="Stop generation" aria-label="Stop">⏹</button>
+                    <button type="button" class="send-btn send-btn-v3" id="sendBtn" onclick="sendMessage()" aria-label="Send message">
+                        <span class="send-label">Send</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="voice-status" id="voiceStatus" hidden>Listening… speak now</div>
+            <div class="edit-actions" id="editActions" role="region" aria-label="Edit message actions">
+                <button class="btn-send-edit" onclick="sendEdit()">✅ Update Message</button>
+                <button class="btn-cancel-edit" onclick="cancelEdit()">✖ Cancel</button>
+            </div>
+            <div id="filePreviewArea" class="file-preview-area" aria-label="File previews"></div>
+            <input type="file" id="fileInput" multiple accept="image/*,.pdf,.jpg,.jpeg,.png,.bmp,.webp,.gif,.txt,.md,.csv,.docx,.pptx,.xlsx,.html,.py" capture="environment" aria-label="File upload">
+        </div>
+    </main>
+
+    <!-- SINGLE SOURCE OF TRUTH -->
+    
+    <!-- Tool IDs live in top bar; hidden stubs prevent null refs -->
+    <button id="floatingThemeToggle" hidden aria-hidden="true"></button>
+    <button id="helpBtn" hidden aria-hidden="true"></button>
+    <button id="adminBtn" hidden aria-hidden="true"></button>
+    <button id="adminPayBtn" hidden aria-hidden="true"></button>
+
+    <script src="/frontend/static/js/auth.js?v=494"></script>
+    <script src="/frontend/static/js/index.js?v=494"></script>
+    <script src="/frontend/static/js/prompt_studio.js?v=440"></script>
+    <script src="/frontend/static/js/aether-power.js?v=500"></script>
+    <script src="/frontend/static/js/aether-advanced.js?v=510"></script>
+    <script src="/frontend/static/js/aether-engine.js?v=520"></script>
+    <script src="/frontend/static/js/aether-lab.js?v=530"></script>
+    <script src="/frontend/static/js/aether-forge.js?v=540"></script>
+
+<script>
+(function workerBadge(){
+  async function tick(){
+    try {
+      const r = await fetch('/api/workers?t=' + Date.now());
+      const d = await r.json();
+      const on = !!(d.live && d.live.ok);
+      const el = document.getElementById('gpuWorkerBadge');
+      if (!el) return;
+      el.innerHTML = on
+        ? '<span class="topbar-chip-icon" style="color:#22c55e">●</span><span class="topbar-chip-label">GPU On</span>'
+        : '<span class="topbar-chip-icon">⚡</span><span class="topbar-chip-label">Boost</span>';
+      el.title = on ? 'GPU worker online — open Boost page' : 'Optional GPU Boost (Colab/Kaggle)';
+    } catch (_) {}
+  }
+  tick();
+  setInterval(tick, 20000);
+})();
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (window.renderMathInElement) {
+    try {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError: false
+      });
+    } catch (e) {}
+  }
+});
+</script>
+</body>
+</html>
