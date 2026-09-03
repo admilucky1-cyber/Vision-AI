@@ -1,0 +1,21 @@
+/* Map legacy variables → v4.2 tokens so style.css/pages.css follow themes */
+:root, html[data-theme="dark"], html[data-theme="light"] {
+  --va-bg: var(--bg-page);
+  --va-bg-elevated: var(--bg-surface);
+  --va-bg-card: var(--bg-surface);
+  --va-bg-input: var(--bg-input);
+  --va-border: var(--border);
+  --va-text: var(--text-primary);
+  --va-text-muted: var(--text-muted);
+  --va-accent: var(--accent);
+  --va-accent-2: var(--accent-hover);
+  --va-user-bubble: var(--bubble-user);
+  --va-ai-bubble: var(--bubble-ai);
+  --va-danger: var(--danger);
+  --va-font: var(--font-family);
+}
+body, .app-container, .chat-container, .sidebar, #sidebar {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+}
+.sidebar, #sidebar { background: var(--bg-surface); }
