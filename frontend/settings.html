@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+  /* Anti-FOUC: set theme BEFORE first paint (no network wait) */
+  (function () {
+    try {
+      var t = localStorage.getItem('vision_ai_theme') || 'dark';
+      var p = localStorage.getItem('vision_theme_preset') || 'humanly';
+      if (t === 'system') {
+        t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      if (t !== 'light' && t !== 'dark') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.setAttribute('data-theme-preset', p);
+      document.documentElement.style.colorScheme = t === 'light' ? 'light' : 'dark';
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.setAttribute('data-theme-preset', 'humanly');
+      document.documentElement.style.colorScheme = 'dark';
+    }
+  })();
+  </script>
+  <style>
+  /* Critical paint: match default dark shell so CSS load doesn't flash white */
+  html, body {
+    background-color: #0b1220 !important;
+    color: #e8eef7;
+  }
+  html[data-theme="light"], html[data-theme="light"] body {
+    background-color: #f4f7fb !important;
+    color: #0f172a;
+  }
+  </style>
+
+    <meta charset="UTF-8">
+<!-- 🔥 UPDATED: Forces perfect 1:1 mobile scaling -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+    <meta name="theme-color" content="#2d6a3e">
+    <meta name="description" content="Vision AI v4.9.3 - Profile, appearance, security, and account settings">
+    <title>Settings & Profile - Vision AI v4.9.3</title>
+
+    <!-- ✅ PREMIUM FAVICONS (Matches your exact folder structure) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/frontend/static/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/frontend/static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/frontend/static/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/frontend/static/favicon/site.webmanifest">
+    <!-- ✅ LEGACY SUPPORT (For older browsers / fallback) -->
+    <link rel="shortcut icon" href="/frontend/static/favicon/favicon.ico">
+    
+    <!-- Preconnect for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Global Theme -->
+<!-- Page Layout System -->
+<style>
+        /* Page-Specific Styles */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        body { 
+            font-family: var(--font-family, 'Inter', system-ui, -apple-system, sans-serif); 
+            background: var(--bg-deep, #ffffff); 
+            color: var(--text-main, #1a1a1a); 
+            margin: 0;
+            padding: 0;
+        }
+
+        .page {
+            max-width: 960px !important;
+            margin: 24px auto !important;
+            padding: 0 20px 64px !important;
+        }
+        .settings-grid {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 18px !important;
+            align-items: stretch !important;
+            width: 100%;
+        }
+        @media (max-width: 780px) {
+            .settings-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+        }
+        .settings-grid .card.full-width { grid-column: 1 / -1 !important; }
+        .settings-grid .card {
+            margin: 0 !important;
+            padding: 20px 18px !important;
+            min-height: 0 !important;
+            height: 100%;
+            display: flex !important;
+            flex-direction: column !important;
+            border-radius: 16px !important;
+            box-sizing: border-box !important;
+        }
+        .settings-grid .card h2 {
+            margin: 0 0 12px !important;
+            font-size: 1.02rem !important;
+            font-weight: 700;
+        }
+        .settings-grid .card-actions {
+            margin-top: auto;
+            padding-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .settings-grid .profile-row {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+        .settings-grid .profile-row:last-of-type { border-bottom: none; }
+        .settings-grid .profile-row .label {
+            color: var(--text-muted, #9aa);
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .settings-grid .profile-row .value {
+            text-align: right;
+            word-break: break-word;
+        }
+        .card {
+            margin-bottom: 0 !important;
+        }
+        .voice-box {
+            background: var(--plan-bg, rgba(45,106,62,0.08));
+            border: 1px solid var(--plan-border, rgba(45,106,62,0.22));
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-top: 8px;
+        }
+        .voice-box label { font-size: 13px; color: var(--text-muted); display:block; margin-bottom: 6px; }
+        .voice-box select {
+            width: 100%; padding: 10px 12px; border-radius: 10px;
+            border: 1px solid var(--border-color); background: var(--input-bg);
+            color: var(--text-main); margin-bottom: 10px;
+        }
+        
+        h1 { 
+            font-size: 26px; 
+            font-weight: 800; 
+            margin-bottom: 6px; 
+        }
+        
+        .subtitle { 
+            color: var(--text-muted, #6b7280); 
+            font-size: 14px; 
+            margin-bottom: 30px; 
+        }
+
+        .card {
+            background: var(--bg-secondary, #ffffff);
+            border: 1px solid var(--border-color, #e5e7eb);
+            border-radius: 16px;
+            padding: 20px 22px;
+            margin-bottom: 16px;
+            transition: background 0.3s ease, border 0.3s ease;
+        }
+        
+        .card h2 { 
+            font-size: 15px; 
+            font-weight: 700; 
+            margin-bottom: 18px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+
+        .profile-row {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 11px 0; 
+            border-bottom: 1px solid var(--border-color, #e5e7eb); 
+            font-size: 14px;
+            transition: border 0.3s ease;
+        }
+        
+        .profile-row:last-child { 
+            border-bottom: none; 
+        }
+        
+        .profile-row .label { 
+            color: var(--text-muted, #6b7280); 
+        }
+        
+        .profile-row .value { 
+            color: var(--text-main, #1a1a1a); 
+            font-weight: 500; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+        
+        .plan-badge {
+            display: inline-block; 
+            padding: 3px 12px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 700;
+            background: var(--plan-bg, rgba(0, 198, 255, 0.1));
+            color: #00C6FF; 
+            border: 1px solid var(--plan-border, rgba(0, 198, 255, 0.2)); 
+            text-transform: capitalize;
+        }
+
+        .form-group { 
+            margin-bottom: 16px; 
+            position: relative; 
+        }
+        
+        .form-group label { 
+            display: block; 
+            margin-bottom: 6px; 
+            font-size: 13px; 
+            font-weight: 500; 
+            color: var(--text-muted, #6b7280); 
+        }
+        
+        .form-group input {
+            width: 100%; 
+            padding: 12px 14px; 
+            padding-right: 45px;
+            background: var(--input-bg, #ffffff); 
+            border: 1px solid var(--input-border, #d1d5db);
+            border-radius: 10px; 
+            color: var(--text-main, #1a1a1a); 
+            font-size: 14px; 
+            outline: none; 
+            transition: all 0.2s;
+        }
+        
+        .form-group input:focus { 
+            border-color: #7b68ee; 
+            box-shadow: 0 0 0 3px rgba(123, 104, 238, 0.15); 
+        }
+        
+        .form-group input:invalid {
+            border-color: #ef4444;
+        }
+        
+        .form-group input:invalid:focus {
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+        }
+
+        .toggle-password {
+            position: absolute; 
+            right: 12px; 
+            top: 37px; 
+            cursor: pointer; 
+            background: none; 
+            border: none;
+            color: var(--text-muted, #6b7280); 
+            font-size: 16px;
+        }
+        
+        .toggle-password:hover { 
+            color: var(--text-main, #1a1a1a); 
+        }
+
+        .btn {
+            padding: 11px 20px; 
+            border-radius: 10px; 
+            border: none; 
+            cursor: pointer;
+            font-weight: 600; 
+            font-size: 14px; 
+            transition: all 0.2s;
+        }
+        
+        .btn-primary { 
+            background: linear-gradient(135deg, #00C6FF, #7B68EE); 
+            color: #fff; 
+        }
+        
+        .btn-primary:hover:not(:disabled) { 
+            transform: scale(1.02); 
+            box-shadow: 0 6px 16px rgba(0, 198, 255, 0.25); 
+        }
+        
+        .btn-primary:disabled { 
+            opacity: 0.6; 
+            cursor: not-allowed; 
+            transform: none; 
+        }
+        
+        .btn-outline { 
+            background: transparent; 
+            border: 1px solid var(--border-color, #e5e7eb); 
+            color: var(--text-main, #1a1a1a); 
+        }
+        
+        .btn-outline:hover { 
+            background: var(--input-bg, #ffffff); 
+        }
+
+        .btn-danger-outline { 
+            background: transparent; 
+            border: 1px solid rgba(239, 68, 68, 0.35); 
+            color: #ef4444; 
+        }
+        
+        .btn-danger-outline:hover { 
+            background: rgba(239, 68, 68, 0.08); 
+        }
+
+        .card-actions { 
+            display: flex; 
+            gap: 10px; 
+            flex-wrap: wrap; 
+            margin-top: 4px; 
+        }
+
+        .edit-icon-btn {
+            background: transparent; 
+            border: none; 
+            color: var(--text-muted, #6b7280);
+            cursor: pointer; 
+            font-size: 14px; 
+            padding: 2px 6px;
+            border-radius: 6px; 
+            transition: all 0.2s;
+        }
+        
+        .edit-icon-btn:hover { 
+            color: #00C6FF; 
+            background: var(--input-bg, #ffffff); 
+        }
+        
+        .edit-input-group { 
+            display: flex; 
+            gap: 8px; 
+            align-items: center; 
+        }
+        
+        .edit-input-group input { 
+            padding: 6px 10px; 
+            font-size: 13px; 
+            width: 180px; 
+            background: var(--input-bg, #ffffff); 
+            border: 1px solid var(--border-color, #e5e7eb); 
+            border-radius: 6px; 
+            color: var(--text-main, #1a1a1a); 
+        }
+        
+        .edit-input-group input:focus { 
+            border-color: #00C6FF; 
+            outline: none; 
+        }
+        
+        .edit-input-group button { 
+            padding: 6px 12px; 
+            font-size: 12px; 
+        }
+
+        .msg { 
+            font-size: 13px; 
+            padding: 10px 14px; 
+            border-radius: 10px; 
+            margin-top: 12px; 
+            display: none; 
+        }
+        
+        .msg.show { 
+            display: block; 
+        }
+        
+        .msg.success { 
+            background: var(--success-bg, rgba(34, 197, 94, 0.1)); 
+            color: var(--success-text, #22c55e); 
+            border: 1px solid rgba(34, 197, 94, 0.3); 
+        }
+        
+        .msg.error { 
+            background: var(--error-bg, rgba(239, 68, 68, 0.1)); 
+            color: var(--error-text, #ef4444); 
+            border: 1px solid rgba(239, 68, 68, 0.3); 
+        }
+
+        .loading-state { 
+            text-align: center; 
+            padding: 60px; 
+            color: var(--text-muted, #6b7280); 
+        }
+        
+        .spinner {
+            width: 28px; 
+            height: 28px; 
+            border: 3px solid var(--border-color, #e5e7eb); 
+            border-top-color: #00C6FF;
+            border-radius: 50%; 
+            margin: 0 auto 12px; 
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin { 
+            to { transform: rotate(360deg); } 
+        }
+
+        @media (max-width: 480px) {
+            .page { 
+                margin: 20px auto; 
+                padding: 0 16px 40px; 
+            }
+            .card { 
+                padding: 20px 16px; 
+            }
+            .profile-row { 
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap: 4px; 
+                padding: 8px 0; 
+            }
+            .profile-row .value { 
+                width: 100%; 
+                justify-content: space-between; 
+            }
+            .edit-input-group { 
+                flex-wrap: wrap; 
+                width: 100%; 
+            }
+            .edit-input-group input { 
+                width: 100%; 
+            }
+            .edit-input-group button { 
+                flex: 1; 
+            }
+        }
+        
+        /* Dark mode fallbacks */
+        [data-theme="dark"] .plan-badge {
+            background: rgba(0, 198, 255, 0.15);
+            border-color: rgba(0, 198, 255, 0.3);
+        }
+    </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/frontend/static/css/nova-system.css?v=550">
+  <style>
+    body { font-family: Inter, system-ui, sans-serif; background: #09090b !important; color: #fafafa; }
+    .login-card, .auth-card, .settings-card, .card {
+      background: #111114 !important;
+      border: 1px solid rgba(255,255,255,0.08) !important;
+      border-radius: 14px !important;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.45) !important;
+    }
+    button.primary, .btn-primary, button[type="submit"] {
+      background: #6366f1 !important; border: none !important; font-weight: 600 !important; border-radius: 10px !important;
+    }
+  </style>
+
+</head>
+<body class="settings-page page-view">
+<div class="settings-layout">
+<aside class="settings-nav" aria-label="Settings sections">
+  <a href="#account">Profile</a>
+  <a href="#appearance">Appearance</a>
+  <a href="#security">Security</a>
+  <a href="#voice">Voice</a>
+  <a href="#session">Session</a>
+</aside>
+
+
+<div class="page-topbar" role="banner">
+    <div class="page-brand">
+        <img src="/frontend/static/img/vision-ai-logo-64.png" alt="" class="brand-logo" width="28" height="28">
+        Vision AI
+    </div>
+    <div class="topbar-actions" style="display:flex; align-items:center; gap:12px;">
+        <!-- 🔥 FIX: Use the theme-toggle-btn class from pages.css -->
+        <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">🌙</button>
+        <button class="page-back-btn" onclick="window.history.back()" aria-label="Go back">← Back</button>
+    </div>
+</div>
+
+<div class="page" role="main">
+    <h1>⚙️ Settings</h1>
+    <p class="subtitle">Manage your profile, theme, plan, and account security.</p>
+
+<section class="settings-card" id="aboutSection" style="max-width:980px;margin:16px auto;padding:18px;border-radius:16px;border:1px solid rgba(0,198,255,0.25);background:rgba(12,20,36,0.65);backdrop-filter:blur(12px);">
+  <h2 style="margin:0 0 10px;font-size:1.15rem;">ℹ️ About · Live build</h2>
+  <p style="color:var(--text-muted);margin:0 0 12px;font-size:0.92rem;">Exact version running on this server (from <code>/api/version</code> + <code>VERSION</code> file).</p>
+  <div class="profile-row"><span class="label">Product</span><span class="value" id="aboutProduct">Vision AI</span></div>
+  <div class="profile-row"><span class="label">Version</span><span class="value" id="aboutVersion">…</span></div>
+  <div class="profile-row"><span class="label">Build / channel</span><span class="value" id="aboutBuild">…</span></div>
+  <div class="profile-row"><span class="label">Server time (PKT)</span><span class="value" id="aboutTime">…</span></div>
+  <div class="profile-row"><span class="label">API health</span><span class="value" id="aboutHealth">…</span></div>
+  <p style="margin-top:12px;font-size:0.85rem;color:var(--text-muted);">
+    Browser tab title should match this version after a hard refresh.
+    If Railway still shows an old title, push this code to GitHub <code>main</code> (Source Repo) — zip upload alone does not update the connected branch.
+  </p>
+</section>
+
+
+    <div id="content" aria-live="polite">
+        <div class="loading-state">
+            <div class="spinner"></div>
+            Loading your account…
+        </div>
+    </div>
+</div>
+
+<script src="/frontend/static/js/auth.js?v=476"></script>
+<script src="/frontend/static/js/settings.js?v=476"></script>
+
+<script>
+    // ============================================================
+    // SETTINGS INITIALIZATION (Crash-Free)
+    // ============================================================
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        // Prevent duplicate execution
+        if (window._settingsDOMReady) return;
+        window._settingsDOMReady = true;
+
+        // Apply theme from localStorage
+        const savedTheme = localStorage.getItem('vision_ai_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        console.log('👁️ Vision AI Settings - Ready');
+    });
+</script>
+
+<section class="settings-card" id="adminPaymentsSection" class="settings-card">
+  <h2 >Admin · Payment Verification</h2>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;">
+    <select id="payStatusFilter">
+      <option value="all">All</option>
+      <option value="pending" selected>Pending</option>
+      <option value="approved">Approved</option>
+      <option value="rejected">Rejected</option>
+    </select>
+    <button type="button" id="payRefreshBtn">Refresh</button>
+  </div>
+  <div id="payRequestsList"><p>Loading…</p></div>
+</section>
+<section class="settings-card" id="adminCacheSection" class="settings-card">
+  <h2 >Admin · Search Cache Dashboard</h2>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;align-items:center;">
+    <button type="button" id="cacheRefreshBtn">Refresh</button>
+    <button type="button" id="cacheClearBtn">Clear Cache</button>
+    <label><input type="checkbox" id="cacheAutoRefresh" /> Auto-refresh (30s)</label>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;">
+    <div style="flex:1 1 120px;text-align:center;padding:10px;border-radius:12px;background:rgba(52,211,153,0.08);"><b id="cacheTotal">0</b><div>Total Entries</div></div>
+    <div style="flex:1 1 120px;text-align:center;padding:10px;border-radius:12px;background:rgba(52,211,153,0.08);"><b id="cacheMax">200</b><div>Max Cache Size</div></div>
+    <div style="flex:1 1 120px;text-align:center;padding:10px;border-radius:12px;background:rgba(52,211,153,0.08);"><b id="cacheDuration">—</b><div>Cache Duration</div></div>
+  </div>
+  <h3 style="margin-top:14px;color:#9ab5aa;font-size:0.95rem;">Recent Queries</h3>
+  <div style="overflow:auto;"><table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+    <thead><tr><th align="left">Query</th><th align="left">Age</th><th align="left">Length</th><th align="left">Status</th></tr></thead>
+    <tbody id="cacheRecentBody"><tr><td colspan="4">No data</td></tr></tbody>
+  </table></div>
+</section>
+<script>
+(function(){
+  function token(){ return localStorage.getItem('vision_ai_access_token')||localStorage.getItem('vision_ai_access')||''; }
+  function headers(){ var h={'Accept':'application/json'}; var t=token(); if(t) h.Authorization='Bearer '+t; return h; }
+  async function loadPayments(){
+    var box=document.getElementById('payRequestsList'); if(!box) return;
+    var st=(document.getElementById('payStatusFilter')||{}).value||'pending';
+    box.innerHTML='<p>Loading…</p>';
+    try{
+      var urls=['/upgrade/admin/payments?status='+encodeURIComponent(st),'/api/upgrade/payments?status='+encodeURIComponent(st)];
+      var res=null, data={};
+      for (var i=0;i<urls.length;i++){
+        res=await fetch(urls[i],{headers:headers(),credentials:'include'});
+        if(res.status!==404) break;
+      }
+      if(!res||res.status===401||res.status===403){ box.innerHTML='<p>Admin login required to view payments.</p>'; return; }
+      data=await res.json().catch(function(){return {};});
+      var items=data.requests||data.items||(Array.isArray(data)?data:[]);
+      if(!items.length){ box.innerHTML='<p>No payment requests.</p>'; return; }
+      box.innerHTML=items.map(function(r){
+        return '<div style="border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:12px;margin-bottom:10px;background:rgba(0,0,0,0.2);"><div><strong>'+(r.plan||'Plan')+'</strong> · '+(r.status||'pending')+'</div><div>Txn: <code>'+(r.transaction_id||r.txn||'—')+'</code></div><div>Method: '+(r.method||r.payment_method||'—')+' · Amount: '+(r.amount||'—')+'</div><div>Name on transfer: '+(r.name_on_transfer||r.payer_name||'—')+'</div></div>';
+      }).join('');
+    }catch(e){ box.innerHTML='<p>Could not load payments.</p>'; }
+  }
+  async function loadCache(){
+    try{
+      var res=await fetch('/api/search/cache/stats',{headers:headers(),credentials:'include'});
+      if(!res.ok) res=await fetch('/admin/search-cache',{headers:headers(),credentials:'include'});
+      var data=await res.json().catch(function(){return {};});
+      var set=function(id,v){ var n=document.getElementById(id); if(n) n.textContent=v; };
+      set('cacheTotal', data.total_entries||data.total||0);
+      set('cacheMax', data.max_size||data.max||200);
+      set('cacheDuration', data.duration||data.ttl||'—');
+      var rows=data.recent||data.queries||[];
+      var tb=document.getElementById('cacheRecentBody');
+      if(tb){
+        tb.innerHTML = rows.length ? rows.map(function(q){
+          return '<tr><td>'+(q.query||q.q||'—')+'</td><td>'+(q.age||'—')+'</td><td>'+(q.length||q.len||'—')+'</td><td>'+(q.status||'ok')+'</td></tr>';
+        }).join('') : '<tr><td colspan="4">No recent queries</td></tr>';
+      }
+    }catch(e){}
+  }
+  async function clearCache(){
+    try{ await fetch('/api/search/cache/clear',{method:'POST',headers:headers(),credentials:'include'}); loadCache(); }catch(e){}
+  }
+  var pr=document.getElementById('payRefreshBtn'); if(pr) pr.onclick=loadPayments;
+  var pf=document.getElementById('payStatusFilter'); if(pf) pf.onchange=loadPayments;
+  var cr=document.getElementById('cacheRefreshBtn'); if(cr) cr.onclick=loadCache;
+  var cc=document.getElementById('cacheClearBtn'); if(cc) cc.onclick=clearCache;
+  var auto=document.getElementById('cacheAutoRefresh'), timer=null;
+  if(auto) auto.onchange=function(){ if(timer) clearInterval(timer); if(auto.checked) timer=setInterval(loadCache,30000); };
+  loadPayments(); loadCache();
+})();
+</script>
+
+</div>
+</body>
+</html>

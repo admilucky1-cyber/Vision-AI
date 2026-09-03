@@ -1,0 +1,136 @@
+# Vision AI v3.2.1 - Python Dependencies
+# Install: pip install -r requirements.txt
+# Last Updated: 2026-08-12
+
+# ============================================================
+# CORE WEB FRAMEWORK
+# ============================================================
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+
+# ============================================================
+# AUTHENTICATION & SECURITY
+# ============================================================
+python-jose[cryptography]>=3.3.0
+bcrypt>=4.0.0
+authlib>=1.2.0
+itsdangerous>=2.1.0
+passlib[bcrypt]>=1.7.4
+
+# ============================================================
+# DATA VALIDATION
+# ============================================================
+pydantic[email]>=2.5.0
+pydantic-settings>=2.1.0
+email-validator>=2.0.0
+
+# ============================================================
+# RATE LIMITING
+# ============================================================
+slowapi>=0.1.9
+
+# ============================================================
+# ENVIRONMENT MANAGEMENT
+# ============================================================
+python-dotenv>=1.0.0
+
+# ============================================================
+# AI PROVIDERS
+# ============================================================
+google-genai>=0.3.0
+requests>=2.31.0
+httpx>=0.25.0
+openai>=1.0.0
+tiktoken>=0.13.0
+
+# ============================================================
+# SEARCH SERVICES
+# ============================================================
+tavily-python>=0.3.0
+ddgs>=9.0.0
+
+# ============================================================
+# DOCUMENT PROCESSING
+# ============================================================
+# PDF Processing
+pdfplumber>=0.10.0
+PyPDF2>=3.0.0
+pdfminer.six>=20221105
+
+# Office Documents
+python-docx>=1.1.0
+python-pptx>=0.6.23
+openpyxl>=3.1.2
+
+# OCR (optional - for scanned PDFs)
+pytesseract>=0.3.10
+pdf2image>=1.16.3
+
+# ============================================================
+# IMAGE & CHART GENERATION
+# ============================================================
+matplotlib>=3.8.0
+plotly>=5.18.0
+kaleido>=0.2.1
+graphviz>=0.20.1
+Pillow>=10.1.0
+numpy>=1.24.0
+pandas>=2.0.0
+
+# ============================================================
+# VECTOR STORE & EMBEDDINGS
+# ============================================================
+chromadb>=0.5.0
+sentence-transformers>=2.2.0
+torch>=2.0.0
+transformers>=4.30.0
+huggingface_hub>=0.16.0
+typing_extensions>=4.5.0
+
+# ============================================================
+# YOUTUBE DOWNLOADER
+# ============================================================
+yt-dlp>=2024.0.0
+
+# ============================================================
+# AUDIO TRANSCRIPTION
+# ============================================================
+openai-whisper>=20231117
+
+# ============================================================
+# URL SCRAPING
+# ============================================================
+beautifulsoup4>=4.12.0
+
+# ============================================================
+# ADDITIONAL UTILITIES
+# ============================================================
+# Logging
+loguru>=0.7.0  # Optional - Enhanced logging
+
+# Caching
+redis>=5.0.0  # Optional - For production caching
+
+# Database (for future production use)
+sqlalchemy>=2.0.0  # Optional - For PostgreSQL integration
+asyncpg>=0.29.0     # Optional - Async PostgreSQL driver
+
+# ============================================================
+# DEVELOPMENT & DEBUGGING (Optional)
+# ============================================================
+# Uncomment for development only
+# ipython>=8.0.0
+# python-debugger>=0.1.0
+# pytest>=7.0.0
+# black>=23.0.0
+# ruff>=0.1.0
+# YouTube transcripts (no API key required)
+youtube-transcript-api>=0.6.2
+
+# Payments
+stripe>=8.0.0
+PyMuPDF>=1.24.0
+
+# Optional CAS
+sympy>=1.12

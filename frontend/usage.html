@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+  /* Anti-FOUC: set theme BEFORE first paint (no network wait) */
+  (function () {
+    try {
+      var t = localStorage.getItem('vision_ai_theme') || 'dark';
+      var p = localStorage.getItem('vision_theme_preset') || 'humanly';
+      if (t === 'system') {
+        t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      if (t !== 'light' && t !== 'dark') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.setAttribute('data-theme-preset', p);
+      document.documentElement.style.colorScheme = t === 'light' ? 'light' : 'dark';
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.setAttribute('data-theme-preset', 'humanly');
+      document.documentElement.style.colorScheme = 'dark';
+    }
+  })();
+  </script>
+  <style>
+  /* Critical paint: match default dark shell so CSS load doesn't flash white */
+  html, body {
+    background-color: #0b1220 !important;
+    color: #e8eef7;
+  }
+  html[data-theme="light"], html[data-theme="light"] body {
+    background-color: #f4f7fb !important;
+    color: #0f172a;
+  }
+  </style>
+
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+  <title>Vision AI — Usage Dashboard</title>
+  <link rel="icon" href="/frontend/static/favicon/favicon.ico" />
+  <style>
+    :root {
+      --bg: #0b0f14; --card: #121821; --border: #1e2a3a;
+      --text: #e8eef7; --muted: #8b9bb4; --accent: #3b82f6;
+      --green: #22c55e; --purple: #a855f7; --orange: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: radial-gradient(1200px 600px at 10% -10%, #1a2740 0%, var(--bg) 55%);
+      color: var(--text); min-height: 100vh;
+    }
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(8px); position: sticky; top: 0;
+      background: rgba(11,15,20,.85); z-index: 10;
+    }
+    header a { color: var(--muted); text-decoration: none; margin-left: 1rem; font-size: .9rem; }
+    header a:hover { color: var(--text); }
+    .brand { font-weight: 700; }
+    .brand span { color: var(--accent); }
+    main { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+    h1 { font-size: 1.4rem; margin: 0 0 .25rem; }
+    .sub { color: var(--muted); font-size: .9rem; margin-bottom: 1.5rem; }
+    .grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem; margin-bottom: 1.5rem;
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.1rem 1.2rem;
+    }
+    .card .label { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; }
+    .card .value { font-size: 1.85rem; font-weight: 700; margin-top: .35rem; }
+    .card .hint { color: var(--muted); font-size: .8rem; margin-top: .25rem; }
+    .value.blue { color: var(--accent); }
+    .value.green { color: var(--green); }
+    .value.purple { color: var(--purple); }
+    .value.orange { color: var(--orange); }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { text-align: left; padding: .65rem .75rem; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 600; font-size: .75rem; text-transform: uppercase; }
+    tr:hover td { background: rgba(59,130,246,.06); }
+    .bar-wrap { display: flex; align-items: center; gap: .5rem; }
+    .bar {
+      height: 8px; border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent), var(--purple)); min-width: 2px;
+    }
+    .error { color: #f87171; padding: 1rem; }
+    .footer { margin-top: 2rem; color: var(--muted); font-size: .8rem; text-align: center; }
+    button.refresh {
+      background: var(--accent); color: #fff; border: none; border-radius: 8px;
+      padding: .45rem .9rem; cursor: pointer; font-weight: 600;
+    }
+    button.refresh:hover { filter: brightness(1.1); }
+  </style>
+
+
+
+
+
+
+  <link rel="stylesheet" href="/frontend/static/css/tokens.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/themes.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/base.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/layout.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/components.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/chat.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/studio.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/theme-bridge.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/style.css?v=470">
+  <link rel="stylesheet" href="/frontend/static/css/chat-ui.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/pages.css?v=470"
+    <link rel="stylesheet" href="/frontend/static/css/glass-ui.css?v=471">
+  <link rel="stylesheet" href="/frontend/static/css/responsive.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/accessibility.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/hljs-atom-one-dark.css?v=440">
+</head>
+<body>
+  <header>
+    <div class="brand">Vision <span>AI</span> · Usage</div>
+    <nav>
+      <a href="/">Chat</a>
+      <a href="/settings.html">Settings</a>
+      <a href="/upgrade.html">Upgrade</a>
+      <button class="refresh" onclick="load()">Refresh</button>
+    </nav>
+  </header>
+  <main>
+    <h1>Real-time usage &amp; savings</h1>
+    <p class="sub">Free-tier analytics · <code>data/usage.json</code> · no external DB</p>
+    <div class="grid">
+      <div class="card"><div class="label">Today · Users</div><div class="value blue" id="t-users">—</div></div>
+      <div class="card"><div class="label">Today · Messages</div><div class="value purple" id="t-msg">—</div></div>
+      <div class="card"><div class="label">Today · Images</div><div class="value orange" id="t-img">—</div></div>
+      <div class="card"><div class="label">Today · Saved</div><div class="value green" id="t-save">—</div><div class="hint">vs paid APIs (est.)</div></div>
+    </div>
+    <div class="grid">
+      <div class="card"><div class="label">Lifetime · Messages</div><div class="value" id="all-msg">—</div></div>
+      <div class="card"><div class="label">Lifetime · Images</div><div class="value" id="all-img">—</div></div>
+      <div class="card"><div class="label">Lifetime · Unique users</div><div class="value" id="all-users">—</div></div>
+      <div class="card"><div class="label">Lifetime · Saved</div><div class="value green" id="all-save">—</div></div>
+    </div>
+    <div class="card" style="margin-top:1rem">
+      <div class="label" style="margin-bottom:.75rem">Last 14 days</div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Users</th><th>Messages</th><th>Images</th><th>Saved (USD)</th><th>Activity</th></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="footer" id="stamp">Loading…</p>
+  </main>
+  <script>
+    function money(n) { return '$' + (Number(n) || 0).toFixed(2); }
+    async function load() {
+      try {
+        const r = await fetch('/api/usage/summary?days=14');
+        const d = await r.json();
+        if (!d.ok) throw new Error('bad response');
+        const t = d.today || {};
+        document.getElementById('t-users').textContent = t.users ?? 0;
+        document.getElementById('t-msg').textContent = t.messages ?? 0;
+        document.getElementById('t-img').textContent = t.images ?? 0;
+        document.getElementById('t-save').textContent = money(t.saved_usd);
+        const tot = d.totals || {};
+        document.getElementById('all-msg').textContent = tot.messages ?? 0;
+        document.getElementById('all-img').textContent = tot.images ?? 0;
+        document.getElementById('all-users').textContent = tot.users ?? 0;
+        document.getElementById('all-save').textContent = money(tot.saved_usd);
+        const days = d.recent_days || [];
+        const maxAct = Math.max(1, ...days.map(x => (x.messages || 0) + (x.images || 0) * 3));
+        document.getElementById('rows').innerHTML = days.slice().reverse().map(row => {
+          const act = (row.messages || 0) + (row.images || 0) * 3;
+          const pct = Math.round((act / maxAct) * 100);
+          return `<tr>
+            <td>${row.date}</td><td>${row.users || 0}</td><td>${row.messages || 0}</td>
+            <td>${row.images || 0}</td><td>${money(row.saved_usd)}</td>
+            <td><div class="bar-wrap"><div class="bar" style="width:${pct}%"></div>
+            <span style="color:var(--muted);font-size:.75rem">${act}</span></div></td></tr>`;
+        }).join('') || '<tr><td colspan="6">No data yet — send a chat message to start tracking.</td></tr>';
+        document.getElementById('stamp').textContent = 'Updated ' + (d.generated_at || new Date().toISOString());
+      } catch (e) {
+        document.getElementById('stamp').innerHTML = '<span class="error">Failed: ' + e.message + '</span>';
+      }
+    }
+    load();
+    setInterval(load, 30000);
+    try {
+      const uid = localStorage.getItem('vision_user_id') || ('u_' + Math.random().toString(36).slice(2, 10));
+      localStorage.setItem('vision_user_id', uid);
+      fetch('/api/usage/ping', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: uid, event: 'session' })
+      }).catch(() => {});
+    } catch (_) {}
+  </script>
+</body>
+</html>

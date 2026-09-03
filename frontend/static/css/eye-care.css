@@ -1,0 +1,64 @@
+
+/* Vision AI — eye-friendly theme (v2.8.0) */
+:root {
+  --ec-bg: #0c1017;
+  --ec-panel: #141a24;
+  --ec-text: #dce3ee;
+  --ec-muted: #9aa8bc;
+  --ec-accent: #5ec8d8;
+  --ec-warn: #e8b86d;
+  --ec-line: rgba(158, 175, 198, 0.14);
+}
+
+/* Soft dark (default): avoid pure black + harsh pure white */
+[data-theme="dark"] body,
+html:not([data-theme="light"]) body {
+  background: #0c1017 !important;
+  color: var(--ec-text) !important;
+}
+[data-theme="dark"] .sidebar,
+html:not([data-theme="light"]) .sidebar {
+  background: #101620 !important;
+}
+[data-theme="dark"] .message-row.ai .message-bubble {
+  background: #171e2b !important;
+  color: #e2e8f0 !important;
+  border-color: var(--ec-line) !important;
+}
+[data-theme="dark"] .message-row.user .message-bubble {
+  background: linear-gradient(135deg, #1a6b7c, #3d4db8) !important;
+  color: #f1f5f9 !important;
+}
+[data-theme="dark"] #message {
+  color: #e2e8f0 !important;
+}
+[data-theme="dark"] .main-header {
+  background: rgba(12, 16, 23, 0.92) !important;
+}
+
+/* Soft light: off-white, not pure #fff */
+[data-theme="light"] body {
+  background: #eef2f6 !important;
+  color: #1e293b !important;
+}
+[data-theme="light"] .sidebar {
+  background: #e8eef5 !important;
+}
+[data-theme="light"] .message-row.ai .message-bubble {
+  background: #f7f9fc !important;
+  color: #1e293b !important;
+  border: 1px solid rgba(30, 41, 59, 0.1) !important;
+}
+[data-theme="light"] #chatOutput {
+  background: #eef2f6 !important;
+}
+
+/* Reduce glare on chips */
+.topbar-chip {
+  opacity: 0.95;
+}
+/* Comfortable line height in chat */
+.message-bubble {
+  line-height: 1.6 !important;
+  letter-spacing: 0.01em;
+}

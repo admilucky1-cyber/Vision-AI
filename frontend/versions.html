@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+  /* Anti-FOUC: set theme BEFORE first paint (no network wait) */
+  (function () {
+    try {
+      var t = localStorage.getItem('vision_ai_theme') || 'dark';
+      var p = localStorage.getItem('vision_theme_preset') || 'humanly';
+      if (t === 'system') {
+        t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      if (t !== 'light' && t !== 'dark') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.setAttribute('data-theme-preset', p);
+      document.documentElement.style.colorScheme = t === 'light' ? 'light' : 'dark';
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.setAttribute('data-theme-preset', 'humanly');
+      document.documentElement.style.colorScheme = 'dark';
+    }
+  })();
+  </script>
+  <style>
+  /* Critical paint: match default dark shell so CSS load doesn't flash white */
+  html, body {
+    background-color: #0b1220 !important;
+    color: #e8eef7;
+  }
+  html[data-theme="light"], html[data-theme="light"] body {
+    background-color: #f4f7fb !important;
+    color: #0f172a;
+  }
+  </style>
+
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+  <meta name="theme-color" content="#2d6a3e">
+  <title>Vision AI v4.8.3 — Versions & About</title>
+
+<style>
+    .ver-page { max-width: 920px; margin: 0 auto; padding: 24px 16px 80px; }
+    .ver-hero { text-align: center; margin-bottom: 28px; }
+    .ver-hero h1 { font-size: 1.75rem; color: var(--text-main); margin-bottom: 8px; }
+    .ver-hero p { color: var(--text-muted); }
+    .ver-card {
+      background: var(--bg-deep);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+    .ver-card.current { border-color: var(--primary-purple); box-shadow: 0 0 0 2px var(--plan-border); }
+    .ver-card h2 { font-size: 1.15rem; margin: 0 0 6px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .badge {
+      font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 999px;
+      text-transform: uppercase; letter-spacing: 0.03em;
+    }
+    .badge-stable { background: var(--success-bg); color: var(--success-text); }
+    .badge-archived { background: var(--bg-tertiary); color: var(--text-muted); }
+    .ver-meta { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; }
+    .ver-meta code { background: var(--bg-tertiary); padding: 1px 6px; border-radius: 4px; font-size: 0.8rem; }
+    .deploy-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .deploy-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+      border: 1px solid var(--border-color); background: var(--bg-tertiary);
+      color: var(--text-main); text-decoration: none; cursor: pointer;
+    }
+    .deploy-btn:hover { background: var(--bg-hover); border-color: var(--primary-purple); }
+    .deploy-btn.primary {
+      background: var(--primary-purple); color: #fff; border-color: transparent;
+    }
+    .deploy-btn.primary:hover { filter: brightness(1.08); }
+    .top-links { display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+    .top-links a { color: var(--primary-purple); font-weight: 600; text-decoration: none; }
+    .howto {
+      margin-top: 32px; padding: 16px; border-radius: 12px;
+      background: var(--plan-bg); border: 1px solid var(--plan-border);
+      font-size: 0.9rem; color: var(--text-main);
+    }
+    .howto h3 { margin: 0 0 8px; font-size: 1rem; }
+    .howto pre {
+      background: var(--bg-deep); padding: 12px; border-radius: 8px;
+      overflow-x: auto; font-size: 0.8rem; margin: 8px 0 0;
+    }
+  </style>
+
+
+
+
+
+
+  <link rel="stylesheet" href="/frontend/static/css/tokens.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/themes.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/base.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/layout.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/components.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/chat.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/studio.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/theme-bridge.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/style.css?v=470">
+  <link rel="stylesheet" href="/frontend/static/css/chat-ui.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/pages.css?v=470"
+    <link rel="stylesheet" href="/frontend/static/css/glass-ui.css?v=471">
+  <link rel="stylesheet" href="/frontend/static/css/responsive.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/accessibility.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/hljs-atom-one-dark.css?v=440">
+</head>
+<body style="display:block;height:auto;overflow:auto;background:var(--bg-main);">
+  <div class="ver-page">
+    <div class="ver-hero">
+      <h1>🌿 Vision AI v4.8.3 — Versions & About</h1>
+      <p>Every release keeps its own <code>main.py</code>. Pick a version to run or deploy.</p>
+    </div>
+    <div class="top-links">
+      <a href="/">← Chat</a>
+      <a href="/upgrade.html">Upgrade</a>
+      <a href="/frontend/admin/payments.html">Admin payments</a>
+      <a href="/versions.json">versions.json</a>
+    </div>
+    <div id="list">Loading versions…</div>
+    <div class="howto">
+      <h3>Run any version locally</h3>
+      <pre>git fetch --tags
+git checkout v2.1.0          # or v2.0.2 / version/2.0
+cp .env.example .env
+pip install -r requirements.txt
+python main.py</pre>
+      <h3 style="margin-top:14px;">Deploy (free hosts)</h3>
+      <pre># Railway / Render / Docker — configs ship in every tagged release
+docker compose up --build
+# or push the chosen branch/tag to your Railway/Render service</pre>
+    </div>
+  </div>
+  <script>
+    async function load() {
+      const el = document.getElementById('list');
+      try {
+        const res = await fetch('/versions.json?t=' + Date.now());
+        const data = await res.json();
+        const current = data.current;
+        el.innerHTML = (data.versions || []).map(v => {
+          const isCur = v.id === current;
+          const badge = v.status === 'stable'
+            ? '<span class="badge badge-stable">stable</span>'
+            : '<span class="badge badge-archived">archived</span>';
+          const deploys = Object.entries(v.deploy || {})
+            .filter(([, ok]) => ok)
+            .map(([name]) => name)
+            .join(' · ');
+          return `
+            <article class="ver-card ${isCur ? 'current' : ''}">
+              <h2>${escapeHtml(v.name)} ${badge}${isCur ? ' <span class="badge badge-stable">current</span>' : ''}</h2>
+              <div class="ver-meta">
+                Tag <code>${escapeHtml(v.tag)}</code>
+                · Branch <code>${escapeHtml(v.branch)}</code>
+                · Entry <code>${escapeHtml(v.entry || 'main.py')}</code>
+                · ${escapeHtml(v.released || '')}
+              </div>
+              <p style="margin:0;font-size:0.92rem;color:var(--text-main);">${escapeHtml(v.summary || '')}</p>
+              <div class="ver-meta" style="margin-top:8px;">Hosts: ${escapeHtml(deploys)}</div>
+              <div class="deploy-row">
+                <a class="deploy-btn primary" href="https://github.com" target="_blank" rel="noopener"
+                   title="Open your GitHub repo, switch to this tag/branch">GitHub tag ${escapeHtml(v.tag)}</a>
+                <button type="button" class="deploy-btn" onclick="copyCmd('${escapeHtml(v.tag)}')">Copy checkout</button>
+              </div>
+            </article>`;
+        }).join('');
+      } catch (e) {
+        el.innerHTML = '<p style="color:#dc2626;">Could not load versions.json</p>';
+      }
+    }
+    function escapeHtml(s) {
+      return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function copyCmd(tag) {
+      const cmd = `git fetch --tags && git checkout ${tag}`;
+      navigator.clipboard.writeText(cmd).then(() => alert('Copied:\\n' + cmd)).catch(() => prompt('Copy:', cmd));
+    }
+    load();
+  </script>
+</body>
+</html>
