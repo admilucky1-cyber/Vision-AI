@@ -1,0 +1,143 @@
+
+/* v2.8.9 polish */
+
+/* When sidebar is open (desktop), hide duplicate header brand */
+@media (min-width: 769px) {
+  body:not(.sidebar-collapsed) .header-brand,
+  body.sidebar-open .header-brand,
+  #sidebar.open ~ .main-content .header-brand,
+  .app-layout:not(.rail) .header-brand-text {
+    /* keep logo icon only if needed */
+  }
+  /* Prefer: hide full brand when sidebar visible */
+  .sidebar:not([style*="display: none"]) ~ .main-content .header-brand-text {
+    display: none;
+  }
+}
+/* Class-based (JS can set data-sidebar) */
+html[data-sidebar="open"] .main-header .header-brand-text {
+  /* keep logo; hide only long text if space tight */
+  max-width: 0; overflow: hidden; opacity: 0;
+}
+@media (min-width: 1100px) {
+  html[data-sidebar="open"] .main-header .header-brand-text {
+    max-width: 120px; opacity: 1;
+  }
+}
+
+/* Top bar chips — cleaner */
+.topbar-chip, .header-chip {
+  border-radius: 999px !important;
+  padding: 7px 12px !important;
+  font-weight: 600 !important;
+  gap: 6px !important;
+}
+
+/* Stop button — not a huge red square */
+#stopBtn, .stop-btn {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: 10px !important;
+  background: rgba(248, 113, 113, 0.15) !important;
+  color: #fca5a5 !important;
+  border: 1px solid rgba(248, 113, 113, 0.45) !important;
+  box-shadow: none !important;
+  font-size: 0.85rem !important;
+}
+#stopBtn:hover { background: rgba(248, 113, 113, 0.28) !important; }
+
+/* Chat output readability */
+#chatOutput, .chat-container {
+  padding: 12px 16px 24px !important;
+}
+.message-row {
+  margin-bottom: 14px !important;
+}
+.message-row.ai .message-bubble {
+  max-width: min(720px, 92%) !important;
+  font-size: 0.95rem !important;
+  line-height: 1.65 !important;
+  padding: 14px 16px !important;
+}
+.message-row.user .message-bubble {
+  max-width: min(560px, 88%) !important;
+  font-size: 0.95rem !important;
+  line-height: 1.5 !important;
+  padding: 12px 16px !important;
+}
+
+/* Composer */
+.input-container, .composer-wrap {
+  max-width: 900px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+#message {
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+}
+
+/* Hide removed hint row if empty shell remains */
+.hint-chips:empty { display: none !important; }
+.composer-hints .hint-chip { display: none !important; }
+
+/* Profile menu: Download inside dropdown */
+.profile-dropdown .dl-item {
+  color: #e8f5f0 !important;
+}
+
+/* ========== PLANS: force full useful width ========== */
+body.upgrade-page,
+body.page-view {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+.upgrade-shell,
+#plansContainer,
+.plans-grid {
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
+/* Override any narrow parent */
+body.upgrade-page .page-content,
+body.upgrade-page main,
+body.upgrade-page .content-wrap {
+  max-width: 1200px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+.plans-grid {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+@media (max-width: 1100px) {
+  .plans-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 700px) {
+  .plans-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 430px) {
+  .plans-grid { grid-template-columns: 1fr !important; }
+}
+.plan-card {
+  min-height: auto !important;
+  padding: 16px 14px !important;
+}
+.payment-section {
+  max-width: 900px !important;
+  width: 100% !important;
+  margin: 16px auto 48px !important;
+}
+
+/* Prompt studio cleaner */
+.ps-cat-icons, .prompt-cat-scroll, .ps-category-icons, .ps-icon-row { display: none !important; }
+#promptStudioDrawer .ps-help,
+#promptStudioDrawer .ps-subtitle { font-size: 0.8rem !important; opacity: 0.85; }

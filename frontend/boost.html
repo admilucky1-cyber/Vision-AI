@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+  /* Anti-FOUC: set theme BEFORE first paint (no network wait) */
+  (function () {
+    try {
+      var t = localStorage.getItem('vision_ai_theme') || 'dark';
+      var p = localStorage.getItem('vision_theme_preset') || 'humanly';
+      if (t === 'system') {
+        t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      if (t !== 'light' && t !== 'dark') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.setAttribute('data-theme-preset', p);
+      document.documentElement.style.colorScheme = t === 'light' ? 'light' : 'dark';
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.setAttribute('data-theme-preset', 'humanly');
+      document.documentElement.style.colorScheme = 'dark';
+    }
+  })();
+  </script>
+  <style>
+  /* Critical paint: match default dark shell so CSS load doesn't flash white */
+  html, body {
+    background-color: #0b1220 !important;
+    color: #e8eef7;
+  }
+  html[data-theme="light"], html[data-theme="light"] body {
+    background-color: #f4f7fb !important;
+    color: #0f172a;
+  }
+  </style>
+
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+  <title>GPU Boost — Vision AI</title>
+
+<style>
+    body.boost-page { display:block; height:auto; overflow:auto; min-height:100vh;
+      background: linear-gradient(165deg, #0f1a14 0%, #15241c 40%, #0d1510 100%);
+      color: #e8f5e9; }
+    [data-theme="light"] body.boost-page, body.boost-page.light {
+      background: linear-gradient(165deg, #f1f8f4 0%, #e8f5e9 50%, #f7fbf8 100%);
+      color: #1b3d2f;
+    }
+    body.boost-page { }
+    .boost-wrap { max-width: min(820px, 100%); margin:0 auto; padding:28px 16px 80px; box-sizing: border-box; }
+    .hero {
+      text-align:center; padding:32px 20px; border-radius:20px; margin:18px 0;
+      border:1px solid var(--border-color); background:var(--bg-deep);
+    }
+    .hero.online { border-color:rgba(34,160,80,.45); background:linear-gradient(180deg,rgba(34,160,80,.12),var(--bg-deep)); }
+    .hero.timeout { border-color:rgba(239,68,68,.4); background:linear-gradient(180deg,rgba(239,68,68,.1),var(--bg-deep)); }
+    .hero.stale { border-color:rgba(234,179,8,.5); background:linear-gradient(180deg,rgba(234,179,8,.12),var(--bg-deep)); }
+    .dot { width:18px; height:18px; border-radius:50%; display:inline-block; background:#94a3b8; margin-right:8px; vertical-align:middle; }
+    .hero.online .dot { background:#22c55e; animation:pulse 1.5s infinite; }
+    .hero.stale .dot { background:#eab308; }
+    .hero.timeout .dot { background:#ef4444; }
+    @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)} 70%{box-shadow:0 0 0 12px transparent} 100%{box-shadow:0 0 0 0 transparent} }
+    h1 { font-size:1.5rem; margin:0 0 8px; }
+    .big-btn {
+      display:block; width:100%; max-width:420px; margin:12px auto; padding:16px 20px;
+      border:none; border-radius:14px; font-size:1.05rem; font-weight:800; cursor:pointer;
+      background:var(--primary-purple,#2d6a3e); color:#fff;
+    }
+    .big-btn.secondary { background:transparent; border:2px solid var(--primary-purple,#2d6a3e); color:var(--text-main); }
+    .big-btn:hover { filter:brightness(1.06); }
+    .card {
+      background:var(--bg-deep); border:1px solid var(--border-color);
+      border-radius:16px; padding:18px; margin-top:14px;
+    }
+    .muted { color:var(--text-muted); font-size:.92rem; line-height:1.5; }
+    .steps { margin:8px 0 0; padding-left:18px; }
+    .steps li { margin:8px 0; }
+    code { background:var(--bg-tertiary); padding:2px 6px; border-radius:4px; font-size:.8rem; }
+    a.back { color:var(--text-muted); text-decoration:none; font-size:.9rem; }
+    .vram-bar { height:8px; border-radius:99px; background:var(--bg-tertiary); overflow:hidden; margin-top:10px; max-width:280px; margin-left:auto; margin-right:auto; }
+    .vram-fill { height:100%; background:#22c55e; width:0%; }
+    .btn-row { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:8px; }
+  </style>
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="/frontend/static/css/tokens.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/themes.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/base.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/layout.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/components.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/chat.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/studio.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/theme-bridge.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/style.css?v=470">
+  <link rel="stylesheet" href="/frontend/static/css/chat-ui.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/pages.css?v=470"
+    <link rel="stylesheet" href="/frontend/static/css/glass-ui.css?v=471">
+  <link rel="stylesheet" href="/frontend/static/css/responsive.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/accessibility.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/hljs-atom-one-dark.css?v=440">
+</head>
+<body class="boost-page">
+  <div class="boost-wrap">
+    <a class="back" href="/">← Chat</a>
+    <h1>⚡ GPU Boost</h1>
+    <p class="muted"><strong>Optional.</strong> App works on free API keys without Boost. Turn GPU on only when you need stronger images.</p>
+
+    <div id="hero" class="hero">
+      <span class="dot"></span>
+      <div id="title" style="font-size:1.25rem;font-weight:800;margin-top:8px;">Checking…</div>
+      <div id="sub" class="muted" style="margin-top:6px;"></div>
+      <div id="vramWrap" style="display:none;margin-top:8px;">
+        <div class="muted" id="vramText" style="font-size:.8rem;"></div>
+        <div class="vram-bar"><div class="vram-fill" id="vramFill"></div></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button type="button" class="big-btn" id="oneClick" style="margin:0;max-width:280px;">🚀 Colab Boost</button>
+      <button type="button" class="big-btn secondary" id="kaggleClick" style="margin:0;max-width:280px;">📘 Kaggle Boost</button>
+    </div>
+    <p class="muted" style="text-align:center;">Copies setup · opens notebook · one Run</p>
+
+    <div class="card">
+      <strong>Colab (GPU T4)</strong>
+      <ol class="steps muted">
+        <li>Runtime → <strong>GPU (T4)</strong></li>
+        <li>Secrets: <code>NGROK_TOKEN</code> (+ optional <code>HF_TOKEN</code>)</li>
+        <li>Paste &amp; run one cell:</li>
+      </ol>
+      <pre id="cellCode" style="background:var(--bg-tertiary);padding:12px;border-radius:10px;overflow:auto;font-size:11px;line-height:1.35;"></pre>
+      <button type="button" class="big-btn" style="margin-top:10px;font-size:.95rem;padding:12px;" onclick="copyCell('colab')">📋 Copy Colab cell</button>
+    </div>
+
+    <div class="card">
+      <strong>Kaggle (GPU or CPU)</strong>
+      <ol class="steps muted">
+        <li>New notebook → Settings → Accelerator: <strong>GPU T4</strong> (or CPU)</li>
+        <li>Add secret <code>NGROK_TOKEN</code> (Kaggle secrets)</li>
+        <li>Run the same worker flow — cell below:</li>
+      </ol>
+      <pre id="kaggleCode" style="background:var(--bg-tertiary);padding:12px;border-radius:10px;overflow:auto;font-size:11px;line-height:1.35;"></pre>
+      <button type="button" class="big-btn secondary" style="margin-top:10px;font-size:.95rem;padding:12px;" onclick="copyCell('kaggle')">📋 Copy Kaggle cell</button>
+      <p class="muted" style="margin-top:8px;">Kaggle: <a href="https://www.kaggle.com/code" target="_blank" rel="noopener">kaggle.com/code</a> → New Notebook</p>
+    </div>
+
+    <div class="card muted">
+      After the cell prints <strong>DONE</strong>, leave that tab open. Green = worker on.
+      You do <strong>not</strong> need GPU 24/7 — only when generating heavy images.
+    </div>
+  </div>
+  <script>
+    const COLAB_NEW = 'https://colab.research.google.com/#create=true';
+    const KAGGLE_NEW = 'https://www.kaggle.com/code?new=true';
+    const COLAB_CELL = `# One-Click Vision AI Boost — Colab (GPU)
+!pip -q install -U fastapi 'uvicorn[standard]' pyngrok requests==2.32.4
+!git clone --depth 1 https://github.com/admilucky1-cyber/Vision-AI-v2.git /content/Vision-AI 2>/dev/null || (cd /content/Vision-AI && git pull --ff-only)
+%cd /content/Vision-AI
+!python colab_one_click_boost.py
+`;
+    const KAGGLE_CELL = `# Vision AI Boost — Kaggle (GPU or CPU)
+# 1) Accelerator: GPU T4 (or None for CPU)
+# 2) Add Notebook secret NGROK_TOKEN
+import os, subprocess, sys
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', '-q', 'fastapi', 'uvicorn[standard]', 'pyngrok', 'requests==2.32.4'])
+# Clone if needed
+if not os.path.isdir('/kaggle/working/Vision-AI'):
+    subprocess.check_call(['git', 'clone', '--depth', '1', 'https://github.com/admilucky1-cyber/Vision-AI-v2.git', '/kaggle/working/Vision-AI'])
+os.chdir('/kaggle/working/Vision-AI')
+# Kaggle secrets → env
+try:
+    from kaggle_secrets import UserSecretsClient
+    s = UserSecretsClient()
+    for k in ('NGROK_TOKEN', 'HF_TOKEN', 'WORKER_SECRET', 'MAIN_APP_URL'):
+        try:
+            os.environ[k] = s.get_secret(k)
+        except Exception:
+            pass
+except Exception as e:
+    print('Set NGROK_TOKEN via Kaggle secrets or paste when asked', e)
+# Default app URL if missing
+os.environ.setdefault('MAIN_APP_URL', 'https://vision-ai-v2-production.up.railway.app')
+!python colab_one_click_boost.py
+`;
+
+    document.getElementById('cellCode').textContent = COLAB_CELL;
+    document.getElementById('kaggleCode').textContent = KAGGLE_CELL;
+
+    async function copyCell(kind) {
+      const text = kind === 'kaggle' ? KAGGLE_CELL : COLAB_CELL;
+      try {
+        await navigator.clipboard.writeText(text);
+        alert('Copied. Paste into ' + (kind === 'kaggle' ? 'Kaggle' : 'Colab') + ' and Run.');
+      } catch {
+        prompt('Copy this:', text);
+      }
+    }
+
+    document.getElementById('oneClick').onclick = async () => {
+      try { await navigator.clipboard.writeText(COLAB_CELL); } catch (_) {}
+      window.open(COLAB_NEW, '_blank', 'noopener');
+    };
+    document.getElementById('kaggleClick').onclick = async () => {
+      try { await navigator.clipboard.writeText(KAGGLE_CELL); } catch (_) {}
+      window.open(KAGGLE_NEW, '_blank', 'noopener');
+    };
+
+    let had = false;
+    async function refresh() {
+      const hero = document.getElementById('hero');
+      try {
+        const r = await fetch('/api/workers?t=' + Date.now());
+        const d = await r.json();
+        const reg = d.registered || [];
+        const age = reg[0] ? (reg[0].age_sec || 9999) : 9999;
+        const ok = !!(d.live && d.live.ok);
+        const w = ((d.live && d.live.workers) || []).find(x => x.ok);
+        hero.className = 'hero';
+        if (ok && age <= 120) {
+          had = true;
+          hero.classList.add('online');
+          document.getElementById('title').textContent = 'GPU Online';
+          document.getElementById('sub').textContent = 'Worker connected — leave notebook open';
+        } else if (ok || (had && age <= 150)) {
+          had = true;
+          hero.classList.add('stale');
+          document.getElementById('title').textContent = 'GPU Slow';
+          document.getElementById('sub').textContent = 'Heartbeat delayed — re-run cell if needed';
+        } else if (had) {
+          hero.classList.add('timeout');
+          document.getElementById('title').textContent = 'GPU Offline';
+          document.getElementById('sub').textContent = 'Optional — chat still works on API keys';
+        } else {
+          document.getElementById('title').textContent = 'GPU Off (optional)';
+          document.getElementById('sub').textContent = 'Turn on only when you need stronger images';
+        }
+        const vw = document.getElementById('vramWrap');
+        if (w && w.vram_total_mb) {
+          vw.style.display = 'block';
+          const pct = Math.round(100 * w.vram_used_mb / w.vram_total_mb);
+          document.getElementById('vramFill').style.width = pct + '%';
+          document.getElementById('vramText').textContent = 'VRAM ' + w.vram_used_mb + ' / ' + w.vram_total_mb + ' MB';
+        } else vw.style.display = 'none';
+      } catch (e) {
+        document.getElementById('title').textContent = 'Status error';
+        document.getElementById('sub').textContent = String(e);
+      }
+    }
+    refresh();
+    setInterval(refresh, 12000);
+  </script>
+
+<script>
+/* v2.7.9: show worker load_status while model warms */
+(async function pollWorkerStatus(){
+  const el = document.getElementById('workerLoadStatus') || (function(){
+    const d = document.createElement('div');
+    d.id = 'workerLoadStatus';
+    d.style.cssText = 'margin:12px 0;padding:10px 14px;border-radius:12px;border:1px solid rgba(34,211,238,0.3);font-size:0.9rem;';
+    d.textContent = 'Worker status: connect Boost, then status appears here.';
+    const root = document.querySelector('main') || document.body;
+    root.insertBefore(d, root.firstChild);
+    return d;
+  })();
+  // Status comes from your registered worker URL + /worker/health when configured.
+  // Without a public worker URL in the page, this stays informational.
+  el.textContent = 'While Colab loads SDXL: watch the Colab log for [status] lines, or GET /worker/health → load_status.';
+})();
+</script>
+
+</body>
+</html>

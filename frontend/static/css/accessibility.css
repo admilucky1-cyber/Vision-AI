@@ -1,0 +1,10 @@
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: var(--z-fullscreen);
+  background: var(--accent); color: var(--text-inverse); padding: var(--space-2) var(--space-3);
+}
+.skip-link:focus { left: var(--space-2); top: var(--space-2); }
+[aria-disabled="true"], :disabled { opacity: 0.55; cursor: not-allowed; }

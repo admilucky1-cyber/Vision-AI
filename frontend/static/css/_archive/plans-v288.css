@@ -1,0 +1,131 @@
+
+/* Plans layout v2.8.8 — medium height, wide grid, responsive payment */
+.upgrade-shell {
+  max-width: 1200px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 12px 16px 48px !important;
+  box-sizing: border-box !important;
+}
+.plans-grid {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  padding: 8px 0 20px !important;
+  align-items: stretch !important;
+  width: 100% !important;
+}
+@media (max-width: 1100px) {
+  .plans-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 720px) {
+  .plans-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
+}
+@media (max-width: 420px) {
+  .plans-grid { grid-template-columns: 1fr !important; }
+}
+.plan-card {
+  padding: 14px 12px !important;
+  border-radius: 14px !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+.plan-name { font-size: 1rem !important; margin-bottom: 4px !important; }
+.plan-price { font-size: 1.25rem !important; margin: 4px 0 8px !important; line-height: 1.2 !important; }
+.plan-price .per { font-size: 0.75rem !important; }
+.plan-features {
+  margin: 0 0 10px !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+.plan-features li {
+  font-size: 0.8rem !important;
+  line-height: 1.35 !important;
+  padding: 3px 0 3px 18px !important;
+  margin: 0 !important;
+}
+.plan-btn {
+  padding: 8px 10px !important;
+  font-size: 0.82rem !important;
+  border-radius: 10px !important;
+  margin-top: 8px !important;
+}
+.popular-badge {
+  font-size: 0.7rem !important;
+  padding: 2px 8px !important;
+  margin: 0 0 6px !important;
+}
+
+/* Payment section compact + responsive */
+.payment-section {
+  max-width: 960px !important;
+  width: 100% !important;
+  margin: 8px auto 40px !important;
+  padding: 20px 18px !important;
+  box-sizing: border-box !important;
+}
+.pay-method-row {
+  grid-template-columns: 1fr auto !important;
+  gap: 12px !important;
+  padding: 12px !important;
+}
+.pay-method-row img {
+  width: 110px !important;
+  height: 110px !important;
+}
+#paymentForm {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px 12px !important;
+}
+#paymentForm .full-row,
+#paymentForm button[type="submit"] {
+  grid-column: 1 / -1 !important;
+}
+@media (max-width: 640px) {
+  .pay-method-row {
+    grid-template-columns: 1fr !important;
+    justify-items: start !important;
+  }
+  .pay-method-row img {
+    width: 120px !important;
+    height: 120px !important;
+  }
+  #paymentForm {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Theme + light mode text on upgrade */
+[data-theme="light"] body.page-view,
+[data-theme="light"] .upgrade-shell {
+  color: #0f1f1a !important;
+}
+[data-theme="light"] .plan-card {
+  background: #fff !important;
+  color: #0f1f1a !important;
+  border-color: rgba(15,31,26,0.12) !important;
+}
+[data-theme="light"] .plan-name,
+[data-theme="light"] .plan-features li {
+  color: #0f1f1a !important;
+}
+html[data-theme-preset="humanly"][data-theme="dark"] .plan-card {
+  background: rgba(15, 40, 34, 0.9) !important;
+  border-color: rgba(52, 211, 153, 0.22) !important;
+  color: #e8f5f0 !important;
+}
+
+/* v2.8.9 force break out of narrow columns */
+body.upgrade-page .upgrade-shell,
+body.page-view .upgrade-shell {
+  max-width: 1200px !important;
+  width: min(1200px, 100%) !important;
+}
+body.upgrade-page main,
+body.page-view main {
+  max-width: none !important;
+  width: 100% !important;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-theme-preset="humanly">
+<head>
+  <script>
+  /* Anti-FOUC: set theme BEFORE first paint (no network wait) */
+  (function () {
+    try {
+      var t = localStorage.getItem('vision_ai_theme') || 'dark';
+      var p = localStorage.getItem('vision_theme_preset') || 'humanly';
+      if (t === 'system') {
+        t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      if (t !== 'light' && t !== 'dark') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.setAttribute('data-theme-preset', p);
+      document.documentElement.style.colorScheme = t === 'light' ? 'light' : 'dark';
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.setAttribute('data-theme-preset', 'humanly');
+      document.documentElement.style.colorScheme = 'dark';
+    }
+  })();
+  </script>
+  <style>
+  /* Critical paint: match default dark shell so CSS load doesn't flash white */
+  html, body {
+    background-color: #0b1220 !important;
+    color: #e8eef7;
+  }
+  html[data-theme="light"], html[data-theme="light"] body {
+    background-color: #f4f7fb !important;
+    color: #0f172a;
+  }
+  </style>
+
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+  <title>Skills — Vision AI</title>
+
+
+<style>
+    body.skills-page { margin: 0; min-height: 100vh; }
+    .skills-wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 64px; }
+    .skills-hero { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .skills-hero h1 { margin: 0; font-size: 1.6rem; }
+    .btn { padding: 10px 16px; border-radius: 12px; border: 1px solid var(--shell-border, #333); cursor: pointer; font-weight: 700; }
+    .btn-primary { background: linear-gradient(135deg, #34d399, #10b981); color: #042f2e; border: none; }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: none; align-items: center; justify-content: center; z-index: 50; }
+    .modal-backdrop.open { display: flex; }
+    .modal { width: min(520px, 92vw); background: var(--glass-bg, #122); backdrop-filter: blur(24px); border: 1px solid var(--glass-border, #444); border-radius: 16px; padding: 20px; }
+    .modal label { display: block; margin: 10px 0 4px; font-size: 0.85rem; opacity: 0.9; }
+    .modal input, .modal textarea { width: 100%; box-sizing: border-box; border-radius: 10px; border: 1px solid var(--shell-border, #444); background: rgba(0,0,0,0.25); color: inherit; padding: 10px; }
+    .modal textarea { min-height: 120px; font-family: ui-monospace, monospace; font-size: 0.85rem; }
+    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
+  </style>
+  <link rel="stylesheet" href="/frontend/static/css/tokens.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/themes.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/base.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/layout.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/components.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/chat.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/studio.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/theme-bridge.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/style.css?v=470">
+  <link rel="stylesheet" href="/frontend/static/css/chat-ui.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/pages.css?v=470"
+    <link rel="stylesheet" href="/frontend/static/css/glass-ui.css?v=471">
+  <link rel="stylesheet" href="/frontend/static/css/responsive.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/accessibility.css?v=440">
+  <link rel="stylesheet" href="/frontend/static/css/hljs-atom-one-dark.css?v=440">
+</head>
+<body class="skills-page">
+  <div class="skills-wrap">
+    <div class="skills-hero">
+      <div>
+        <h1>Skill Market</h1>
+        <p style="margin:6px 0 0;opacity:0.85;">Install lightweight skills that shape how Vision AI answers.</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a class="btn" href="/">← Chat</a>
+        <button type="button" class="btn btn-primary" id="btnAddSkill">+ Add New Skill</button>
+      </div>
+    </div>
+    <div class="skills-grid" id="skillsGrid"></div>
+  </div>
+
+  <div class="modal-backdrop" id="skillModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h2 style="margin:0 0 8px;">Add New Skill</h2>
+      <p style="margin:0;font-size:0.85rem;opacity:0.8;">Define <code>def run(prompt, context):</code> — no imports.</p>
+      <label for="skillName">Name</label>
+      <input id="skillName" placeholder="My Skill">
+      <label for="skillDesc">Description</label>
+      <input id="skillDesc" placeholder="What it does">
+      <label for="skillCode">Python code</label>
+      <textarea id="skillCode">def run(prompt, context):
+    return "Skill says: " + (prompt or "")
+</textarea>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnCancelSkill">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btnSaveSkill">Install</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/frontend/static/js/skills.js?v=301"></script>
+</body>
+</html>
