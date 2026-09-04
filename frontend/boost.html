@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="app-version" content="5.6.0">
+  <title>Boost — Vision AI</title>
+  <script>
+  (function(){try{var t=localStorage.getItem('vision_ai_theme')||'dark';
+  if(t==='system')t=(matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+  document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');
+  }catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/frontend/static/css/nova-system.css?v=560">
+  <link rel="stylesheet" href="/frontend/static/css/pages-shell.css?v=560">
+</head>
+<body class="nova-app">
+<div class="page-shell">
+  <header class="page-topbar">
+    <a class="back" href="/">← Chat</a>
+    <h1>Boost</h1>
+  </header>
+  <main class="page-body">
+
+    <div class="page-card">
+      <h2>GPU Boost</h2>
+      <p class="muted">Connect a Colab or Kaggle worker for image, video, or LoRA jobs. Free cloud GPUs when available; heavy jobs may need a paid worker.</p>
+      <div class="page-grid">
+        <a class="page-tile" href="/studio.html"><strong>Model Studio</strong><span>Launch image / video / LoRA jobs</span></a>
+        <a class="page-tile" href="/settings.html"><strong>API keys</strong><span>HF token and provider keys</span></a>
+        <a class="page-tile" href="/upgrade.html"><strong>Plans</strong><span>Higher limits and priority</span></a>
+      </div>
+    </div>
+    <div class="page-card">
+      <h2>Worker status</h2>
+      <p class="muted">Register a worker URL from your Colab notebook. Status appears here when the backend workers API is available.</p>
+      <div id="workerStatus" class="muted">No worker registered yet.</div>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>
