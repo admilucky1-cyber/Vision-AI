@@ -1,0 +1,111 @@
+/* Humanly global theme — same as Plans page, all surfaces */
+:root, html[data-theme="dark"], html[data-theme-preset="humanly"] {
+  --hm-bg: #0b1220;
+  --hm-bg2: #0f172a;
+  --hm-surface: #111827;
+  --hm-surface2: #1e293b;
+  --hm-text: #e8eef7;
+  --hm-muted: #8b9bb0;
+  --hm-accent: #3d8b4f;
+  --hm-accent2: #2d6a3e;
+  --hm-border: rgba(148, 163, 184, 0.14);
+}
+
+html, body {
+  background-color: var(--hm-bg, #0b1220) !important;
+  color: var(--hm-text, #e8eef7);
+}
+
+html[data-theme="light"], html[data-theme="light"] body {
+  --hm-bg: #f4f7fb;
+  --hm-bg2: #ffffff;
+  --hm-surface: #ffffff;
+  --hm-surface2: #e2e8f0;
+  --hm-text: #0f172a;
+  --hm-muted: #64748b;
+  --hm-border: rgba(15, 23, 42, 0.08);
+  background-color: #f4f7fb !important;
+  color: #0f172a !important;
+}
+
+/* Plans-style atmospheric background on every page */
+body.page-mode,
+body.login-page,
+body.studio-page,
+.page-shell {
+  background:
+    radial-gradient(1100px 560px at 8% -8%, rgba(61, 139, 79, 0.16), transparent 55%),
+    radial-gradient(900px 480px at 100% 0%, rgba(45, 106, 62, 0.1), transparent 50%),
+    radial-gradient(700px 400px at 50% 100%, rgba(56, 189, 248, 0.06), transparent 45%),
+    #0b1220 !important;
+  color: #e8eef7 !important;
+  min-height: 100dvh;
+}
+
+html[data-theme="light"] body.page-mode,
+html[data-theme="light"] body.login-page,
+html[data-theme="light"] .page-shell {
+  background:
+    radial-gradient(1000px 500px at 10% -10%, rgba(45, 106, 62, 0.08), transparent 50%),
+    #f4f7fb !important;
+  color: #0f172a !important;
+}
+
+/* Chat main canvas — same DNA */
+body.nova-app {
+  background:
+    radial-gradient(1200px 600px at 12% -10%, rgba(61, 139, 79, 0.14), transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, rgba(56, 189, 248, 0.07), transparent 50%),
+    #0b1220 !important;
+}
+html[data-theme="light"] body.nova-app {
+  background:
+    radial-gradient(1000px 500px at 10% -10%, rgba(45, 106, 62, 0.07), transparent 50%),
+    #f4f7fb !important;
+}
+
+/* Centered content column — all secondary pages */
+.page-shell {
+  display: flex !important;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100dvh;
+  margin: 0;
+}
+.page-body {
+  width: 100% !important;
+  max-width: 880px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 28px 20px 56px !important;
+  box-sizing: border-box;
+}
+.page-topbar {
+  width: 100%;
+  box-sizing: border-box;
+}
+.page-topbar-inner {
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-card, .page-tile {
+  background: rgba(17, 24, 39, 0.92) !important;
+  border: 1px solid var(--hm-border) !important;
+  color: inherit;
+}
+html[data-theme="light"] .page-card,
+html[data-theme="light"] .page-tile {
+  background: #fff !important;
+}
+
+.btn-primary, a.btn-primary, .send-btn, .new-chat-btn {
+  background: linear-gradient(135deg, #3d8b4f, #2d6a3e) !important;
+  color: #fff !important;
+  border: none !important;
+}
