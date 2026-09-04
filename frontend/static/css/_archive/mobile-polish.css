@@ -1,0 +1,25 @@
+
+/* Mobile safe areas + composer (v2.8.3) */
+@media (max-width: 768px) {
+  .main-header, .page-topbar {
+    padding-left: max(10px, env(safe-area-inset-left));
+    padding-right: max(10px, env(safe-area-inset-right));
+  }
+  .input-container, .composer-wrap {
+    margin-bottom: max(8px, env(safe-area-inset-bottom));
+    padding-bottom: 4px;
+  }
+  .topbar-chips, .header-chips {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+  .topbar-chip span.label { display: none; }
+  #message, textarea#message {
+    font-size: 16px !important; /* reduce iOS zoom on focus */
+  }
+  .sidebar {
+    max-width: min(320px, 88vw);
+  }
+}

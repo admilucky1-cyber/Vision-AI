@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="app-version" content="5.6.4">
+  <title>Versions — Vision AI</title>
+  <script>
+  (function(){try{var t=localStorage.getItem('vision_ai_theme')||'dark';
+  if(t==='system')t=(matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+  document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');
+  }catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/frontend/static/css/nova-system.css?v=564">
+  <link rel="stylesheet" href="/frontend/static/css/pages-shell.css?v=564">
+</head>
+<body class="nova-app">
+<div class="page-shell">
+  <header class="page-topbar">
+    <a class="back" href="/">← Chat</a>
+    <h1>Versions</h1>
+  </header>
+  <main class="page-body">
+
+    <div class="page-card">
+      <h2>Vision AI</h2>
+      <p class="muted">Product version and workspace release notes.</p>
+      <div class="page-tile"><strong>Version</strong><span>5.6.3 Nova</span></div>
+    </div>
+    <div class="page-card">
+      <h2>Recent</h2>
+      <p class="muted">SQLAlchemy preferences, settings API, Nova shell, fixed composer, collapsed sidebar tray, consistent secondary pages, Railway host fixes.</p>
+      <a class="btn-primary" href="/">Open workspace</a>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>

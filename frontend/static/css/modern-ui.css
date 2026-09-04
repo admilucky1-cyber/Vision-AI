@@ -1,0 +1,27 @@
+/**
+ * VISION AI v4.8.3 — compatibility bridge only.
+ * Component rules migrated to components.css / chat.css / layout.css.
+ * Keep this file last in cascade for residual overrides.
+ */
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height);
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+h1, .page-title { font-size: var(--font-size-2xl); font-weight: var(--font-weight-semibold); letter-spacing: -0.02em; }
+h2, .section-title { font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); }
+h3 { font-size: var(--font-size-lg); font-weight: var(--font-weight-medium); }
+.muted, .text-muted, .user-plan { color: var(--color-text-muted); font-size: var(--font-size-sm); }
+
+/* Residual high-specificity overrides against legacy style.css */
+.sidebar, #sidebar,
+.main-header,
+.chat-container,
+.page-container {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+* { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--color-text) 20%, transparent) transparent; }

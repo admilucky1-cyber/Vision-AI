@@ -1,0 +1,920 @@
+/* ==========================================================================
+   VISION AI — Aether Workspace UI  v5.0
+   Superior design layer. Non-breaking. Loaded last.
+   Design goals: Quiet confidence, maximum focus, premium restraint.
+   Backend & existing JS remain 100% compatible.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. REFINED DESIGN TOKENS (Aether)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Depth system */
+  --aether-bg: #0c0e12;
+  --aether-bg-elevated: #12151b;
+  --aether-surface: #161a22;
+  --aether-surface-2: #1c212b;
+  --aether-surface-3: #232933;
+
+  /* Text */
+  --aether-text: #eef1f6;
+  --aether-text-secondary: #a0a8b8;
+  --aether-text-tertiary: #6b7385;
+
+  /* Accent — soft electric, not neon */
+  --aether-accent: #5b8def;
+  --aether-accent-soft: rgba(91, 141, 239, 0.14);
+  --aether-accent-glow: rgba(91, 141, 239, 0.28);
+
+  /* Borders */
+  --aether-border: rgba(255, 255, 255, 0.06);
+  --aether-border-strong: rgba(255, 255, 255, 0.10);
+
+  /* Shadows — soft layered depth */
+  --aether-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --aether-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.32);
+  --aether-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.40);
+  --aether-shadow-composer: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04);
+
+  /* Radii */
+  --aether-radius-sm: 8px;
+  --aether-radius-md: 12px;
+  --aether-radius-lg: 16px;
+  --aether-radius-xl: 20px;
+
+  /* Motion */
+  --aether-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --aether-duration: 180ms;
+}
+
+/* Map into existing token system so legacy CSS still works */
+html[data-theme="dark"] {
+  --color-bg: var(--aether-bg);
+  --color-surface: var(--aether-surface);
+  --color-surface-elevated: var(--aether-surface-2);
+  --color-text: var(--aether-text);
+  --color-text-muted: var(--aether-text-secondary);
+  --color-border: var(--aether-border);
+  --color-accent: var(--aether-accent);
+  --bg-main: var(--aether-bg);
+  --bg-deep: var(--aether-bg);
+  --bg-secondary: var(--aether-surface);
+  --bg-tertiary: var(--aether-surface-2);
+  --text-main: var(--aether-text);
+  --text-muted: var(--aether-text-secondary);
+  --border-color: var(--aether-border);
+  --input-bg: var(--aether-surface);
+  --input-border: var(--aether-border);
+}
+
+/* --------------------------------------------------------------------------
+   2. GLOBAL SHELL
+   -------------------------------------------------------------------------- */
+html[data-theme="dark"] body {
+  background: var(--aether-bg) !important;
+  color: var(--aether-text);
+  font-feature-settings: "ss01", "cv01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle radial atmosphere behind main content (very restrained) */
+.app-shell,
+.main-content,
+#app,
+.chat-container {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(91, 141, 239, 0.04) 0%, transparent 60%),
+    var(--aether-bg);
+}
+
+/* --------------------------------------------------------------------------
+   3. SIDEBAR — Slim, quiet, precise
+   -------------------------------------------------------------------------- */
+.sidebar {
+  background: var(--aether-bg-elevated) !important;
+  border-right: 1px solid var(--aether-border) !important;
+  width: 252px !important;
+}
+
+.sidebar-header {
+  padding: 18px 16px 12px !important;
+  border-bottom: 1px solid var(--aether-border);
+}
+
+.sidebar-logo {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--aether-text) !important;
+  font-size: 15px;
+}
+
+/* New Chat — only strong element */
+.sidebar .new-chat-btn,
+.sidebar button[onclick*="newChat"],
+.sidebar .btn-new-chat,
+#newChatBtn {
+  background: var(--aether-accent) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: var(--aether-radius-md) !important;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: transform var(--aether-duration) var(--aether-ease),
+              box-shadow var(--aether-duration) var(--aether-ease),
+              background var(--aether-duration) var(--aether-ease);
+}
+
+.sidebar .new-chat-btn:hover,
+.sidebar button[onclick*="newChat"]:hover,
+#newChatBtn:hover {
+  background: #6b9af5 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(91, 141, 239, 0.35);
+}
+
+.sidebar-link,
+.sidebar-nav a {
+  color: var(--aether-text-secondary) !important;
+  border-radius: var(--aether-radius-sm) !important;
+  margin: 1px 8px;
+  padding: 8px 12px !important;
+  font-size: 13.5px;
+  transition: background var(--aether-duration) var(--aether-ease),
+              color var(--aether-duration) var(--aether-ease);
+}
+
+.sidebar-link:hover,
+.sidebar-nav a:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: var(--aether-text) !important;
+}
+
+.sidebar-link.active,
+.sidebar-nav a.active {
+  background: var(--aether-accent-soft) !important;
+  color: var(--aether-accent) !important;
+}
+
+.sidebar-footer {
+  border-top: 1px solid var(--aether-border);
+  padding: 12px 10px;
+}
+
+/* --------------------------------------------------------------------------
+   4. HEADER — Quiet & precise
+   -------------------------------------------------------------------------- */
+.header,
+.chat-header,
+.top-bar {
+  background: transparent !important;
+  border-bottom: 1px solid var(--aether-border) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* --------------------------------------------------------------------------
+   5. CHAT MESSAGES — Workspace style, refined
+   -------------------------------------------------------------------------- */
+.message,
+.chat-message,
+.msg {
+  padding: 18px 0 !important;
+  border-bottom: none !important;
+}
+
+.message-content,
+.msg-content {
+  max-width: 780px;
+  margin: 0 auto;
+  line-height: 1.65;
+  font-size: 15px;
+  color: var(--aether-text);
+}
+
+/* AI response surface — very subtle elevation */
+.message.ai .message-body,
+.message.assistant .message-body,
+.msg.ai,
+.msg.assistant {
+  background: transparent;
+}
+
+/* User message — quieter */
+.message.user .message-body,
+.msg.user {
+  color: var(--aether-text-secondary);
+}
+
+/* Code blocks — refined */
+pre, .code-block, .hljs {
+  background: var(--aether-surface-2) !important;
+  border: 1px solid var(--aether-border) !important;
+  border-radius: var(--aether-radius-md) !important;
+  box-shadow: var(--aether-shadow-sm);
+}
+
+/* --------------------------------------------------------------------------
+   6. HERO COMPOSER — The star of the interface
+   -------------------------------------------------------------------------- */
+.input-area,
+.composer,
+.composer-shell,
+.input-container {
+  max-width: 820px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.composer-shell,
+.input-container {
+  background: var(--aether-surface) !important;
+  border: 1px solid var(--aether-border-strong) !important;
+  border-radius: var(--aether-radius-xl) !important;
+  box-shadow: var(--aether-shadow-composer) !important;
+  padding: 14px 16px !important;
+  transition: border-color var(--aether-duration) var(--aether-ease),
+              box-shadow var(--aether-duration) var(--aether-ease),
+              background var(--aether-duration) var(--aether-ease);
+}
+
+.composer-shell:focus-within,
+.input-container:focus-within {
+  border-color: rgba(91, 141, 239, 0.45) !important;
+  background: var(--aether-surface-2) !important;
+  box-shadow:
+    0 0 0 1px rgba(91, 141, 239, 0.25),
+    0 12px 40px rgba(0, 0, 0, 0.45),
+    0 0 40px rgba(91, 141, 239, 0.08) !important;
+}
+
+#message,
+textarea#message,
+.composer-input {
+  background: transparent !important;
+  border: none !important;
+  color: var(--aether-text) !important;
+  font-size: 15.5px !important;
+  line-height: 1.55 !important;
+  padding: 8px 4px !important;
+  min-height: 52px;
+  resize: none;
+}
+
+#message::placeholder,
+textarea#message::placeholder {
+  color: var(--aether-text-tertiary) !important;
+  font-weight: 400;
+}
+
+/* Send button — precise & strong */
+.send-btn,
+#sendBtn,
+.send-btn-v3 {
+  background: var(--aether-accent) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--aether-duration) var(--aether-ease),
+              background var(--aether-duration) var(--aether-ease),
+              box-shadow var(--aether-duration) var(--aether-ease);
+  box-shadow: 0 2px 8px rgba(91, 141, 239, 0.35);
+}
+
+.send-btn:hover,
+#sendBtn:hover,
+.send-btn-v3:hover {
+  background: #6b9af5 !important;
+  transform: scale(1.04);
+  box-shadow: 0 4px 16px rgba(91, 141, 239, 0.45);
+}
+
+.send-btn:active,
+#sendBtn:active {
+  transform: scale(0.97);
+}
+
+/* Tool buttons around composer */
+.composer-tools button,
+.input-actions button,
+.tool-btn {
+  color: var(--aether-text-secondary) !important;
+  background: transparent !important;
+  border-radius: 10px !important;
+  transition: background var(--aether-duration) var(--aether-ease),
+              color var(--aether-duration) var(--aether-ease);
+}
+
+.composer-tools button:hover,
+.input-actions button:hover,
+.tool-btn:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: var(--aether-text) !important;
+}
+
+/* --------------------------------------------------------------------------
+   7. BUTTONS & CONTROLS
+   -------------------------------------------------------------------------- */
+.icon-btn {
+  color: var(--aether-text-secondary) !important;
+  border-radius: 10px !important;
+  transition: background var(--aether-duration) var(--aether-ease),
+              color var(--aether-duration) var(--aether-ease);
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: var(--aether-text) !important;
+}
+
+/* Primary actions */
+.btn-primary,
+.primary-btn {
+  background: var(--aether-accent) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: var(--aether-radius-md) !important;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   8. SCROLLBARS — Quiet
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* --------------------------------------------------------------------------
+   9. FOCUS & ACCESSIBILITY
+   -------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--aether-accent) !important;
+  outline-offset: 2px !important;
+}
+
+/* --------------------------------------------------------------------------
+   10. LIGHT THEME SAFETY (still supported)
+   -------------------------------------------------------------------------- */
+html[data-theme="light"] {
+  --aether-bg: #f4f6f9;
+  --aether-bg-elevated: #ffffff;
+  --aether-surface: #ffffff;
+  --aether-surface-2: #f0f3f7;
+  --aether-surface-3: #e6eaf0;
+  --aether-text: #0f141e;
+  --aether-text-secondary: #4a5568;
+  --aether-text-tertiary: #718096;
+  --aether-border: rgba(0, 0, 0, 0.07);
+  --aether-border-strong: rgba(0, 0, 0, 0.11);
+  --aether-shadow-composer: 0 8px 32px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="light"] body {
+  background: var(--aether-bg) !important;
+  color: var(--aether-text);
+}
+
+/* --------------------------------------------------------------------------
+   11. MICRO-POLISH
+   -------------------------------------------------------------------------- */
+.quota-badge {
+  border-radius: 99px !important;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Reduce visual noise from old layers */
+.glass-ui, .glass {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Ensure composer stays above chat on mobile */
+@media (max-width: 768px) {
+  .composer-shell,
+  .input-container {
+    border-radius: 16px !important;
+    margin: 0 8px 8px;
+  }
+
+  .sidebar {
+    width: 280px !important;
+  }
+}
+
+/* Final safety: never break existing layouts */
+.composer-shell *,
+.input-container * {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   Aether Power Features — Palette, Theme Panel, Token Meter, Code Toolbar
+   ========================================================================== */
+
+/* Command Palette */
+.aether-palette {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: min(18vh, 140px);
+}
+.aether-palette[hidden] { display: none !important; }
+.aether-palette-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.aether-palette-panel {
+  position: relative;
+  width: min(560px, 92vw);
+  background: var(--aether-surface, #161a22);
+  border: 1px solid var(--aether-border-strong, rgba(255,255,255,0.1));
+  border-radius: var(--aether-radius-lg, 16px);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04);
+  overflow: hidden;
+  animation: aetherPaletteIn 140ms var(--aether-ease, cubic-bezier(0.22,1,0.36,1));
+}
+@keyframes aetherPaletteIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.aether-palette-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--aether-border, rgba(255,255,255,0.06));
+}
+.aether-palette-search svg { flex-shrink: 0; opacity: 0.55; }
+.aether-palette-search input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--aether-text, #eef1f6);
+  font-size: 15px;
+  font-family: inherit;
+}
+.aether-palette-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  max-height: min(52vh, 420px);
+  overflow-y: auto;
+}
+.aether-palette-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+.aether-palette-item:hover,
+.aether-palette-item.active {
+  background: var(--aether-accent-soft, rgba(91,141,239,0.14));
+}
+.aether-palette-item-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.aether-palette-label { font-size: 14px; font-weight: 550; color: var(--aether-text, #eef1f6); }
+.aether-palette-hint { font-size: 12px; color: var(--aether-text-secondary, #a0a8b8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.aether-palette-empty { padding: 24px; text-align: center; color: var(--aether-text-secondary); font-size: 13px; }
+.aether-palette-footer {
+  display: flex;
+  gap: 16px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--aether-border, rgba(255,255,255,0.06));
+  font-size: 11px;
+  color: var(--aether-text-tertiary, #6b7385);
+}
+.aether-kbd {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--aether-text-secondary, #a0a8b8);
+  white-space: nowrap;
+}
+
+/* Theme Panel */
+.aether-theme-panel {
+  position: fixed;
+  top: 72px;
+  right: 20px;
+  z-index: 190;
+  width: min(320px, 92vw);
+  background: var(--aether-surface, #161a22);
+  border: 1px solid var(--aether-border-strong, rgba(255,255,255,0.1));
+  border-radius: var(--aether-radius-lg, 16px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+  padding: 0;
+  overflow: hidden;
+}
+.aether-theme-panel[hidden] { display: none !important; }
+.aether-theme-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--aether-border);
+  font-size: 13px;
+}
+.aether-theme-close {
+  background: transparent;
+  border: none;
+  color: var(--aether-text-secondary);
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+}
+.aether-theme-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+}
+.aether-theme-body label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--aether-text-secondary);
+}
+.aether-theme-body input[type="color"] {
+  width: 42px;
+  height: 28px;
+  border: 1px solid var(--aether-border);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+.aether-theme-body input[type="range"] {
+  flex: 1;
+  accent-color: var(--aether-accent, #5b8def);
+}
+.aether-theme-foot {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 10px 14px 14px;
+}
+.aether-theme-foot button {
+  border: 1px solid var(--aether-border);
+  background: transparent;
+  color: var(--aether-text);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.aether-theme-foot button.primary {
+  background: var(--aether-accent, #5b8def);
+  border-color: transparent;
+  color: #fff;
+}
+
+/* Token Meter */
+.aether-token-meter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 4px 0;
+  max-width: 820px;
+  margin: 0 auto 6px;
+}
+.aether-meter-bar {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.aether-meter-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--aether-accent, #5b8def);
+  border-radius: 99px;
+  transition: width 180ms ease, background 180ms ease;
+}
+.aether-meter-fill.warn { background: #e3b341; }
+.aether-meter-fill.danger { background: #f07178; }
+.aether-meter-text {
+  font-size: 11px;
+  color: var(--aether-text-tertiary, #6b7385);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Code toolbar */
+.aether-code-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  margin: -4px -4px 8px;
+  background: rgba(0,0,0,0.25);
+  border-bottom: 1px solid var(--aether-border, rgba(255,255,255,0.06));
+  border-radius: var(--aether-radius-md, 12px) var(--aether-radius-md, 12px) 0 0;
+  font-size: 11px;
+}
+.aether-code-lang {
+  margin-right: auto;
+  color: var(--aether-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+.aether-code-toolbar button {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--aether-text-secondary);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.aether-code-toolbar button:hover {
+  background: var(--aether-accent-soft, rgba(91,141,239,0.14));
+  color: var(--aether-text);
+}
+.aether-sandbox-out {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  background: #0a0c10;
+  border: 1px solid var(--aether-border);
+  border-radius: 0 0 var(--aether-radius-md, 12px) var(--aether-radius-md, 12px);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 12px;
+  white-space: pre-wrap;
+  color: var(--aether-text-secondary);
+}
+.aether-sandbox-out.err { color: #f07178; border-color: rgba(240,113,120,0.35); }
+
+@media (max-width: 640px) {
+  .aether-palette-panel { width: 96vw; }
+  .aether-theme-panel { right: 8px; left: 8px; width: auto; }
+  .aether-token-meter { padding-left: 12px; padding-right: 12px; }
+}
+
+/* ===== Aether Advanced v5.1 ===== */
+.aether-rag-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid var(--aether-border, rgba(255,255,255,.08));
+  background: rgba(255,255,255,.03);
+  color: var(--aether-text-secondary, #a0a8b8);
+  border-radius: 99px; padding: 4px 10px; font-size: 11px;
+  cursor: pointer; margin-left: 6px;
+}
+.aether-rag-badge .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #6b7385;
+}
+.aether-rag-badge.on .dot { background: #7fd99a; box-shadow: 0 0 8px rgba(127,217,154,.5); }
+
+.aether-profile-wrap {
+  display: flex; align-items: center; gap: 8px;
+  max-width: 820px; margin: 0 auto 6px; padding: 0 4px;
+  font-size: 12px; color: var(--aether-text-secondary);
+}
+.aether-profile-select {
+  background: var(--aether-surface, #161a22);
+  color: var(--aether-text, #eef1f6);
+  border: 1px solid var(--aether-border);
+  border-radius: 8px; padding: 4px 8px; font-size: 12px;
+}
+
+.aether-export-menu {
+  position: fixed; z-index: 180;
+  background: var(--aether-surface, #161a22);
+  border: 1px solid var(--aether-border-strong, rgba(255,255,255,.1));
+  border-radius: 12px; padding: 6px; min-width: 160px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.45);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.aether-export-menu[hidden] { display: none !important; }
+.aether-export-menu button {
+  background: transparent; border: none; text-align: left;
+  color: var(--aether-text); padding: 8px 12px; border-radius: 8px;
+  cursor: pointer; font-size: 13px;
+}
+.aether-export-menu button:hover { background: var(--aether-accent-soft, rgba(91,141,239,.14)); }
+
+.aether-drawer { position: fixed; inset: 0; z-index: 185; }
+.aether-drawer[hidden] { display: none !important; }
+.aether-drawer-back { position: absolute; inset: 0; background: rgba(0,0,0,.5); }
+.aether-drawer-panel {
+  position: absolute; top: 0; right: 0; height: 100%; width: min(380px, 94vw);
+  background: var(--aether-bg-elevated, #12151b); border-left: 1px solid var(--aether-border);
+  display: flex; flex-direction: column; padding: 12px; gap: 10px;
+  box-shadow: -12px 0 40px rgba(0,0,0,.35);
+}
+.aether-drawer-panel header { display: flex; justify-content: space-between; align-items: center; }
+.aether-drawer-panel header button { background: none; border: none; color: var(--aether-text-secondary); font-size: 22px; cursor: pointer; }
+.aether-drawer-panel input[type="search"] {
+  background: var(--aether-surface); border: 1px solid var(--aether-border);
+  border-radius: 10px; padding: 8px 10px; color: var(--aether-text); font-size: 13px;
+}
+.aether-drawer-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.aether-drawer-chips .chip {
+  border: 1px solid var(--aether-border); background: transparent;
+  color: var(--aether-text-secondary); border-radius: 99px; padding: 4px 10px;
+  font-size: 11px; cursor: pointer;
+}
+.aether-drawer-chips .chip.on { background: var(--aether-accent-soft); color: var(--aether-accent); border-color: transparent; }
+.aether-drawer-list { overflow: auto; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.aether-prompt-item {
+  display: flex; justify-content: space-between; gap: 8px;
+  background: transparent; border: 1px solid transparent; border-radius: 10px;
+  padding: 10px; color: var(--aether-text); cursor: pointer; text-align: left;
+}
+.aether-prompt-item:hover { background: rgba(255,255,255,.04); border-color: var(--aether-border); }
+.aether-prompt-item .c { font-size: 11px; color: var(--aether-text-tertiary); }
+
+.aether-inspector { position: fixed; inset: 0; z-index: 186; }
+.aether-inspector[hidden] { display: none !important; }
+.aether-inspector-back { position: absolute; inset: 0; background: rgba(0,0,0,.55); }
+.aether-inspector-panel {
+  position: absolute; inset: 6% 8%; background: var(--aether-bg-elevated, #12151b);
+  border: 1px solid var(--aether-border-strong); border-radius: 16px;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0,0,0,.5);
+}
+.aether-inspector-panel > header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px; border-bottom: 1px solid var(--aether-border);
+}
+.aether-inspector-panel > header button { background: none; border: none; color: var(--aether-text-secondary); font-size: 22px; cursor: pointer; }
+.aether-inspector-layout { display: grid; grid-template-columns: 220px 1fr; flex: 1; min-height: 0; }
+.aether-inspector-list { border-right: 1px solid var(--aether-border); overflow: auto; padding: 8px; }
+.aether-inspector-list .asset-row {
+  display: flex; flex-direction: column; gap: 2px; width: 100%;
+  background: transparent; border: none; color: var(--aether-text);
+  text-align: left; padding: 8px; border-radius: 8px; cursor: pointer;
+}
+.aether-inspector-list .asset-row:hover { background: rgba(255,255,255,.04); }
+.aether-inspector-list .kind { font-size: 10px; color: var(--aether-text-tertiary); text-transform: uppercase; }
+.aether-inspector-view { padding: 12px; overflow: auto; }
+.inspect-toolbar { display: flex; gap: 6px; margin-bottom: 8px; }
+.inspect-toolbar button {
+  background: rgba(255,255,255,.06); border: 1px solid var(--aether-border);
+  color: var(--aether-text-secondary); border-radius: 8px; padding: 4px 10px; cursor: pointer; font-size: 12px;
+}
+.inspect-stage { overflow: auto; max-height: 55vh; text-align: center; background: #0a0c10; border-radius: 12px; padding: 12px; }
+.inspect-stage img { max-width: 100%; transform-origin: center center; transition: transform 120ms ease; }
+.inspect-meta { margin-top: 12px; font-size: 12px; color: var(--aether-text-secondary); }
+.inspect-meta pre { background: var(--aether-surface); padding: 8px; border-radius: 8px; overflow: auto; }
+
+@media (max-width: 720px) {
+  .aether-inspector-layout { grid-template-columns: 1fr; }
+  .aether-inspector-list { max-height: 120px; border-right: none; border-bottom: 1px solid var(--aether-border); }
+  .aether-inspector-panel { inset: 2% 2%; }
+}
+
+/* v5.2 Engine */
+.aether-citations { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.aether-citations-title { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--aether-text-tertiary); }
+.aether-cite-card {
+  display: grid; grid-template-columns: auto 1fr; gap: 2px 10px;
+  text-align: left; background: rgba(255,255,255,.03);
+  border: 1px solid var(--aether-border); border-radius: 10px;
+  padding: 8px 10px; cursor: pointer; color: var(--aether-text-secondary); font-size: 12px;
+}
+.aether-cite-card:hover { border-color: var(--aether-accent); color: var(--aether-text); }
+.aether-cite-card .cid { grid-row: span 2; font-weight: 700; color: var(--aether-accent); align-self: center; }
+.aether-cite-card .fn { font-weight: 600; color: var(--aether-text); }
+.aether-cite-card .sn { grid-column: 2; opacity: .85; }
+
+.aether-doc-viewer, .aether-export-modal { position: fixed; inset: 0; z-index: 200; }
+.aether-doc-viewer[hidden], .aether-export-modal[hidden] { display: none !important; }
+.aether-doc-viewer .back, .aether-export-modal .back { position: absolute; inset: 0; background: rgba(0,0,0,.55); }
+.aether-doc-viewer .panel, .aether-export-modal .panel {
+  position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+  width: min(640px, 94vw); max-height: 80vh; overflow: auto;
+  background: var(--aether-bg-elevated); border: 1px solid var(--aether-border-strong);
+  border-radius: 16px; padding: 14px; box-shadow: 0 24px 64px rgba(0,0,0,.5);
+}
+.aether-doc-viewer header, .aether-export-modal header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.aether-doc-viewer header button, .aether-export-modal header button { background: none; border: none; color: var(--aether-text-secondary); font-size: 22px; cursor: pointer; }
+.aether-doc-viewer pre { white-space: pre-wrap; font-size: 13px; line-height: 1.5; background: var(--aether-surface); padding: 12px; border-radius: 10px; }
+.aether-export-modal label { display: block; margin: 10px 0; font-size: 13px; color: var(--aether-text-secondary); }
+.aether-export-modal select { margin-left: 8px; background: var(--aether-surface); color: var(--aether-text); border: 1px solid var(--aether-border); border-radius: 8px; padding: 4px 8px; }
+.aether-export-modal .chk { display: flex; align-items: center; gap: 8px; }
+.aether-export-modal .go { margin-top: 12px; background: var(--aether-accent); color: #fff; border: none; border-radius: 10px; padding: 8px 14px; cursor: pointer; font-weight: 600; }
+
+.aether-split-pane {
+  position: fixed; top: 56px; right: 0; width: min(42vw, 520px); bottom: 0;
+  background: var(--aether-bg-elevated); border-left: 1px solid var(--aether-border);
+  z-index: 30; display: flex; flex-direction: column;
+}
+.aether-split-pane[hidden] { display: none !important; }
+.aether-split-pane header { padding: 12px 14px; border-bottom: 1px solid var(--aether-border); font-size: 13px; font-weight: 600; }
+.aether-split-out { flex: 1; overflow: auto; padding: 12px; font-size: 13px; color: var(--aether-text-secondary); }
+body.aether-split main, body.aether-split .chat-container { margin-right: min(42vw, 520px); }
+
+/* v5.3 Lab */
+.aether-telemetry {
+  position: fixed; top: 56px; right: 12px; z-index: 195;
+  width: min(360px, 94vw); background: var(--aether-bg-elevated);
+  border: 1px solid var(--aether-border-strong); border-radius: 14px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.45); padding: 0; overflow: hidden;
+}
+.aether-telemetry[hidden] { display: none !important; }
+.aether-telemetry header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--aether-border); font-size: 13px; }
+.aether-telemetry header button { background: none; border: none; color: var(--aether-text-secondary); font-size: 20px; cursor: pointer; }
+.aether-telem-grid { padding: 10px 12px; display: flex; flex-direction: column; gap: 12px; font-size: 12px; }
+.aether-telem-grid h4 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--aether-text-tertiary); }
+.aether-telem-grid .row { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; color: var(--aether-text-secondary); }
+
+.aether-branch-panel {
+  position: fixed; top: 56px; left: 12px; z-index: 194; width: min(300px, 90vw);
+  background: var(--aether-bg-elevated); border: 1px solid var(--aether-border-strong);
+  border-radius: 14px; padding: 0; max-height: 60vh; overflow: auto;
+}
+.aether-branch-panel[hidden] { display: none !important; }
+.aether-branch-panel header { display: flex; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid var(--aether-border); }
+.aether-branch-panel header button { background: none; border: none; color: var(--aether-text-secondary); font-size: 20px; cursor: pointer; }
+.br-item { display: flex; flex-direction: column; width: 100%; text-align: left; background: transparent; border: none; color: var(--aether-text); padding: 10px 12px; cursor: pointer; border-bottom: 1px solid var(--aether-border); }
+.br-item:hover { background: rgba(255,255,255,.04); }
+.br-item .meta { font-size: 11px; color: var(--aether-text-tertiary); }
+
+.aether-vault-modal, .aether-agentic { position: fixed; inset: 0; z-index: 200; }
+.aether-vault-modal[hidden], .aether-agentic[hidden] { display: none !important; }
+.aether-vault-modal .back, .aether-agentic .back { position: absolute; inset: 0; background: rgba(0,0,0,.55); }
+.aether-vault-modal .panel, .aether-agentic .panel {
+  position: absolute; top: 8%; left: 50%; transform: translateX(-50%);
+  width: min(520px, 94vw); background: var(--aether-bg-elevated);
+  border: 1px solid var(--aether-border-strong); border-radius: 16px; padding: 14px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.5); max-height: 84vh; overflow: auto;
+}
+.aether-vault-modal header, .aether-agentic header { display: flex; justify-content: space-between; align-items: center; }
+.aether-vault-modal header button, .aether-agentic header button { background: none; border: none; font-size: 22px; color: var(--aether-text-secondary); cursor: pointer; }
+.aether-agentic textarea {
+  width: 100%; min-height: 160px; margin: 8px 0; background: var(--aether-surface);
+  color: var(--aether-text); border: 1px solid var(--aether-border); border-radius: 10px;
+  padding: 10px; font-family: var(--font-mono, monospace); font-size: 13px;
+}
+.aether-agentic .primary, .aether-vault-modal .primary {
+  background: var(--aether-accent); color: #fff; border: none; border-radius: 10px;
+  padding: 8px 14px; cursor: pointer; font-weight: 600; margin-top: 8px;
+}
+.aether-agentic pre {
+  margin-top: 12px; background: #0a0c10; padding: 10px; border-radius: 10px;
+  font-size: 12px; white-space: pre-wrap; color: var(--aether-text-secondary); max-height: 240px; overflow: auto;
+}
+.aether-vault-modal input { background: var(--aether-surface); color: var(--aether-text); border: 1px solid var(--aether-border); border-radius: 8px; padding: 6px 8px; margin-top: 4px; }
+
+/* v5.4 Forge */
+.aether-workbench {
+  position: fixed; top: 0; right: 0; width: min(46vw, 560px); height: 100vh; z-index: 90;
+  background: var(--aether-bg-elevated); border-left: 1px solid var(--aether-border);
+  display: flex; flex-direction: column;
+}
+.aether-workbench[hidden] { display: none !important; }
+.aether-workbench header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--aether-border); }
+.aether-workbench header button { background: rgba(255,255,255,.06); border: 1px solid var(--aether-border); color: var(--aether-text); border-radius: 8px; padding: 4px 10px; cursor: pointer; margin-left: 6px; }
+.aether-workbench textarea { flex: 1; width: 100%; border: none; background: transparent; color: var(--aether-text); padding: 14px; font-family: var(--font-mono, monospace); font-size: 13px; line-height: 1.5; resize: none; }
+body.workbench-open main, body.workbench-open .chat-container { margin-right: min(46vw, 560px); }
+
+.aether-cost-panel, .aether-graph {
+  position: fixed; top: 60px; right: 12px; z-index: 196;
+  width: min(400px, 94vw); background: var(--aether-bg-elevated);
+  border: 1px solid var(--aether-border-strong); border-radius: 14px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.45); overflow: hidden;
+}
+.aether-cost-panel[hidden], .aether-graph[hidden] { display: none !important; }
+.aether-cost-panel header, .aether-graph header { display: flex; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid var(--aether-border); }
+.aether-cost-panel header button, .aether-graph header button { background: none; border: none; color: var(--aether-text-secondary); font-size: 20px; cursor: pointer; }
+.aether-cost-panel .sum { padding: 10px 12px; font-weight: 600; }
+.aether-cost-panel .row { display: flex; justify-content: space-between; padding: 4px 12px; font-size: 12px; color: var(--aether-text-secondary); }
+.aether-cost-panel .hint { padding: 8px 12px 12px; font-size: 11px; color: var(--aether-text-tertiary); }
+.aether-graph canvas { display: block; width: 100%; height: auto; background: #0c0e12; }
