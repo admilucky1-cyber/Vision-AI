@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-theme-preset="humanly">
+<head>
+  <script>
+  /* Anti-FOUC: set theme BEFORE first paint (no network wait) */
+  (function () {
+    try {
+      var t = localStorage.getItem('vision_ai_theme') || 'dark';
+      var p = localStorage.getItem('vision_theme_preset') || 'humanly';
+      if (t === 'system') {
+        t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      if (t !== 'light' && t !== 'dark') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.setAttribute('data-theme-preset', p);
+      document.documentElement.style.colorScheme = t === 'light' ? 'light' : 'dark';
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.setAttribute('data-theme-preset', 'humanly');
+      document.documentElement.style.colorScheme = 'dark';
+    }
+  })();
+  </script>
+  <style>
+  /* Critical paint: match default dark shell so CSS load doesn't flash white */
+  html, body {
+    background-color: #0b1220 !important;
+    color: #e8eef7;
+  }
+  html[data-theme="light"], html[data-theme="light"] body {
+    background-color: #f4f7fb !important;
+    color: #0f172a;
+  }
+  </style>
+
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
+  <meta name="color-scheme" content="dark light">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+
+  <meta name="app-version" content="5.6.5">
+  <title>Sign in — Vision AI</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body.login-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px 32px;
+      font-family: Inter, "Segoe UI", system-ui, sans-serif;
+      color: #e8f5f0;
+      background:
+        radial-gradient(900px 500px at 20% 10%, rgba(45,212,191,0.16), transparent 55%),
+        radial-gradient(700px 400px at 90% 90%, rgba(16,185,129,0.12), transparent 50%),
+        linear-gradient(165deg, #06140f 0%, #0a1c16 50%, #071210 100%);
+    }
+    .glass-card {
+      width: min(420px, 100%);
+      padding: 40px 28px 28px;
+      border-radius: 24px;
+      background: linear-gradient(165deg, rgba(12, 40, 34, 0.92), rgba(8, 28, 24, 0.95));
+      border: 1px solid rgba(52, 211, 153, 0.22);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.45), 0 0 40px rgba(45,212,191,0.08);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      animation: cardIn 0.45s cubic-bezier(0.4,0,0.2,1) both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .brand { text-align: center; margin-bottom: 18px; padding-top: 4px; }
+    .brand img {
+      width: 64px; height: 64px; border-radius: 14px; margin-bottom: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    }
+    .brand h1 {
+      font-size: 1.65rem; font-weight: 800; color: #5eead4;
+      letter-spacing: -0.02em; line-height: 1.2;
+    }
+    .brand .tagline {
+      color: #8fb9a8; font-size: 0.95rem; margin-top: 8px;
+      line-height: 1.45; padding: 0 8px;
+    }
+    .tabs {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      margin: 18px 0 16px; padding: 4px; border-radius: 14px;
+      background: rgba(0,0,0,0.25);
+    }
+    .tabs button {
+      border: none; border-radius: 10px; padding: 10px; font-weight: 700;
+      cursor: pointer; background: transparent; color: #9ab5aa; font-size: 0.95rem;
+    }
+    .tabs button.active {
+      background: linear-gradient(135deg, #0d9488, #059669);
+      color: #ecfdf5; box-shadow: 0 6px 16px rgba(5,150,105,0.3);
+    }
+    label {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      color: #a7c4b8; margin: 12px 0 6px;
+    }
+    .field { position: relative; }
+    .glass-input {
+      width: 100%; padding: 12px 14px; border-radius: 12px;
+      border: 1.5px solid rgba(52,211,153,0.35);
+      background: #f0fdf9; color: #0f1f1a; font-size: 1rem; outline: none;
+    }
+    .glass-input:focus {
+      border-color: #34d399; box-shadow: 0 0 0 3px rgba(52,211,153,0.2);
+    }
+    .toggle-eye {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      border: none; background: transparent; cursor: pointer; font-size: 1.05rem;
+      padding: 4px 6px; line-height: 1;
+    }
+    .glass-btn {
+      width: 100%; margin-top: 18px; padding: 13px; border: none; border-radius: 12px;
+      font-weight: 800; font-size: 1rem; cursor: pointer;
+      background: linear-gradient(135deg, #34d399, #10b981); color: #042f2e;
+      box-shadow: 0 8px 20px rgba(16,185,129,0.35);
+    }
+    .glass-btn:disabled { opacity: 0.65; cursor: wait; }
+    .auth-msg {
+      margin-top: 12px; text-align: center; font-size: 0.9rem; font-weight: 600;
+      min-height: 1.2em; line-height: 1.35; word-break: break-word;
+    }
+    .auth-msg.ok { color: #5eead4; }
+    .auth-msg.err { color: #fca5a5; }
+    .divider {
+      display: flex; align-items: center; gap: 12px; margin: 18px 0;
+      color: #6b9080; font-size: 0.8rem;
+    }
+    .divider::before, .divider::after {
+      content: ""; flex: 1; height: 1px; background: rgba(52,211,153,0.2);
+    }
+    .google-btn {
+      width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(52,211,153,0.25);
+      background: rgba(0,0,0,0.35); color: #e8f5f0; font-weight: 700; cursor: pointer;
+    }
+    .glass-link {
+      display: block; text-align: center; margin-top: 16px;
+      color: #34d399; font-weight: 700; text-decoration: none; font-size: 0.95rem;
+    }
+    .glass-link:hover { text-decoration: underline; color: #5eead4; }
+    .reg-only { display: none; }
+    body.mode-register .reg-only { display: block; }
+    #errorMsg, #errorText { display: none !important; }
+  </style>
+
+
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+    body { font-family: Inter, system-ui, sans-serif; background: #09090b !important; color: #fafafa; }
+    .login-card, .auth-card, .settings-card, .card {
+      background: #111114 !important;
+      border: 1px solid rgba(255,255,255,0.08) !important;
+      border-radius: 14px !important;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.45) !important;
+    }
+    button.primary, .btn-primary, button[type="submit"] {
+      background: #6366f1 !important; border: none !important; font-weight: 600 !important; border-radius: 10px !important;
+    }
+  </style>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/frontend/static/css/nova-system.css?v=565">
+  <link rel="stylesheet" href="/frontend/static/css/cross-platform.css?v=565">
+  <link rel="stylesheet" href="/frontend/static/css/pages-shell.css?v=565">
+</head>
+<body class="login-page mode-login">
+  <div class="glass-card" role="main">
+    <div class="brand">
+      <img src="/frontend/static/img/vision-ai-logo-64.png" alt="Vision AI" width="64" height="64"
+           onerror="this.src='/frontend/static/img/vision-ai-logo.png'">
+      <h1>Vision AI</h1>
+      <p class="tagline">See Beyond Limits<br><span style="opacity:0.85;font-size:0.88em">Sign in to your account</span></p>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button type="button" class="active" id="tabLogin" role="tab" aria-selected="true">Login</button>
+      <button type="button" id="tabRegister" role="tab" aria-selected="false">Register</button>
+    </div>
+
+    <form id="authForm" autocomplete="on">
+      <label for="username">Username</label>
+      <input class="glass-input" id="username" name="username" type="text" autocomplete="username" required minlength="3" maxlength="50" placeholder="username">
+
+      <label for="password">Password</label>
+      <div class="field">
+        <input class="glass-input" id="password" name="password" type="password" autocomplete="current-password" required minlength="6" placeholder="••••••••">
+        <button type="button" class="toggle-eye" id="toggleEye" title="Show password" aria-label="Show password">👁️</button>
+      </div>
+
+      <div class="reg-only">
+        <label for="email">Email</label>
+        <input class="glass-input" id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+        <label for="full_name">Full name <span style="opacity:0.7">(optional)</span></label>
+        <input class="glass-input" id="full_name" name="full_name" type="text" autocomplete="name" placeholder="Optional">
+      </div>
+
+      <button type="submit" class="glass-btn" id="submitBtn">Sign In</button>
+      <div id="authMessage" class="auth-msg" role="status" aria-live="polite"></div>
+      <!-- compatibility targets for older login.js -->
+      <div id="errorMsg" style="display:none"><span id="errorText"></span></div>
+    </form>
+
+    <div class="divider">OR</div>
+    <button type="button" class="google-btn" id="googleBtn">G  Continue with Google</button>
+    <a href="#" class="glass-link" id="guestLink">Continue as guest →</a>
+  </div>
+
+  <script src="/frontend/static/js/cross-platform.js?v=565"></script>
+  <script src="/frontend/static/js/login.js?v=565"></script>
+</body>
+</html>

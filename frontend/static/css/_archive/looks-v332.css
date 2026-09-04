@@ -1,0 +1,260 @@
+/* ============================================================
+   Vision AI v3.3.2 — Looks & style refresh
+   ============================================================ */
+
+:root {
+  --va-teal: #2dd4a8;
+  --va-teal-dim: rgba(45, 212, 168, 0.14);
+  --va-teal-border: rgba(45, 212, 168, 0.32);
+  --va-ink: #eaf6f0;
+  --va-muted: #8fad9e;
+  --va-surface: rgba(14, 22, 19, 0.94);
+  --va-surface-2: rgba(20, 32, 27, 0.96);
+  --va-danger: #f97316;
+  --va-radius: 16px;
+}
+
+/* ---- Global selection & focus ---- */
+::selection {
+  background: rgba(45, 212, 168, 0.35);
+  color: #fff;
+}
+:focus-visible {
+  outline: 2px solid var(--va-teal);
+  outline-offset: 2px;
+}
+
+/* ---- Header brand ---- */
+.header-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none !important;
+}
+.header-brand-logo {
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(45,212,168,0.25);
+}
+.header-brand-text {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-size: 15px;
+  background: linear-gradient(90deg, #5eead4, #34d399 60%, #6ee7b7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+#chatTitle {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--va-ink) !important;
+  opacity: 0.92;
+}
+
+/* ---- Model + status ---- */
+.model-selector {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: linear-gradient(135deg, rgba(45,212,168,0.12), transparent) !important;
+  cursor: pointer;
+}
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--va-muted);
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+#statusDot.status-dot,
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25);
+}
+
+/* ---- AI model badge ---- */
+.model-badge,
+.message-bubble .badge,
+[class*="model-used"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px !important;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  padding: 3px 9px !important;
+  border-radius: 999px !important;
+  background: var(--va-teal-dim) !important;
+  border: 1px solid var(--va-teal-border) !important;
+  color: #5eead4 !important;
+  margin-bottom: 8px;
+}
+
+/* ---- Download / success cards inside chat ---- */
+.markdown-content strong {
+  color: #b7f7e1;
+  font-weight: 650;
+}
+.message-bubble a.dl-file-link,
+.markdown-content a[href*="/upload/downloads/"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(45,212,168,0.2), rgba(20,184,166,0.1));
+  border: 1px solid rgba(45,212,168,0.4);
+  color: #ecfdf5 !important;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+.message-bubble a.dl-file-link:hover,
+.markdown-content a[href*="/upload/downloads/"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(45, 212, 168, 0.2);
+  background: linear-gradient(135deg, rgba(45,212,168,0.3), rgba(20,184,166,0.16));
+}
+
+/* ---- Tables in answers ---- */
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 13.5px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.markdown-content th {
+  background: rgba(45,212,168,0.12);
+  color: #d1fae5;
+  text-align: left;
+  padding: 8px 10px;
+}
+.markdown-content td {
+  padding: 8px 10px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ---- Blockquotes ---- */
+.markdown-content blockquote {
+  margin: 10px 0;
+  padding: 8px 14px;
+  border-left: 3px solid var(--va-teal);
+  background: rgba(45,212,168,0.06);
+  border-radius: 0 10px 10px 0;
+  color: var(--va-muted);
+}
+
+/* ---- Prompt Studio overlay ---- */
+#helpModal, .ps-panel, .prompt-studio {
+  border-radius: 18px !important;
+}
+.ps-card, .prompt-card {
+  border-radius: 14px !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  background: var(--va-surface-2) !important;
+  transition: border-color 0.15s ease, transform 0.12s ease !important;
+}
+.ps-card:hover, .prompt-card:hover {
+  border-color: var(--va-teal-border) !important;
+  transform: translateY(-2px);
+}
+
+/* ---- Toasts ---- */
+.toast, .va-toast, [class*="toast"] {
+  border-radius: 12px !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4) !important;
+}
+
+/* ---- Sidebar account chip ---- */
+.sidebar-footer {
+  padding: 10px 10px 14px !important;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,0.25));
+}
+.user-chip, .account-btn, #sidebarFooter .user-info {
+  border-radius: 12px !important;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+}
+
+/* ---- Scroll fade at chat top ---- */
+.chat-container, #chatOutput {
+  mask-image: linear-gradient(to bottom, transparent 0, #000 12px, #000 calc(100% - 8px), transparent 100%);
+}
+
+/* ---- Loading / typing indicator ---- */
+.typing-dots, .thinking-indicator {
+  display: inline-flex;
+  gap: 5px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: var(--va-surface);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.typing-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--va-teal);
+  animation: bounceDot 1s infinite ease-in-out;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes bounceDot {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.45; }
+  40% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* ---- File preview chips ---- */
+.file-preview-area .file-chip,
+.file-preview-area > * {
+  border-radius: 12px !important;
+  border: 1px solid var(--va-teal-border) !important;
+  background: var(--va-teal-dim) !important;
+}
+
+/* ---- Upgrade / settings pages soft consistency ---- */
+body:not(.login-page) .card,
+.plan-card, .settings-card {
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(12, 20, 17, 0.9);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.28);
+}
+
+/* ---- Desktop hover lift for history ---- */
+@media (hover: hover) and (pointer: fine) {
+  .history-item {
+    transition: background 0.12s ease, transform 0.12s ease, border-color 0.12s ease;
+  }
+  .history-item:hover {
+    transform: translateX(2px);
+  }
+}
+
+/* ---- Mobile: tighter, still premium ---- */
+@media (max-width: 768px) {
+  .header-brand-text { font-size: 14px; }
+  .message-row.user .message-bubble {
+    max-width: 92% !important;
+  }
+  .input-container.glass-composer {
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35) !important;
+  }
+  .chat-container, #chatOutput {
+    mask-image: none;
+  }
+}

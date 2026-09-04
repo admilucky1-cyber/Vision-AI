@@ -1,0 +1,347 @@
+/* Vision AI v2.6.2 — responsive UI refresh
+   Free-tier product: clean, fast, mobile-first
+*/
+
+:root {
+  --va-radius: 16px;
+  --va-radius-sm: 12px;
+  --va-accent: #22d3ee;
+  --va-accent-2: #a78bfa;
+  --va-user: linear-gradient(135deg, #0891b2 0%, #6366f1 100%);
+  --va-ai-border: rgba(34, 211, 238, 0.18);
+}
+
+/* Prevent horizontal page scroll */
+html, body {
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+}
+
+/* ---- Overlay: never block UI unless sidebar open ---- */
+#sidebar-overlay {
+  display: none !important;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+#sidebar-overlay.active {
+  display: block !important;
+  pointer-events: auto !important;
+  opacity: 1;
+  background: rgba(0,0,0,0.5) !important;
+  z-index: 150 !important;
+}
+
+/* ---- Header compact & responsive ---- */
+.main-header {
+  gap: 8px !important;
+  padding: 10px 12px !important;
+  min-height: 52px !important;
+  flex-wrap: nowrap !important;
+}
+.header-left { gap: 4px !important; }
+.header-brand-logo { width: 26px !important; height: 26px !important; }
+.header-right-actions, .topbar-tools {
+  gap: 4px !important;
+  max-width: min(58vw, 420px) !important;
+  overflow-x: auto !important;
+  flex-wrap: nowrap !important;
+  scrollbar-width: none;
+}
+.topbar-chip {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  max-width: 120px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  font-size: 12px !important;
+  padding: 6px 10px !important;
+  border-radius: 999px !important;
+}
+.topbar-chip-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 4.5rem;
+}
+.model-selector {
+  max-width: 120px !important;
+  font-size: 12px !important;
+  flex-shrink: 0 !important;
+}
+#chatTitle {
+  font-size: clamp(12px, 3.2vw, 16px) !important;
+  min-width: 0 !important;
+}
+
+/* ---- Sidebar drawer ---- */
+@media (max-width: 900px) {
+  .sidebar, #sidebar {
+    z-index: 160 !important;
+    width: min(300px, 86vw) !important;
+    box-shadow: 8px 0 32px rgba(0,0,0,0.35);
+  }
+  .main-content {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+  .topbar-chip-label { display: none !important; }
+  .topbar-chip { padding: 8px !important; min-width: 38px; justify-content: center; }
+  /* v2.7.4: keep chips visible as icons on narrow screens */
+  .topbar-chip[aria-label="Search cache"],
+  .topbar-chip[aria-label="Payments"],
+  .topbar-chip[aria-label="Upgrade"] { display: inline-flex !important; }
+  .header-brand-text { display: none !important; }
+  .status #statusText { display: none !important; }
+}
+
+@media (max-width: 480px) {
+  .model-selector { max-width: 88px !important; font-size: 11px !important; }
+  #chatTitle { max-width: 22vw !important; }
+}
+
+/* ---- Chat messages — modern flow ---- */
+.chat-container {
+  padding: 16px 12px 12px !important;
+  scroll-behavior: smooth;
+}
+.message-row {
+  margin-bottom: 14px !important;
+}
+.message-bubble {
+  max-width: min(720px, 92%) !important;
+  padding: 12px 16px !important;
+  border-radius: var(--va-radius) !important;
+  font-size: clamp(14px, 3.6vw, 15.5px) !important;
+  line-height: 1.55 !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.12) !important;
+}
+.message-row.user .message-bubble {
+  background: var(--va-user) !important;
+  color: #fff !important;
+  border-bottom-right-radius: 6px !important;
+}
+.message-row.ai .message-bubble {
+  background: rgba(20, 28, 36, 0.92) !important;
+  border: 1px solid var(--va-ai-border) !important;
+  border-bottom-left-radius: 6px !important;
+  backdrop-filter: blur(12px);
+}
+[data-theme="light"] .message-row.ai .message-bubble {
+  background: rgba(255,255,255,0.95) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  color: #0f172a !important;
+}
+
+.msg-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 4px !important;
+  margin-top: 8px !important;
+}
+.msg-action-btn {
+  font-size: 11px !important;
+  padding: 5px 9px !important;
+  border-radius: 8px !important;
+  white-space: nowrap !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* ---- Composer (input) refresh ---- */
+.input-area, .v3-composer {
+  padding: 10px 12px max(12px, env(safe-area-inset-bottom)) !important;
+  background: transparent !important;
+  border-top: 1px solid rgba(255,255,255,0.06) !important;
+}
+.composer-hints {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  margin-bottom: 8px !important;
+  max-width: 100% !important;
+}
+.hint-chip {
+  font-size: 12px !important;
+  padding: 6px 12px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(34, 211, 238, 0.25) !important;
+  background: rgba(34, 211, 238, 0.08) !important;
+  color: var(--text-main) !important;
+  white-space: nowrap !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+.glass-composer, .input-container {
+  display: flex !important;
+  align-items: flex-end !important;
+  gap: 6px !important;
+  padding: 8px 10px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(34, 211, 238, 0.22) !important;
+  background: rgba(12, 18, 28, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.25) !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+[data-theme="light"] .glass-composer,
+[data-theme="light"] .input-container {
+  background: rgba(255,255,255,0.92) !important;
+  border-color: rgba(0,0,0,0.1) !important;
+}
+#message, .glass-composer textarea {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  max-height: 140px !important;
+  font-size: 15px !important;
+  line-height: 1.4 !important;
+  border: none !important;
+  background: transparent !important;
+  resize: none !important;
+  padding: 10px 6px !important;
+}
+.tool-btn, .icon-btn.tool-btn {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: 12px !important;
+  flex-shrink: 0 !important;
+}
+.send-btn, #sendBtn, .send-btn-v3 {
+  flex-shrink: 0 !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  padding: 0 14px !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #06b6d4, #6366f1) !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+.send-btn .send-label {
+  max-width: 4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 480px) {
+  .send-btn .send-label { display: none !important; }
+  .hint-chip { font-size: 11px !important; padding: 5px 10px !important; }
+}
+
+/* Free / ads friendly subtle bar */
+.free-tier-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-muted, #94a3b8);
+  padding: 4px 8px;
+  opacity: 0.85;
+}
+.free-tier-bar a { color: var(--va-accent); text-decoration: none; font-weight: 600; }
+
+/* Sidebar links text never overflow */
+.sidebar .new-chat-btn,
+.sidebar .cache-clear-btn,
+.sidebar-link,
+.history-item {
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+
+/* v2.7.3 public UI polish */
+.unique-banner {
+  margin: 8px 16px 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,198,255,0.35);
+  background: linear-gradient(135deg, rgba(0,198,255,0.12), rgba(99,102,241,0.1));
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--text-main, #e8e8f0);
+}
+.unique-banner strong { color: #67e8f9; }
+[data-theme="light"] .unique-banner {
+  background: linear-gradient(135deg, #e0f7fa, #eef2ff);
+  color: #0f172a;
+  border-color: #67e8f9;
+}
+
+
+/* v2.7.4 */
+.ai-image-wrap { position: relative; margin: 8px 0 12px; }
+.ai-image-actions {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;
+}
+.ai-image-actions .img-act {
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.35);
+  color: #e8eef8;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.ai-image-actions .img-act:hover { background: rgba(0,198,255,0.2); }
+.vision-lightbox {
+  display: none; position: fixed; inset: 0; z-index: 99999;
+  background: rgba(0,0,0,0.88); align-items: center; justify-content: center;
+  padding: 24px;
+}
+.vision-lightbox.open { display: flex; }
+.vision-lightbox img {
+  max-width: min(96vw, 1200px); max-height: 90vh; object-fit: contain;
+  border-radius: 12px; box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+.vision-lightbox .lb-close {
+  position: absolute; top: 16px; right: 20px; font-size: 32px;
+  background: transparent; border: none; color: #fff; cursor: pointer;
+}
+.unique-banner {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin: 10px 16px 6px; padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(103,232,249,0.35);
+  background: linear-gradient(135deg, rgba(6,182,212,0.14), rgba(99,102,241,0.12));
+  font-size: 0.88rem; line-height: 1.45;
+}
+.unique-banner .ub-close {
+  margin-left: auto; border: none; background: transparent;
+  color: inherit; opacity: 0.7; cursor: pointer; font-size: 18px;
+}
+/* Stable top chips — no vanish on mild zoom */
+.topbar-tools, .header-right-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  max-width: min(52vw, 420px);
+  justify-content: flex-end;
+}
+.topbar-chip {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+@media (max-width: 900px) {
+  .topbar-chip-label { display: none !important; }
+  /* keep all chips as icons — do not hide Plans/Pay/Cache entirely */
+  .topbar-chip[aria-label="Search cache"],
+  .topbar-chip[aria-label="Payments"],
+  .topbar-chip[aria-label="Upgrade"] { display: inline-flex !important; }
+}

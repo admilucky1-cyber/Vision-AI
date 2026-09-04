@@ -1,0 +1,32 @@
+
+/* Theme presets — data-theme-preset on <html> */
+html[data-theme-preset="nord"][data-theme="dark"] body {
+  background: #2e3440 !important; color: #eceff4 !important;
+}
+html[data-theme-preset="nord"][data-theme="dark"] .sidebar {
+  background: #3b4252 !important;
+}
+html[data-theme-preset="nord"][data-theme="dark"] .message-row.ai .message-bubble {
+  background: #434c5e !important; color: #eceff4 !important;
+}
+html[data-theme-preset="sunset"][data-theme="dark"] body {
+  background: #1a1210 !important; color: #f5e6d3 !important;
+}
+html[data-theme-preset="sunset"][data-theme="dark"] .message-row.user .message-bubble {
+  background: linear-gradient(135deg, #c2410c, #b45309) !important;
+}
+html[data-theme-preset="high-contrast"] body {
+  background: #000 !important; color: #fff !important;
+}
+html[data-theme-preset="high-contrast"] .message-row.ai .message-bubble {
+  background: #111 !important; border: 2px solid #fff !important; color: #fff !important;
+}
+html[data-theme-preset="high-contrast"] .message-row.user .message-bubble {
+  background: #00ff88 !important; color: #000 !important;
+}
+html[data-theme-preset="soft-sepia"][data-theme="light"] body {
+  background: #f4ecd8 !important; color: #3e3226 !important;
+}
+html[data-theme-preset="soft-sepia"][data-theme="light"] .message-row.ai .message-bubble {
+  background: #faf6eb !important; color: #3e3226 !important;
+}
