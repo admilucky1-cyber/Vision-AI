@@ -1,0 +1,161 @@
+/* VISION AI v4.8.3 — glass utilities (compatibility; prefer solid surfaces) */
+/* Vision AI v4.7.1 — Glass + gradient polish (ChatGPT/DeepSeek-inspired) */
+:root {
+  --glass-blur: 18px;
+  --glass-sat: 1.35;
+  --grad-primary: linear-gradient(135deg, #2dd4bf 0%, #38bdf8 45%, #a78bfa 100%);
+  --grad-btn: linear-gradient(135deg, #14b8a6 0%, #0ea5e9 55%, #8b5cf6 100%);
+  --grad-user: linear-gradient(135deg, #0ea5e9 0%, #6366f1 50%, #a855f7 100%);
+  --grad-ai-border: linear-gradient(135deg, rgba(45,212,191,.45), rgba(56,189,248,.25), rgba(167,139,250,.35));
+  --shadow-glass: 0 8px 32px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.06);
+  --radius-bubble: 18px;
+}
+
+html[data-theme="light"] {
+  --grad-user: linear-gradient(135deg, #0284c7 0%, #4f46e5 55%, #7c3aed 100%);
+  --shadow-glass: 0 8px 28px rgba(15,23,42,.08), inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+/* App shell glass */
+.sidebar, .chat-header, .composer-bar, .input-area, .bottom-composer {
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+.sidebar {
+  background: color-mix(in srgb, var(--bg-secondary, #0f172a) 78%, transparent) !important;
+  border-right: 1px solid rgba(148,163,184,.12) !important;
+}
+
+/* AI + user bubbles — glass */
+.message-row.ai .message-bubble {
+  background: color-mix(in srgb, var(--ai-bubble-bg, #1a2332) 72%, transparent) !important;
+  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  border: 1px solid rgba(148,163,184,.14) !important;
+  box-shadow: var(--shadow-glass);
+  border-radius: var(--radius-bubble) var(--radius-bubble) var(--radius-bubble) 6px !important;
+  position: relative;
+}
+.message-row.ai .message-bubble::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--grad-ai-border);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: .55;
+}
+
+.message-row.user .message-bubble {
+  background: var(--grad-user) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 6px 24px rgba(14,165,233,.28);
+  border-radius: var(--radius-bubble) var(--radius-bubble) 6px var(--radius-bubble) !important;
+}
+
+/* Buttons */
+.btn-primary, .send-btn, button.send, #sendBtn,
+.footer-signin, .btn-primary-footer,
+.plan-card .btn, .upgrade-btn, button[type="submit"].primary {
+  background: var(--grad-btn) !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 4px 18px rgba(14,165,233,.35);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+.btn-primary:hover, .send-btn:hover, #sendBtn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(139,92,246,.35);
+}
+
+.icon-btn, .header-btn, .chat-action-btn, .msg-toolbar button {
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(148,163,184,.14) !important;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+}
+.icon-btn:hover, .header-btn:hover, .chat-action-btn:hover {
+  background: rgba(45,212,191,.12) !important;
+  border-color: rgba(45,212,191,.35) !important;
+  transform: translateY(-1px);
+}
+
+/* Composer glass */
+.composer-bar, .input-area, #inputArea, .chat-input-wrap {
+  background: color-mix(in srgb, var(--bg-secondary, #0f172a) 70%, transparent) !important;
+  border: 1px solid rgba(148,163,184,.16) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--shadow-glass);
+}
+
+/* Theme picker glass */
+#themePicker, .theme-picker, .header-more-panel, .profile-dropdown {
+  background: color-mix(in srgb, #0b1220 82%, transparent) !important;
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid rgba(148,163,184,.18) !important;
+  box-shadow: 0 16px 48px rgba(0,0,0,.45);
+  border-radius: 16px !important;
+}
+html[data-theme="light"] #themePicker,
+html[data-theme="light"] .profile-dropdown {
+  background: rgba(255,255,255,.88) !important;
+}
+
+/* Upgrade / plan cards */
+.plan-card, .pricing-card, .payment-card, .upgrade-card {
+  background: color-mix(in srgb, var(--bg-secondary, #111827) 75%, transparent) !important;
+  backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid rgba(148,163,184,.14) !important;
+  border-radius: 18px !important;
+  box-shadow: var(--shadow-glass);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.plan-card:hover, .pricing-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(45,212,191,.4) !important;
+  box-shadow: 0 16px 40px rgba(45,212,191,.12);
+}
+.plan-card.featured, .plan-card.popular {
+  border-color: rgba(56,189,248,.45) !important;
+  box-shadow: 0 0 0 1px rgba(56,189,248,.25), 0 12px 40px rgba(99,102,241,.2);
+}
+
+/* Page title gradient */
+.page-title, .upgrade-title, h1.choose-plan {
+  background: var(--grad-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+/* Soft page entrance */
+@keyframes vaFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.message-row, .plan-card, .pricing-card {
+  animation: vaFadeUp .35s ease both;
+}
+
+/* Online pill */
+.status-dot:not(.offline) {
+  background: linear-gradient(135deg, #34d399, #2dd4bf) !important;
+  box-shadow: 0 0 10px rgba(45,212,191,.7);
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

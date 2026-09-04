@@ -1,0 +1,166 @@
+
+/* v2.9.1 — 3D logo, premium avatars, fixed profile menu */
+
+/* ===== 3D Logo ===== */
+.logo img, .sidebar-logo img, .header-brand-logo,
+.brand img, a.logo img {
+  border-radius: 14px !important;
+  transform: perspective(600px) rotateY(-6deg) rotateX(4deg);
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.45),
+    0 2px 0 rgba(255,255,255,0.12) inset,
+    0 0 28px rgba(45, 212, 191, 0.35);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  filter: saturate(1.15) contrast(1.05);
+}
+.logo img:hover, .sidebar-logo img:hover, .header-brand-logo:hover {
+  transform: perspective(600px) rotateY(0deg) rotateX(0deg) scale(1.06);
+  box-shadow:
+    0 14px 32px rgba(0,0,0,0.5),
+    0 0 40px rgba(52, 211, 153, 0.45);
+}
+.logo-text, .header-brand-text {
+  font-weight: 800 !important;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #5eead4, #34d399 40%, #2dd4bf);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  text-shadow: 0 2px 12px rgba(45,212,191,0.25);
+}
+
+/* ===== Premium 3D avatars ===== */
+.msg-avatar {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 50% !important;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.2) !important;
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.35),
+    inset 0 2px 6px rgba(255,255,255,0.25),
+    inset 0 -4px 10px rgba(0,0,0,0.2) !important;
+  animation: avatarPulse 3s ease-in-out infinite;
+  font-size: 0 !important; /* hide text glyphs; use ::after art */
+}
+.msg-avatar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.45), transparent 45%);
+  pointer-events: none;
+}
+.msg-avatar.ai {
+  background: linear-gradient(145deg, #2dd4bf, #059669 55%, #0f766e) !important;
+}
+.msg-avatar.ai::after {
+  content: "✦";
+  font-size: 1.1rem;
+  color: #ecfdf5;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+.msg-avatar.user.male {
+  background: linear-gradient(145deg, #60a5fa, #2563eb 50%, #1e40af) !important;
+}
+.msg-avatar.user.female {
+  background: linear-gradient(145deg, #f9a8d4, #ec4899 50%, #be185d) !important;
+}
+.msg-avatar.user.neutral {
+  background: linear-gradient(145deg, #c4b5fd, #8b5cf6 50%, #6d28d9) !important;
+}
+.msg-avatar.user.male::after { content: "👨"; font-size: 1.25rem; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+.msg-avatar.user.female::after { content: "👩"; font-size: 1.25rem; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+.msg-avatar.user.neutral::after { content: "🧑"; font-size: 1.25rem; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+
+@keyframes avatarPulse {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2px) scale(1.04); }
+}
+
+/* ===== Profile dropdown — solid layout ===== */
+.profile-dropdown {
+  display: none;
+  flex-direction: column !important;
+  gap: 4px !important;
+  padding: 10px !important;
+  min-width: 200px;
+  background: #0c1a16 !important;
+  border: 1px solid rgba(52,211,153,0.28) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5) !important;
+  z-index: 8000 !important;
+}
+.profile-dropdown[style*="flex"] { display: flex !important; }
+.avatar-gender-bar {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr !important;
+  gap: 6px !important;
+  margin: 0 0 8px !important;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(52,211,153,0.15);
+}
+.avatar-gender-bar button {
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 8px 4px !important;
+  border-radius: 9px !important;
+  border: 1px solid rgba(52,211,153,0.25) !important;
+  background: rgba(15,40,34,0.8) !important;
+  color: #e8f5f0 !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+}
+.avatar-gender-bar button.active {
+  background: linear-gradient(135deg, rgba(52,211,153,0.35), rgba(45,212,191,0.2)) !important;
+  border-color: #34d399 !important;
+  color: #ecfdf5 !important;
+}
+.profile-dropdown a,
+.profile-dropdown .dl-item,
+.profile-dropdown .logout-item {
+  display: block !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 10px 12px !important;
+  border-radius: 9px !important;
+  border: none !important;
+  background: transparent !important;
+  color: #e8f5f0 !important;
+  text-align: left !important;
+  font-size: 0.9rem !important;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+.profile-dropdown a:hover,
+.profile-dropdown .dl-item:hover {
+  background: rgba(52,211,153,0.12) !important;
+}
+.profile-dropdown .logout-item { color: #fca5a5 !important; }
+.profile-dropdown .logout-item:hover { background: rgba(248,113,113,0.12) !important; }
+
+/* Kill stray white input ghosts in footer */
+#sidebarFooter input:not([type="file"]),
+.profile-dropdown input {
+  display: none !important;
+}
+
+/* User bubble + avatar alignment */
+.message-row.user .message-bubble {
+  background: linear-gradient(135deg, #ea580c, #c2410c) !important;
+  border-radius: 16px 16px 4px 16px !important;
+}
+.message-row.ai .message-bubble {
+  border-radius: 16px 16px 16px 4px !important;
+}
+
+/* Sidebar logo ring */
+.sidebar .logo, .sidebar-header .logo {
+  filter: drop-shadow(0 8px 16px rgba(45,212,191,0.3));
+}

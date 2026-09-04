@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
+  <meta name="color-scheme" content="dark light">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+
+  <meta name="app-version" content="5.6.7">
+  <title>Usage — Vision AI</title>
+  <script>
+  (function(){try{var t=localStorage.getItem('vision_ai_theme')||'dark';
+  if(t==='system')t=(matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+  document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');
+  }catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/frontend/static/css/nova-system.css?v=567">
+  <link rel="stylesheet" href="/frontend/static/css/cross-platform.css?v=567">
+  <link rel="stylesheet" href="/frontend/static/css/pages-shell.css?v=567">
+</head>
+<body class="nova-app">
+<div class="page-shell">
+  <header class="page-topbar">
+    <a class="back" href="/">← Chat</a>
+    <h1>Usage</h1>
+  </header>
+  <main class="page-body">
+
+    <div class="page-card">
+      <h2>Usage overview</h2>
+      <p class="muted">Message quota, token estimates, and plan limits for this account.</p>
+      <div class="page-grid">
+        <div class="page-tile"><strong>Plan</strong><span id="usagePlan">Free</span></div>
+        <div class="page-tile"><strong>Messages left</strong><span id="usageLeft">—</span></div>
+        <div class="page-tile"><strong>Context window</strong><span>~128k (model-dependent)</span></div>
+      </div>
+    </div>
+    <div class="page-card">
+      <h2>Tips</h2>
+      <p class="muted">The context meter under the chat box estimates how full the prompt is. “Route” chooses which model path handles the reply (auto picks a free cascade).</p>
+      <a class="btn-primary" href="/upgrade.html">View plans</a>
+      <a class="btn-ghost" href="/" style="margin-left:8px">Back to chat</a>
+    </div>
+
+  </main>
+</div>
+
+  <script src="/frontend/static/js/cross-platform.js?v=567"></script>
+</body>
+</html>
