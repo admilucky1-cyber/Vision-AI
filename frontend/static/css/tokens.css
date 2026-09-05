@@ -1,0 +1,157 @@
+/* VISION AI v4.8.2 — Canonical design tokens (+ legacy aliases) */
+:root {
+  /* spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-pill: 999px;
+
+  /* type */
+  --font-family: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-md: 15px;
+  --font-size-lg: 17px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 32px;
+  --line-height: 1.5;
+  --line-height-tight: 1.25;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* motion */
+  --duration-fast: 120ms;
+  --duration: 180ms;
+  --duration-slow: 220ms;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* z */
+  --z-base: 1;
+  --z-sidebar: 40;
+  --z-header: 50;
+  --z-dropdown: 60;
+  --z-overlay: 70;
+  --z-modal: 80;
+  --z-toast: 90;
+  --z-fullscreen: 100;
+
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 35%, transparent);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.14);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.18);
+
+  --sidebar-width: 272px;
+  --sidebar-rail: 68px;
+  --header-height: 52px;
+  --composer-max: 820px;
+
+  /* Semantic surfaces — dark workspace default */
+  --color-bg: #0b0d10;
+  --color-surface: #12151a;
+  --color-surface-elevated: #181c24;
+  --color-text: #eef1f6;
+  --color-text-muted: #9aa3b2;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-accent: #6ea8fe;
+  --color-danger: #f07178;
+  --color-success: #7fd99a;
+
+  --glass-bg: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: 12px;
+
+  /* ===== Legacy aliases (style.css / pages.css compatibility) ===== */
+  --bg-main: var(--color-bg);
+  --bg-deep: var(--color-bg);
+  --bg-secondary: var(--color-surface);
+  --bg-tertiary: var(--color-surface-elevated);
+  --bg-hover: color-mix(in srgb, var(--color-text) 6%, var(--color-surface));
+  --text-main: var(--color-text);
+  --text-muted: var(--color-text-muted);
+  --text-inverse: #0a0c10;
+  --border-color: var(--color-border);
+  --border-subtle: color-mix(in srgb, var(--color-text) 6%, transparent);
+  --input-bg: var(--color-surface);
+  --input-border: var(--color-border);
+  --primary-cyan: var(--color-accent);
+  --primary-purple: var(--color-accent);
+  --primary-gold: #e3b341;
+  --user-bubble-bg: color-mix(in srgb, var(--color-accent) 22%, var(--color-surface));
+  --user-bubble-text: var(--color-text);
+  --ai-bubble-bg: transparent;
+  --ai-bubble-text: var(--color-text);
+  --error-bg: color-mix(in srgb, var(--color-danger) 12%, transparent);
+  --error-text: var(--color-danger);
+  --success-bg: color-mix(in srgb, var(--color-success) 12%, transparent);
+  --success-text: var(--color-success);
+  --topbar-bg: color-mix(in srgb, var(--color-bg) 92%, transparent);
+  --plan-bg: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  --plan-border: color-mix(in srgb, var(--color-accent) 28%, transparent);
+  --tabs-bg: color-mix(in srgb, var(--color-text) 5%, transparent);
+  --btn-disabled: color-mix(in srgb, var(--color-text) 18%, var(--color-surface));
+
+  /* ===== workspace-ui.css aliases (v4.9.1 — do not delete until components migrate) ===== */
+  --color-bg-secondary: var(--color-surface);
+  --color-bg-tertiary: var(--color-surface-elevated);
+  --color-text-secondary: var(--color-text-muted);
+  --color-text-tertiary: color-mix(in srgb, var(--color-text-muted) 75%, var(--color-bg));
+  --color-accent-light: color-mix(in srgb, var(--color-accent) 18%, transparent);
+  --color-accent-text: var(--color-accent);
+  --color-surface-hover: color-mix(in srgb, var(--color-text) 6%, var(--color-surface));
+  --accent: var(--color-accent);
+  --accent-hover: color-mix(in srgb, var(--color-accent) 85%, #000);
+
+
+  /* v4.9.2 workspace + refine aliases */
+
+}
+
+[data-theme="light"] {
+  --color-bg: #f4f6f8;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #ffffff;
+  --color-text: #15202b;
+  --color-text-muted: #5c6b7a;
+  --color-border: rgba(15, 23, 32, 0.1);
+  --color-accent: #3b6fd9;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 32, 0.06);
+  --shadow-md: 0 4px 16px rgba(15, 23, 32, 0.08);
+  --shadow-lg: 0 12px 40px rgba(15, 23, 32, 0.1);
+  --text-inverse: #ffffff;
+  --user-bubble-bg: color-mix(in srgb, var(--color-accent) 12%, #fff);
+}
+
+[data-theme="dark"] {
+  --color-bg: #0b0d10;
+  --color-surface: #12151a;
+  --color-surface-elevated: #181c24;
+  --color-text: #eef1f6;
+  --color-text-muted: #9aa3b2;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-accent: #6ea8fe;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 1ms;
+    --duration: 1ms;
+    --duration-slow: 1ms;
+  }
+}

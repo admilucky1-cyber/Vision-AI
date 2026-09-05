@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-theme-preset="humanly">
+<head>
+  <meta name="app-version" content="5.7.1">
+  <script>
+  /* Anti-FOUC: set theme BEFORE first paint (no network wait) */
+  (function () {
+    try {
+      var t = localStorage.getItem('vision_ai_theme') || 'dark';
+      var p = localStorage.getItem('vision_theme_preset') || 'humanly';
+      if (t === 'system') {
+        t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      if (t !== 'light' && t !== 'dark') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.setAttribute('data-theme-preset', p);
+      document.documentElement.style.colorScheme = t === 'light' ? 'light' : 'dark';
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.setAttribute('data-theme-preset', 'humanly');
+      document.documentElement.style.colorScheme = 'dark';
+    }
+  })();
+  </script>
+  <style>
+  html, body {
+    background-color: #0b1220 !important;
+    color: #e8eef7;
+  }
+  html[data-theme="light"], html[data-theme="light"] body {
+    background-color: #f4f7fb !important;
+    color: #0f172a;
+  }
+  </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
+  <meta name="color-scheme" content="dark light">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+
+    <meta name="theme-color" content="#00C6FF">
+    <link rel="icon" type="image/png" sizes="32x32" href="/frontend/static/favicon/favicon-32x32.png">
+    <title>Payment Verification — Vision AI</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg-main: #0a0a0f;
+            --bg-card: rgba(26, 26, 46, 0.7);
+            --border-color: rgba(42, 42, 74, 0.6);
+            --text-main: #e0e0ff;
+            --text-muted: #8888a8;
+            --text-accent: #00C6FF;
+            --success: #4ade80;
+            --error: #f87171;
+            --warn: #fbbf24;
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-main);
+            padding: 24px;
+            min-height: 100vh;
+        }
+        h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #00C6FF, #7B68EE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle { color: var(--text-muted); margin-bottom: 20px; font-size: 14px; }
+        .toolbar {
+            display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+            margin-bottom: 20px;
+        }
+        .toolbar select, .toolbar button {
+            padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border-color);
+            background: var(--bg-card); color: var(--text-main); font-size: 14px; cursor: pointer;
+        }
+        .toolbar button.primary {
+            background: linear-gradient(135deg, #00C6FF, #7B68EE);
+            border: none; color: #fff; font-weight: 600;
+        }
+        .toolbar button:hover { opacity: 0.9; }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-lg);
+        }
+        .row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            align-items: start;
+        }
+        .meta { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+        .meta strong { color: var(--text-main); }
+        .txn {
+            font-family: ui-monospace, monospace;
+            background: rgba(0,0,0,0.35);
+            padding: 4px 8px;
+            border-radius: 6px;
+            color: var(--text-accent);
+            word-break: break-all;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge.pending { background: rgba(251, 191, 36, 0.15); color: var(--warn); }
+        .badge.approved { background: rgba(74, 222, 128, 0.15); color: var(--success); }
+        .badge.rejected { background: rgba(248, 113, 113, 0.15); color: var(--error); }
+        .actions { display: flex; flex-direction: column; gap: 8px; min-width: 120px; }
+        .actions button {
+            padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer;
+            font-weight: 600; font-size: 13px;
+        }
+        .btn-approve { background: #22c55e; color: #fff; }
+        .btn-reject { background: transparent; color: var(--error); border: 1px solid var(--error) !important; }
+        .btn-approve:disabled, .btn-reject:disabled { opacity: 0.5; cursor: not-allowed; }
+        .empty, .error { text-align: center; padding: 40px 16px; color: var(--text-muted); }
+        .error { color: var(--error); }
+        .topbar {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 8px; flex-wrap: wrap; gap: 8px;
+        }
+        .topbar a {
+            color: var(--text-muted); text-decoration: none; font-size: 14px;
+            padding: 6px 12px; border: 1px solid var(--border-color); border-radius: 8px;
+        }
+        .topbar a:hover { color: var(--text-main); border-color: var(--text-accent); }
+        #statusMsg { margin-bottom: 12px; font-size: 14px; min-height: 20px; }
+        .note-input {
+            width: 100%; margin-top: 8px; padding: 6px 8px; border-radius: 6px;
+            border: 1px solid var(--border-color); background: rgba(0,0,0,0.25);
+            color: var(--text-main); font-size: 12px;
+        }
+        @media (max-width: 640px) {
+            .row { grid-template-columns: 1fr; }
+            .actions { flex-direction: row; }
+        }
+    </style>
+  <link rel="stylesheet" href="/frontend/static/css/tokens.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/themes.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/base.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/layout.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/components.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/chat.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/studio.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/theme-bridge.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/style.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/chat-ui.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/pages.css?v=571"
+    <link rel="stylesheet" href="/frontend/static/css/glass-ui.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/responsive.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/accessibility.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/hljs-atom-one-dark.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/nova-system.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/cross-platform.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/pages-shell.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/humanly-global.css?v=571">
+</head>
+<body>
+    <div class="topbar">
+        <div>
+            <h1>Payment Verification</h1>
+            <p class="subtitle">Admin only — review Easypaisa / bank Transaction IDs and activate plans</p>
+        </div>
+        <div style="display:flex;gap:8px;">
+            <a href="/admin/search">Search cache</a>
+            <a href="/upgrade.html">Upgrade page</a>
+            <a href="/">Chat</a>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <label>
+            Status
+            <select id="statusFilter">
+                <option value="pending">Pending</option>
+                <option value="all">All</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+            </select>
+        </label>
+        <button type="button" class="primary" id="refreshBtn">Refresh</button>
+    </div>
+    <div id="statusMsg"></div>
+    <div id="list"></div>
+
+    <script>
+        async function authedFetch(url, options = {}) {
+            const token = localStorage.getItem('vision_ai_access_token');
+            if (!token) {
+                window.location.href = '/login.html';
+                return null;
+            }
+            const headers = { ...(options.headers || {}), 'Authorization': `Bearer ${token}` };
+            const res = await fetch(url, { ...options, headers });
+            if (res.status === 401) {
+                localStorage.removeItem('vision_ai_access_token');
+                window.location.href = '/login.html';
+                return null;
+            }
+            return res;
+        }
+
+        function setMsg(text, ok) {
+            const el = document.getElementById('statusMsg');
+            el.textContent = text || '';
+            el.style.color = ok === true ? '#4ade80' : ok === false ? '#f87171' : 'var(--text-muted)';
+        }
+
+        function escapeHtml(s) {
+            return String(s ?? '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[c]);
+        }
+
+        async function loadPayments() {
+            const list = document.getElementById('list');
+            list.innerHTML = '<div class="empty">Loading…</div>';
+            try {
+                const res = await authedFetch('/upgrade/admin/payment-requests');
+                if (!res) return;
+                if (res.status === 403) {
+                    list.innerHTML = '<div class="error">Admin access required. Log in with an admin account.</div>';
+                    return;
+                }
+                const data = await res.json();
+                if (!res.ok) {
+                    list.innerHTML = `<div class="error">${escapeHtml(data.detail || 'Failed to load')}</div>`;
+                    return;
+                }
+                const filter = document.getElementById('statusFilter').value;
+                const rows = (Array.isArray(data) ? data : []).filter(r =>
+                    filter === 'all' ? true : (r.status || 'pending') === filter
+                );
+                if (!rows.length) {
+                    list.innerHTML = '<div class="empty">No payment requests in this filter.</div>';
+                    return;
+                }
+                list.innerHTML = rows.map(r => {
+                    const st = r.status || 'pending';
+                    const canAct = st === 'pending';
+                    return `
+                    <div class="card" data-id="${escapeHtml(r.id)}">
+                        <div class="row">
+                            <div>
+                                <div style="margin-bottom:8px;">
+                                    <span class="badge ${escapeHtml(st)}">${escapeHtml(st)}</span>
+                                    <strong style="margin-left:8px;">${escapeHtml((r.plan || '').toUpperCase())}</strong>
+                                    · ${escapeHtml(r.method || '')}
+                                </div>
+                                <div class="meta">
+                                    <div><strong>User:</strong> ${escapeHtml(r.username)} ${r.email ? '(' + escapeHtml(r.email) + ')' : ''}</div>
+                                    <div><strong>Txn ID:</strong> <span class="txn">${escapeHtml(r.transaction_id)}</span></div>
+                                    <div><strong>Amount:</strong> ${escapeHtml(r.amount_pkr ?? r.expected_pkr ?? '—')} PKR
+                                        (expected ${escapeHtml(r.expected_pkr ?? '—')})</div>
+                                    <div><strong>Sender:</strong> ${escapeHtml(r.sender_name || '—')}</div>
+                                    <div><strong>Note:</strong> ${escapeHtml(r.note || '—')}</div>
+                                    <div><strong>Submitted:</strong> ${escapeHtml(r.created_at || '—')}</div>
+                                    ${r.reviewed_at ? `<div><strong>Reviewed:</strong> ${escapeHtml(r.reviewed_at)} by ${escapeHtml(r.reviewed_by || '')}</div>` : ''}
+                                    ${r.admin_note ? `<div><strong>Admin note:</strong> ${escapeHtml(r.admin_note)}</div>` : ''}
+                                </div>
+                                ${canAct ? `<input class="note-input" id="note-${escapeHtml(r.id)}" placeholder="Optional admin note">` : ''}
+                            </div>
+                            <div class="actions">
+                                ${canAct ? `
+                                <button type="button" class="btn-approve" onclick="review('${escapeHtml(r.id)}','approve')">Approve</button>
+                                <button type="button" class="btn-reject" onclick="review('${escapeHtml(r.id)}','reject')">Reject</button>
+                                ` : '<span class="meta">No actions</span>'}
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+            } catch (e) {
+                console.error(e);
+                list.innerHTML = '<div class="error">Connection error</div>';
+            }
+        }
+
+        async function review(requestId, action) {
+            const noteEl = document.getElementById('note-' + requestId);
+            const admin_note = noteEl ? noteEl.value.trim() : '';
+            setMsg(action === 'approve' ? 'Approving…' : 'Rejecting…');
+            try {
+                const res = await authedFetch('/upgrade/admin/payment-review', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ request_id: requestId, action, admin_note: admin_note || null }),
+                });
+                if (!res) return;
+                const data = await res.json();
+                if (!res.ok) {
+                    setMsg(data.detail || 'Review failed', false);
+                    return;
+                }
+                setMsg(action === 'approve'
+                    ? `Approved — ${data.username || ''} → ${data.plan || ''}`
+                    : 'Rejected', true);
+                await loadPayments();
+
+        // Auto-refresh pending list + browser notification
+        let _lastPending = -1;
+        async function pollPending() {
+            try {
+                const res = await authedFetch('/upgrade/admin/notifications?unread_only=false');
+                if (!res.ok) return;
+                const data = await res.json();
+                const n = data.pending_payments || 0;
+                const badge = document.getElementById('pendingBadge');
+                if (badge) {
+                    badge.textContent = n ? (n + ' pending') : '0 pending';
+                    badge.style.display = 'inline-block';
+                }
+                if (_lastPending >= 0 && n > _lastPending) {
+                    setMsg('New payment request received — refresh list');
+                    if (window.Notification && Notification.permission === 'granted') {
+                        new Notification('Vision AI', { body: 'New payment request (' + n + ' pending)' });
+                    }
+                    loadPayments();
+                }
+                _lastPending = n;
+            } catch (e) {}
+        }
+        if (window.Notification && Notification.permission === 'default') {
+            try { Notification.requestPermission(); } catch (e) {}
+        }
+        setInterval(pollPending, 15000);
+        pollPending();
+
+            } catch (e) {
+                console.error(e);
+                setMsg('Connection error', false);
+            }
+        }
+
+        document.getElementById('refreshBtn').addEventListener('click', loadPayments);
+        document.getElementById('statusFilter').addEventListener('change', loadPayments);
+        loadPayments();
+        setInterval(loadPayments, 30000);
+    </script>
+</body>
+</html>

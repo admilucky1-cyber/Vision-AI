@@ -1,0 +1,150 @@
+{
+  "version": 2,
+  "updated": 1788589666.9567783,
+  "storage": {
+    "accounts": {
+      "A_images": {
+        "label": "IMAGE_MODELS",
+        "drive_folder": "VISION-AI-STORAGE/IMAGE_MODELS"
+      },
+      "B_videos": {
+        "label": "VIDEO_MODELS",
+        "drive_folder": "VISION-AI-STORAGE/VIDEO_MODELS"
+      },
+      "C_datasets": {
+        "label": "DATASETS",
+        "drive_folder": "VISION-AI-STORAGE/DATASETS"
+      }
+    }
+  },
+  "models": [
+    {
+      "id": "sdxl-turbo",
+      "name": "SDXL Turbo",
+      "type": "image",
+      "family": "sdxl",
+      "source": "huggingface",
+      "hf_id": "stabilityai/sdxl-turbo",
+      "license": "openrail++",
+      "commercial_use": true,
+      "vram_gb": 6,
+      "minimum_vram_gb": 4,
+      "capabilities": {
+        "t2i": true,
+        "i2i": true,
+        "inpainting": false,
+        "outpainting": false,
+        "t2v": false,
+        "i2v": false,
+        "v2v": false,
+        "lora": true,
+        "control": false,
+        "upscale": false
+      },
+      "workflows": [
+        "t2i",
+        "i2i",
+        "batch"
+      ],
+      "loras": [],
+      "drive_path": "VISION-AI-STORAGE/IMAGE_MODELS/sdxl-turbo",
+      "enabled": true
+    },
+    {
+      "id": "flux-schnell",
+      "name": "FLUX.1 Schnell",
+      "type": "image",
+      "family": "flux",
+      "source": "huggingface",
+      "hf_id": "black-forest-labs/FLUX.1-schnell",
+      "license": "apache-2.0",
+      "commercial_use": true,
+      "vram_gb": 12,
+      "minimum_vram_gb": 8,
+      "capabilities": {
+        "t2i": true,
+        "i2i": true,
+        "inpainting": false,
+        "outpainting": false,
+        "t2v": false,
+        "i2v": false,
+        "v2v": false,
+        "lora": true,
+        "control": false,
+        "upscale": false
+      },
+      "workflows": [
+        "t2i",
+        "i2i"
+      ],
+      "loras": [],
+      "drive_path": "VISION-AI-STORAGE/IMAGE_MODELS/flux-schnell",
+      "enabled": true
+    },
+    {
+      "id": "pollinations-fallback",
+      "name": "Pollinations (free API fallback)",
+      "type": "image",
+      "family": "api",
+      "source": "pollinations",
+      "license": "provider-terms",
+      "commercial_use": false,
+      "vram_gb": 0,
+      "minimum_vram_gb": 0,
+      "capabilities": {
+        "t2i": true,
+        "i2i": false,
+        "inpainting": false,
+        "outpainting": false,
+        "t2v": false,
+        "i2v": false,
+        "v2v": false,
+        "lora": false,
+        "control": false,
+        "upscale": false
+      },
+      "workflows": [
+        "t2i"
+      ],
+      "loras": [],
+      "enabled": true,
+      "notes": "No LoRA; quality varies; free provider limits apply"
+    },
+    {
+      "id": "svd-xt",
+      "name": "Stable Video Diffusion XT",
+      "type": "video",
+      "family": "svd",
+      "source": "huggingface",
+      "hf_id": "stabilityai/stable-video-diffusion-img2vid-xt",
+      "license": "stability-ai-community",
+      "commercial_use": false,
+      "vram_gb": 16,
+      "minimum_vram_gb": 12,
+      "capabilities": {
+        "t2i": false,
+        "i2i": false,
+        "inpainting": false,
+        "outpainting": false,
+        "t2v": false,
+        "i2v": true,
+        "v2v": false,
+        "lora": false,
+        "control": false,
+        "upscale": false
+      },
+      "workflows": [
+        "i2v"
+      ],
+      "loras": [],
+      "drive_path": "VISION-AI-STORAGE/VIDEO_MODELS/svd-xt",
+      "enabled": true,
+      "notes": "I2V only (needs input image). Short clips on free T4 \u2014 not 60s HD.",
+      "maximum_frames": 25
+    }
+  ],
+  "loras": [],
+  "datasets": [],
+  "jobs": [],
+  "artifacts": []
+}

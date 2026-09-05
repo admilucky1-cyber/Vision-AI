@@ -1,0 +1,33 @@
+/* Self-hosted atom-one-dark inspired theme (no CDN) */
+.hljs, pre code, code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.85em 1em;
+  color: #abb2bf;
+  background: #282c34;
+  border-radius: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  line-height: 1.5;
+}
+.hljs-comment, .hljs-quote { color: #5c6370; font-style: italic; }
+.hljs-keyword, .hljs-selector-tag, .hljs-subst { color: #c678dd; }
+.hljs-number, .hljs-literal, .hljs-variable, .hljs-template-variable,
+.hljs-tag .hljs-attr { color: #d19a66; }
+.hljs-string, .hljs-doctag { color: #98c379; }
+.hljs-title, .hljs-section, .hljs-selector-id { color: #61afef; }
+.hljs-type, .hljs-class .hljs-title { color: #e5c07b; }
+.hljs-tag, .hljs-name, .hljs-attribute { color: #e06c75; }
+.hljs-regexp, .hljs-link { color: #56b6c2; }
+.hljs-symbol, .hljs-bullet { color: #61afef; }
+.hljs-built_in, .hljs-builtin-name { color: #e6c07b; }
+.hljs-meta { color: #61afef; }
+.hljs-deletion { background: #3f1f1f; }
+.hljs-addition { background: #1f3f1f; }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: 700; }
+[data-theme="light"] .hljs, [data-theme="light"] pre code {
+  background: #f4f6f8;
+  color: #24292f;
+  border: 1px solid rgba(15,23,42,0.08);
+}
