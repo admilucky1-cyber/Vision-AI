@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-theme-preset="humanly">
+<head>
+  <meta name="app-version" content="5.7.1">
+  <script>
+  /* Anti-FOUC: set theme BEFORE first paint (no network wait) */
+  (function () {
+    try {
+      var t = localStorage.getItem('vision_ai_theme') || 'dark';
+      var p = localStorage.getItem('vision_theme_preset') || 'humanly';
+      if (t === 'system') {
+        t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      if (t !== 'light' && t !== 'dark') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.setAttribute('data-theme-preset', p);
+      document.documentElement.style.colorScheme = t === 'light' ? 'light' : 'dark';
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.setAttribute('data-theme-preset', 'humanly');
+      document.documentElement.style.colorScheme = 'dark';
+    }
+  })();
+  </script>
+  <style>
+  html, body {
+    background-color: #0b1220 !important;
+    color: #e8eef7;
+  }
+  html[data-theme="light"], html[data-theme="light"] body {
+    background-color: #f4f7fb !important;
+    color: #0f172a;
+  }
+  </style>
+
+    <meta charset="UTF-8">
+    <!-- 🔥 UPDATED: Forces perfect 1:1 mobile scaling -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
+  <meta name="color-scheme" content="dark light">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+
+    <meta name="theme-color" content="#00C6FF">
+    <link rel="icon" type="image/png" sizes="32x32" href="/frontend/static/favicon/favicon-32x32.png">
+    <title>Search Cache Dashboard - Vision AI</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        /* --- Light/Dark Theme Variables --- */
+        :root {
+            --bg-main: #0a0a0f;
+            --bg-card: rgba(26, 26, 46, 0.7);
+            --border-color: rgba(42, 42, 74, 0.6);
+            --text-main: #e0e0ff;
+            --text-muted: #8888a8;
+            --text-accent: #00C6FF;
+            --success-color: #4ade80;
+            --error-color: #f87171;
+            --badge-fresh-bg: rgba(34, 197, 94, 0.15);
+            --badge-stale-bg: rgba(239, 68, 68, 0.15);
+            --code-bg: rgba(10, 10, 15, 0.8);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Light Theme Override (if user prefers light) */
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-main: #f5f7fa;
+                --bg-card: rgba(255, 255, 255, 0.85);
+                --border-color: rgba(229, 231, 235, 0.8);
+                --text-main: #1a1a1a;
+                --text-muted: #6b7280;
+                --text-accent: #00C6FF;
+                --code-bg: rgba(240, 242, 245, 0.9);
+                --badge-fresh-bg: rgba(34, 197, 94, 0.1);
+                --badge-stale-bg: rgba(239, 68, 68, 0.1);
+                --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08);
+            }
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-main);
+            padding: 24px;
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        h1 { 
+            font-size: 28px; 
+            font-weight: 800; 
+            margin-bottom: 8px; 
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #00C6FF, #7B68EE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle { 
+            color: var(--text-muted); 
+            margin-bottom: 24px; 
+            font-size: 15px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: background 0.3s ease, border 0.3s ease, transform 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: var(--text-accent);
+        }
+
+        .card h3 { 
+            font-size: 16px; 
+            font-weight: 600; 
+            margin-bottom: 16px; 
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stat-row { 
+            display: flex; 
+            gap: 32px; 
+            flex-wrap: wrap; 
+        }
+        
+        .stat-item { 
+            display: flex; 
+            flex-direction: column; 
+        }
+        
+        .stat-value { 
+            font-size: 28px; 
+            font-weight: 700; 
+            color: var(--text-accent); 
+            transition: transform 0.2s ease;
+        }
+        
+        .stat-item:hover .stat-value {
+            transform: scale(1.05);
+        }
+        
+        .stat-label { 
+            font-size: 13px; 
+            color: var(--text-muted); 
+            margin-top: 4px; 
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            animation: pulseBadge 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulseBadge {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .badge.fresh { 
+            background: var(--badge-fresh-bg); 
+            color: var(--success-color); 
+        }
+        
+        .badge.stale { 
+            background: var(--badge-stale-bg); 
+            color: var(--error-color); 
+        }
+
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 4px; 
+        }
+        
+        th, td { 
+            padding: 12px 12px; 
+            text-align: left; 
+            border-bottom: 1px solid var(--border-color); 
+            transition: background 0.2s ease;
+        }
+        
+        th { 
+            color: var(--text-muted); 
+            font-weight: 500; 
+            font-size: 13px; 
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        td { 
+            font-size: 14px; 
+        }
+        
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        code { 
+            background: var(--code-bg); 
+            padding: 4px 10px; 
+            border-radius: 8px; 
+            color: var(--text-accent); 
+            font-size: 13px; 
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+        
+        code:hover {
+            border-color: var(--text-accent);
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.1);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .refresh-btn {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #00C6FF, #7B68EE);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .refresh-btn:hover { 
+            transform: scale(1.05); 
+            box-shadow: 0 4px 25px rgba(0,198,255,0.3); 
+        }
+        
+        .refresh-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .refresh-btn:disabled { 
+            opacity: 0.6; 
+            cursor: not-allowed; 
+            transform: none; 
+        }
+        
+        .refresh-btn .icon-rotate {
+            display: inline-block;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .refresh-btn:active .icon-rotate {
+            transform: rotate(360deg);
+        }
+
+        .danger-btn {
+            padding: 10px 24px;
+            background: transparent;
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .danger-btn:hover { 
+            background: var(--badge-stale-bg); 
+            transform: scale(1.05); 
+        }
+        
+        .danger-btn:active {
+            transform: scale(0.95);
+        }
+
+        .empty { 
+            color: var(--text-muted); 
+            text-align: center; 
+            padding: 30px; 
+            font-style: italic;
+        }
+        
+        .error { 
+            color: var(--error-color); 
+            text-align: center; 
+            padding: 20px; 
+        }
+
+        .success-msg {
+            color: var(--success-color);
+            text-align: center;
+            padding: 12px 16px;
+            background: var(--badge-fresh-bg);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: none;
+            animation: slideDown 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            border: 1px solid var(--success-color);
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 16px; }
+            h1 { font-size: 24px; }
+            .stat-row { gap: 16px; }
+            .stat-item { width: 100%; }
+            .btn-row { flex-direction: column; }
+            .refresh-btn, .danger-btn { width: 100%; text-align: center; justify-content: center; }
+            .card { padding: 18px 16px; }
+            table { font-size: 13px; }
+            th, td { padding: 8px 6px; }
+            code { font-size: 12px; padding: 2px 6px; }
+        }
+    </style>
+  <link rel="stylesheet" href="/frontend/static/css/tokens.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/themes.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/base.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/layout.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/components.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/chat.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/studio.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/theme-bridge.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/style.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/chat-ui.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/pages.css?v=571"
+    <link rel="stylesheet" href="/frontend/static/css/glass-ui.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/responsive.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/accessibility.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/hljs-atom-one-dark.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/nova-system.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/cross-platform.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/pages-shell.css?v=571">
+  <link rel="stylesheet" href="/frontend/static/css/humanly-global.css?v=571">
+</head>
+<body>
+    <h1>🔍 Search Cache Dashboard</h1>
+    <p class="subtitle">Monitor your AI's real-time search cache performance.</p>
+    
+    <div class="btn-row">
+        <button class="refresh-btn" onclick="loadStats()">
+            <span class="icon-rotate">↻</span> Refresh
+        </button>
+        <button class="danger-btn" onclick="clearCache()">🧹 Clear Cache</button>
+        <label style="color:var(--text-muted); font-size:14px; display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <input type="checkbox" id="autoRefresh" checked style="accent-color: #00C6FF; width:16px; height:16px; cursor:pointer;"> Auto-refresh (30s)
+        </label>
+    </div>
+
+    <div id="successMessage" class="success-msg"></div>
+
+    <div class="card">
+        <h3>📊 Overview</h3>
+        <div id="overview" class="stat-row">
+            <div class="stat-item"><span class="stat-value">—</span><span class="stat-label">Total Entries</span></div>
+            <div class="stat-item"><span class="stat-value">—</span><span class="stat-label">Max Cache Size</span></div>
+            <div class="stat-item"><span class="stat-value">—</span><span class="stat-label">Cache Duration</span></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>📋 Recent Queries</h3>
+        <table>
+            <thead>
+                <tr><th>Query</th><th>Age</th><th>Length</th><th>Status</th></tr>
+            </thead>
+            <tbody id="queriesTable">
+                <tr><td colspan="4" class="empty">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let refreshInterval = null;
+
+        // Self-contained, token-aware fetch wrapper. This page is a standalone
+        // HTML file (not part of the index.js/settings.js bundle), so it can't
+        // reuse authenticatedFetch/authedFetch directly -- but it reuses the
+        // same localStorage key the rest of the app uses, so a user who's
+        // already logged in via the main app doesn't need to log in again here.
+        async function authedFetch(url, options = {}) {
+            const token = localStorage.getItem('vision_ai_access_token');
+            if (!token) {
+                window.location.href = '/login.html';
+                return null;
+            }
+            const headers = { ...(options.headers || {}), 'Authorization': `Bearer ${token}` };
+            const res = await fetch(url, { ...options, headers });
+            if (res.status === 401) {
+                localStorage.removeItem('vision_ai_access_token');
+                window.location.href = '/login.html';
+                return null;
+            }
+            return res;
+        }
+
+        async function loadStats() {
+            const overview = document.getElementById('overview');
+            const tbody = document.getElementById('queriesTable');
+
+            try {
+                const res = await authedFetch('/admin/search/stats');
+                if (!res) return; // redirected to login
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || 'Failed to fetch');
+
+                if (data.status === 'error') {
+                    overview.innerHTML = `<div class="error">⚠️ ${data.detail}</div>`;
+                    tbody.innerHTML = `<tr><td colspan="4" class="error">⚠️ ${data.detail}</td></tr>`;
+                    return;
+                }
+
+                const recent = Array.isArray(data.recent_queries) ? data.recent_queries : [];
+                const total = data.total_entries ?? data.entries ?? 0;
+                const maxSize = data.max_cache_size ?? 200;
+                const dur = data.cache_duration_seconds ?? 3600;
+
+                overview.innerHTML = `
+                    <div class="stat-item"><span class="stat-value">${total}</span><span class="stat-label">Total Entries</span></div>
+                    <div class="stat-item"><span class="stat-value">${maxSize}</span><span class="stat-label">Max Cache Size</span></div>
+                    <div class="stat-item"><span class="stat-value">${Math.round(dur / 60)}m</span><span class="stat-label">Cache Duration</span></div>
+                `;
+
+                if (recent.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="empty">No recent queries</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = recent.map(q => `
+                    <tr>
+                        <td><code>${(q.query || q.key || '—')}</code></td>
+                        <td>${q.age_human || '—'}</td>
+                        <td>${q.result_length != null ? q.result_length + ' chars' : '—'}</td>
+                        <td><span class="badge ${q.is_stale ? 'stale' : 'fresh'}">${q.is_stale ? '⏰ Stale' : '✅ Fresh'}</span></td>
+                    </tr>
+                `).join('');
+            } catch (e) {
+                overview.innerHTML = `<div class="error">⚠️ Error loading stats: ${e.message}</div>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="error">⚠️ ${e.message}</td></tr>`;
+            }
+        }
+
+        async function clearCache() {
+            if (!confirm("Clear entire search cache? This cannot be undone.")) return;
+            
+            const btn = document.querySelector('.danger-btn');
+            const originalText = btn.textContent;
+            btn.textContent = '⏳ Clearing...';
+            btn.disabled = true;
+
+            try {
+                const res = await authedFetch('/admin/search/clear', { method: 'POST' });
+                if (!res) return; // redirected to login
+                const data = await res.json();
+                
+                const msg = document.getElementById('successMessage');
+                if (res.ok) {
+                    msg.textContent = '✅ ' + (data.message || 'Cache cleared successfully!');
+                    msg.style.display = 'block';
+                    setTimeout(() => { msg.style.display = 'none'; }, 4000);
+                    loadStats();
+                } else {
+                    alert('❌ Failed to clear cache: ' + (data.detail || 'Unknown error'));
+                }
+            } catch (e) {
+                alert('❌ Failed to clear cache: ' + e.message);
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // Auto-refresh logic
+        document.getElementById('autoRefresh').addEventListener('change', function() {
+            if (this.checked) {
+                startAutoRefresh();
+            } else {
+                stopAutoRefresh();
+            }
+        });
+
+        function startAutoRefresh() {
+            stopAutoRefresh();
+            refreshInterval = setInterval(loadStats, 30000);
+        }
+
+        function stopAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+                refreshInterval = null;
+            }
+        }
+
+        // Load on page load + start auto-refresh
+        loadStats();
+        startAutoRefresh();
+
+        // Clean up when page is hidden/unloaded
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                stopAutoRefresh();
+            } else {
+                if (document.getElementById('autoRefresh').checked) {
+                    startAutoRefresh();
+                }
+            }
+        });
+    </script>
+  <script src="/frontend/static/js/cross-platform.js?v=571"></script>
+</body>
+</html>
