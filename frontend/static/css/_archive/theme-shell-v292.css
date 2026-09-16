@@ -1,0 +1,184 @@
+
+/* ============================================================
+   Vision AI v2.9.2 — Theme-aware SIDEBAR + TOPBAR + chrome
+   Every preset updates shell, not only chat bubbles.
+   ============================================================ */
+
+/* Base shell uses CSS variables so themes can override once */
+.sidebar, #sidebar {
+  background: var(--shell-sidebar-bg, var(--bg-secondary, #18241a)) !important;
+  border-right: 1px solid var(--shell-border, var(--border-color, #2a3d2e)) !important;
+  color: var(--shell-text, var(--text-main, #e4f0e2)) !important;
+}
+.main-header, .page-topbar, header.main-header {
+  background: var(--shell-topbar-bg, rgba(12, 20, 14, 0.88)) !important;
+  backdrop-filter: blur(16px) saturate(1.15) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.15) !important;
+  border-bottom: 1px solid var(--shell-border, var(--border-color)) !important;
+  color: var(--shell-text, var(--text-main)) !important;
+}
+.main-content, body {
+  background: var(--shell-bg, var(--bg-main)) !important;
+  color: var(--shell-text, var(--text-main)) !important;
+}
+.topbar-chip, .header-chip, .theme-picker-btn {
+  background: var(--shell-chip-bg, var(--bg-tertiary)) !important;
+  border: 1px solid var(--shell-border, var(--border-color)) !important;
+  color: var(--shell-text, var(--text-main)) !important;
+}
+.new-chat-btn, .cache-clear-btn, .sidebar-link, .history-item {
+  color: var(--shell-text, var(--text-main)) !important;
+  border-color: var(--shell-border, transparent) !important;
+}
+.history-item:hover, .history-item.active {
+  background: var(--shell-chip-bg, rgba(52,211,153,0.12)) !important;
+}
+.icon-btn, .header-btn {
+  color: var(--shell-text, var(--text-main)) !important;
+}
+#chatTitle, .header-brand-text, .logo-text {
+  color: var(--shell-accent, #34d399) !important;
+}
+
+/* --- Preset shells --- */
+html[data-theme-preset="humanly"][data-theme="dark"] {
+  --shell-bg: #06140f;
+  --shell-sidebar-bg: linear-gradient(180deg, #0a1f18, #06140f);
+  --shell-topbar-bg: rgba(6, 20, 15, 0.9);
+  --shell-text: #e8f5f0;
+  --shell-border: rgba(52, 211, 153, 0.22);
+  --shell-chip-bg: rgba(15, 42, 34, 0.75);
+  --shell-accent: #34d399;
+}
+html[data-theme-preset="ocean"][data-theme="dark"] {
+  --shell-bg: #0a1628;
+  --shell-sidebar-bg: linear-gradient(180deg, #0f2138, #0a1628);
+  --shell-topbar-bg: rgba(10, 22, 40, 0.92);
+  --shell-text: #e0f2fe;
+  --shell-border: rgba(56, 189, 248, 0.25);
+  --shell-chip-bg: rgba(15, 40, 70, 0.8);
+  --shell-accent: #38bdf8;
+}
+html[data-theme-preset="nord"][data-theme="dark"] {
+  --shell-bg: #2e3440;
+  --shell-sidebar-bg: #3b4252;
+  --shell-topbar-bg: rgba(46, 52, 64, 0.95);
+  --shell-text: #eceff4;
+  --shell-border: rgba(136, 192, 208, 0.25);
+  --shell-chip-bg: #434c5e;
+  --shell-accent: #88c0d0;
+}
+html[data-theme-preset="forest"][data-theme="dark"] {
+  --shell-bg: #0a140c;
+  --shell-sidebar-bg: #122018;
+  --shell-topbar-bg: rgba(10, 20, 12, 0.92);
+  --shell-text: #ecfdf5;
+  --shell-border: rgba(34, 197, 94, 0.25);
+  --shell-chip-bg: rgba(20, 50, 30, 0.8);
+  --shell-accent: #4ade80;
+}
+html[data-theme-preset="violet"][data-theme="dark"] {
+  --shell-bg: #12081c;
+  --shell-sidebar-bg: #1e1230;
+  --shell-topbar-bg: rgba(18, 8, 28, 0.94);
+  --shell-text: #ede9fe;
+  --shell-border: rgba(167, 139, 250, 0.28);
+  --shell-chip-bg: rgba(40, 25, 70, 0.85);
+  --shell-accent: #a78bfa;
+}
+html[data-theme-preset="rose"][data-theme="dark"] {
+  --shell-bg: #1a0a12;
+  --shell-sidebar-bg: #2a1220;
+  --shell-topbar-bg: rgba(26, 10, 18, 0.94);
+  --shell-text: #fce7f3;
+  --shell-border: rgba(244, 114, 182, 0.28);
+  --shell-chip-bg: rgba(60, 20, 40, 0.85);
+  --shell-accent: #f472b6;
+}
+html[data-theme-preset="midnight"][data-theme="dark"] {
+  --shell-bg: #020617;
+  --shell-sidebar-bg: #0f172a;
+  --shell-topbar-bg: rgba(2, 6, 23, 0.95);
+  --shell-text: #f1f5f9;
+  --shell-border: rgba(148, 163, 184, 0.22);
+  --shell-chip-bg: #1e293b;
+  --shell-accent: #818cf8;
+}
+html[data-theme-preset="sunset"][data-theme="dark"] {
+  --shell-bg: #1a1210;
+  --shell-sidebar-bg: #241814;
+  --shell-topbar-bg: rgba(26, 18, 16, 0.94);
+  --shell-text: #f5e6d3;
+  --shell-border: rgba(251, 146, 60, 0.28);
+  --shell-chip-bg: rgba(50, 30, 20, 0.85);
+  --shell-accent: #fb923c;
+}
+html[data-theme-preset="default"][data-theme="dark"] {
+  --shell-bg: #0b1220;
+  --shell-sidebar-bg: #121a2a;
+  --shell-topbar-bg: rgba(11, 18, 32, 0.92);
+  --shell-text: #e2e8f0;
+  --shell-border: rgba(99, 102, 241, 0.25);
+  --shell-chip-bg: rgba(30, 40, 70, 0.85);
+  --shell-accent: #22d3ee;
+}
+html[data-theme-preset="high-contrast"] {
+  --shell-bg: #000;
+  --shell-sidebar-bg: #000;
+  --shell-topbar-bg: #000;
+  --shell-text: #fff;
+  --shell-border: #fff;
+  --shell-chip-bg: #111;
+  --shell-accent: #0f0;
+}
+html[data-theme-preset="soft-sepia"][data-theme="light"],
+html[data-theme-preset="sand"][data-theme="light"] {
+  --shell-bg: #f4ecd8;
+  --shell-sidebar-bg: #faf6eb;
+  --shell-topbar-bg: rgba(250, 246, 235, 0.95);
+  --shell-text: #3e3226;
+  --shell-border: rgba(62, 50, 38, 0.15);
+  --shell-chip-bg: #efe6d4;
+  --shell-accent: #b45309;
+}
+[data-theme="light"] {
+  --shell-bg: #eef3f0;
+  --shell-sidebar-bg: #ffffff;
+  --shell-topbar-bg: rgba(255, 255, 255, 0.92);
+  --shell-text: #0f1f1a;
+  --shell-border: rgba(15, 31, 26, 0.12);
+  --shell-chip-bg: #f3f7f5;
+  --shell-accent: #059669;
+}
+
+/* Sidebar gradient backgrounds need special handling */
+html[data-theme-preset="humanly"][data-theme="dark"] .sidebar,
+html[data-theme-preset="humanly"][data-theme="dark"] #sidebar {
+  background: linear-gradient(180deg, #0a1f18 0%, #06140f 100%) !important;
+}
+html[data-theme-preset="ocean"][data-theme="dark"] .sidebar,
+html[data-theme-preset="ocean"][data-theme="dark"] #sidebar {
+  background: linear-gradient(180deg, #0f2138, #0a1628) !important;
+}
+html[data-theme-preset="violet"][data-theme="dark"] .sidebar,
+html[data-theme-preset="violet"][data-theme="dark"] #sidebar {
+  background: linear-gradient(180deg, #1e1230, #12081c) !important;
+}
+
+/* Clearer 3D logo — sharper, less blurry tilt */
+.logo img, .sidebar-logo img, .header-brand-logo, .brand img {
+  border-radius: 12px !important;
+  transform: perspective(800px) rotateY(-4deg) translateZ(0);
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.4),
+    0 0 0 1px rgba(255,255,255,0.08),
+    0 0 20px rgba(52, 211, 153, 0.25);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: contrast(1.08) saturate(1.1) !important;
+  backface-visibility: hidden;
+}
+.logo img:hover, .header-brand-logo:hover {
+  transform: perspective(800px) rotateY(0) scale(1.05);
+  filter: contrast(1.12) saturate(1.15) !important;
+}
