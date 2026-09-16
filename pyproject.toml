@@ -1,0 +1,12 @@
+[project]
+name = "vision-ai"
+version = "3.5.1"
+description = "Vision AI multimodal assistant"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.bandit]
+exclude_dirs = ["tests", "venv", ".venv"]
