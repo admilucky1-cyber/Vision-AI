@@ -1,0 +1,35 @@
+/* Vision AI v3.4.1 — polish */
+.quota-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(45, 212, 168, 0.12);
+  border: 1px solid rgba(45, 212, 168, 0.35);
+  color: #5eead4;
+  white-space: nowrap;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 768px) {
+  .quota-badge { font-size: 10px; padding: 3px 8px; max-width: 100px; }
+}
+/* Smoother AI bubble list spacing */
+.message-row + .message-row { margin-top: 6px; }
+/* Empty state cards */
+.welcome-empty {
+  max-width: 640px;
+  margin: 8vh auto 0;
+  text-align: center;
+  padding: 0 16px;
+}
+.welcome-empty h2 {
+  background: linear-gradient(90deg, #5eead4, #6ee7b7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
