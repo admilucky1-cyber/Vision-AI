@@ -1,0 +1,14 @@
+# Prefer Docker (ffmpeg). If Railway UI has a Custom Start Command, SET IT TO:
+#   python run.py
+# NEVER use: uvicorn ... --port ${PORT:-8000}
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "python run.py"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 8

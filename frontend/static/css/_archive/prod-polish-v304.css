@@ -1,0 +1,758 @@
+/* Vision AI v3.0.6 — production polish: themes, chat alignment, unfreeze controls */
+
+/* ========== Global theme variables: stronger light/dark difference ========== */
+html[data-theme="dark"] {
+  --bg-deep: #070b14;
+  --bg-secondary: #0c1424;
+  --text-main: #e8eef7;
+  --text-muted: #94a3b8;
+  --border-color: rgba(148, 163, 184, 0.16);
+  --accent: #22d3ee;
+  --user-bubble-bg: linear-gradient(135deg, #0e7490 0%, #4f46e5 100%);
+  --user-bubble-text: #f8fafc;
+  --ai-bubble-bg: #162033;
+  --ai-bubble-text: #e8eef7;
+  color-scheme: dark;
+}
+html[data-theme="light"] {
+  --bg-deep: #f4f7fb;
+  --bg-secondary: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-color: rgba(15, 23, 42, 0.1);
+  --accent: #0891b2;
+  --user-bubble-bg: linear-gradient(135deg, #0891b2 0%, #4f46e5 100%);
+  --user-bubble-text: #ffffff;
+  --ai-bubble-bg: #ffffff;
+  --ai-bubble-text: #0f172a;
+  color-scheme: light;
+}
+
+body {
+  background: var(--bg-deep) !important;
+  color: var(--text-main) !important;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* ========== Chat: user messages reliably on the RIGHT ========== */
+#chatOutput .message-row,
+.message-row {
+  display: flex !important;
+  width: 100% !important;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+.message-row.user {
+  flex-direction: row-reverse !important;
+  justify-content: flex-start !important;
+}
+.message-row.ai,
+.message-row.assistant,
+.message-row.system {
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+}
+.message-row .message-bubble {
+  max-width: min(78%, 720px) !important;
+  flex: 0 1 auto;
+}
+.message-row.user .message-bubble {
+  background: var(--user-bubble-bg) !important;
+  color: var(--user-bubble-text) !important;
+  border: none !important;
+  border-radius: 18px 18px 6px 18px !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+  text-align: left;
+}
+.message-row.ai .message-bubble,
+.message-row.assistant .message-bubble {
+  background: var(--ai-bubble-bg) !important;
+  color: var(--ai-bubble-text) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 18px 18px 18px 6px !important;
+}
+[data-theme="light"] .message-row.ai .message-bubble {
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+}
+
+/* ========== Unfreeze hamburger / controls ========== */
+.main-header,
+header.main-header,
+.topbar,
+.page-topbar {
+  position: relative;
+  z-index: 60 !important;
+}
+.main-header .icon-btn,
+.main-header button,
+#themePicker,
+.theme-picker {
+  position: relative;
+  z-index: 61 !important;
+  pointer-events: auto !important;
+}
+/* Overlay must never cover the top header controls */
+#sidebar-overlay,
+#sidebar-overlay.active,
+.sidebar-overlay {
+  z-index: 40 !important;
+  top: 56px !important; /* leave header clickable */
+}
+@media (max-width: 768px) {
+  #sidebar-overlay.active {
+    pointer-events: auto !important;
+  }
+  .sidebar.open-mobile {
+    z-index: 50 !important;
+  }
+  /* Hamburger always works */
+  .main-header .icon-btn[aria-label*="sidebar" i],
+  .main-header .icon-btn[title*="Sidebar" i],
+  .header-btn {
+    pointer-events: auto !important;
+    opacity: 1 !important;
+  }
+}
+/* Desktop: never trap clicks with ghost overlay */
+@media (min-width: 769px) {
+  #sidebar-overlay,
+  #sidebar-overlay.active {
+    display: none !important;
+    pointer-events: none !important;
+  }
+}
+
+/* Focus / fullscreen mode: keep header usable, no stuck body lock */
+body.focus-mode .main-header,
+html[data-focus="1"] .main-header {
+  z-index: 70 !important;
+}
+body.focus-mode #sidebar-overlay {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* ========== Theme picker + top controls look premium ========== */
+.theme-picker-btn,
+#headerThemeBtn,
+button#themePickerBtn {
+  border-radius: 999px !important;
+  border: 1px solid var(--border-color) !important;
+  background: rgba(255,255,255,0.06) !important;
+  color: var(--text-main) !important;
+  backdrop-filter: blur(8px);
+  transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.theme-picker-btn:hover,
+#headerThemeBtn:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent) !important;
+  background: rgba(34, 211, 238, 0.12) !important;
+}
+[data-theme="light"] .theme-picker-btn,
+[data-theme="light"] #headerThemeBtn {
+  background: rgba(15, 23, 42, 0.04) !important;
+}
+
+/* ========== Upgrade / payment form polish ========== */
+#paymentForm select,
+#paymentForm input {
+  border-radius: 12px !important;
+  border: 1px solid var(--border-color) !important;
+  background: var(--bg-secondary) !important;
+  color: var(--text-main) !important;
+  padding: 10px 12px !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+#paymentForm select:focus,
+#paymentForm input:focus {
+  outline: none !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.25) !important;
+}
+.plan-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+.plan-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Soften system bubbles */
+.message-row.system .message-bubble {
+  max-width: 90% !important;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* ===== v3.0.6 Prompt Studio safety (never freeze main UI) ===== */
+#helpModal {
+  z-index: 10050 !important;
+}
+#helpModal[aria-hidden="true"],
+#helpModal[style*="display: none"],
+#helpModal[style*="display:none"] {
+  pointer-events: none !important;
+  visibility: hidden;
+}
+body.ps-drawer-open {
+  /* only prevent background scroll while modal open — never pointer-events:none on body */
+  overflow: hidden;
+}
+#promptStudioDrawer:not(.open) {
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+#promptStudioDrawer:not(.open) .ps-backdrop {
+  pointer-events: none !important;
+}
+/* Ensure header / composer always clickable even if a ghost overlay remains */
+.main-header,
+.input-area,
+#message,
+#sendBtn {
+  position: relative;
+  z-index: 20;
+}
+
+/* ===== v3.2.1 Prompt Studio — fix blurred/empty panel when open =====
+   Root cause: unified-v300 .ps-panel { transform: translateX(100%) }
+   applied even inside #helpModal, so the panel stayed off-screen.
+   Also conflicting drawer vs centered-modal rules hid content. */
+#helpModal.ps-open,
+#helpModal.ps-drawer-root.ps-open {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  z-index: 100050 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 16px !important;
+  background: rgba(2, 6, 23, 0.72) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+#helpModal.ps-open .ps-panel,
+#helpModal.ps-drawer-root.ps-open .ps-panel,
+#helpModal .ps-panel {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  left: auto !important;
+  transform: none !important;
+  translate: none !important;
+  width: min(1080px, 100%) !important;
+  max-width: 1080px !important;
+  height: auto !important;
+  max-height: 92vh !important;
+  border-radius: 20px !important;
+  margin: 0 auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55) !important;
+  animation: none !important;
+}
+
+#helpModal[aria-hidden="true"],
+#helpModal:not(.ps-open) {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+#helpModal #promptGrid {
+  overflow-y: auto !important;
+  flex: 1 1 auto !important;
+  min-height: 180px !important;
+  max-height: none !important;
+  display: grid !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 640px) {
+  #helpModal.ps-open {
+    padding: 0 !important;
+    align-items: stretch !important;
+  }
+  #helpModal.ps-open .ps-panel {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+  }
+}
+
+/* Never leave a permanent dim on the whole page after close */
+body:not(.ps-drawer-open):not(.sidebar-open) #sidebar-overlay {
+  display: none !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+/* ===== v3.2.2 Professional chat typography & responsive ===== */
+.markdown-content {
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--text-main, #e8eef5);
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4 {
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 1.1em 0 0.45em;
+  letter-spacing: -0.02em;
+  color: var(--text-main, #f1f5f9);
+}
+.markdown-content h1 { font-size: 1.45rem; }
+.markdown-content h2 { font-size: 1.28rem; }
+.markdown-content h3 { font-size: 1.12rem; }
+.markdown-content h4 { font-size: 1.02rem; }
+.markdown-content p {
+  margin: 0.55em 0;
+}
+.markdown-content ul,
+.markdown-content ol {
+  margin: 0.5em 0 0.7em;
+  padding-left: 1.35em;
+}
+.markdown-content li {
+  margin: 0.28em 0;
+}
+.markdown-content li > p { margin: 0.2em 0; }
+.markdown-content strong { font-weight: 700; color: var(--text-main, #fff); }
+.markdown-content code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  padding: 0.12em 0.4em;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.08);
+}
+.markdown-content pre {
+  margin: 0.75em 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  overflow-x: auto;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.markdown-content pre code {
+  padding: 0;
+  background: transparent;
+  font-size: 0.86em;
+  line-height: 1.5;
+}
+.markdown-content blockquote {
+  margin: 0.7em 0;
+  padding: 0.35em 0.9em;
+  border-left: 3px solid var(--primary-cyan, #00c6ff);
+  color: var(--text-muted, #94a3b8);
+  background: rgba(0,198,255,0.06);
+  border-radius: 0 10px 10px 0;
+}
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.8em 0;
+  font-size: 0.92em;
+  display: block;
+  overflow-x: auto;
+}
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 8px 10px;
+  text-align: left;
+}
+.markdown-content th {
+  background: rgba(255,255,255,0.06);
+  font-weight: 600;
+}
+.markdown-content .katex-display {
+  margin: 0.9em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+.markdown-content .katex {
+  font-size: 1.05em;
+}
+
+/* Message bubble responsive */
+.message-bubble {
+  max-width: min(820px, 100%);
+}
+@media (max-width: 640px) {
+  .markdown-content { font-size: 15px; line-height: 1.6; }
+  .markdown-content h1 { font-size: 1.28rem; }
+  .markdown-content h2 { font-size: 1.15rem; }
+  .markdown-content h3 { font-size: 1.05rem; }
+  .message-row { padding-left: 8px; padding-right: 8px; }
+  .message-bubble {
+    max-width: 100%;
+    padding: 12px 14px;
+    border-radius: 14px;
+  }
+  .msg-actions {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .msg-action-btn {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  .input-area {
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+  .main-header {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  #chatOutput, .chat-container {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+/* Download link affordance */
+a.dl-file-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  margin: 6px 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(0,198,255,0.18), rgba(123,104,238,0.18));
+  border: 1px solid rgba(0,198,255,0.35);
+  color: var(--text-main, #e8f5ff) !important;
+  text-decoration: none !important;
+  font-weight: 600;
+  font-size: 13px;
+}
+a.dl-file-link:active {
+  transform: scale(0.98);
+}
+
+/* ===== v3.2.3 Mobile shell polish (ChatGPT-style alignment) ===== */
+@media (max-width: 768px) {
+  .main-header {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    min-height: 52px !important;
+    padding: 8px 10px !important;
+  }
+  .main-header .header-brand,
+  .main-header .sidebar-logo {
+    flex-shrink: 0;
+  }
+  .main-header .header-title,
+  .main-header #chatTitle {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px !important;
+  }
+  /* Tool row: wrap cleanly, no overflow */
+  .main-header .header-tools,
+  .header-actions,
+  .quick-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+  .input-area {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 10px 12px max(12px, env(safe-area-inset-bottom)) !important;
+  }
+  .input-area textarea,
+  #message {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 16px !important; /* prevents iOS zoom */
+  }
+  .input-area .send-btn,
+  #sendBtn {
+    flex-shrink: 0;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  /* Hide desktop-only chrome on small screens when sidebar open */
+  body.sidebar-open .main-content {
+    pointer-events: none;
+  }
+  body.sidebar-open #sidebar {
+    pointer-events: auto;
+  }
+}
+/* Touch targets */
+button, .icon-btn, .msg-action-btn, a.dl-file-link {
+  min-height: 36px;
+  touch-action: manipulation;
+}
+
+/* ===== v3.2.4 Layout density + mobile composer ===== */
+:root {
+  --sidebar-width: 260px;
+}
+@media (min-width: 1100px) {
+  :root { --sidebar-width: 280px; }
+}
+@media (min-width: 769px) and (max-width: 1099px) {
+  :root { --sidebar-width: 240px; }
+}
+.sidebar, #sidebar {
+  width: var(--sidebar-width) !important;
+  max-width: var(--sidebar-width) !important;
+}
+
+/* Response card max width + RTL */
+.markdown-content,
+.message-bubble .markdown-content {
+  max-width: 850px;
+  width: 100%;
+}
+.markdown-content[dir="rtl"],
+.message-bubble[dir="rtl"] .markdown-content,
+.markdown-content.rtl {
+  direction: rtl;
+  text-align: right;
+}
+.markdown-content[dir="rtl"] .katex,
+.markdown-content[dir="rtl"] pre,
+.markdown-content[dir="rtl"] code {
+  direction: ltr;
+  text-align: left;
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* Free tier bar: compact status line, not a billboard */
+.free-tier-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px !important;
+  opacity: 0.85;
+  padding: 4px 8px !important;
+  margin: 0 0 4px !important;
+  border: none !important;
+  background: transparent !important;
+}
+.free-tier-bar a {
+  font-size: 12px;
+  text-decoration: none;
+  opacity: 0.9;
+}
+@media (max-width: 768px) {
+  .free-tier-bar {
+    display: none !important; /* move to sidebar / model chip on mobile */
+  }
+  .input-area.v3-composer {
+    padding: 8px 10px max(10px, env(safe-area-inset-bottom)) !important;
+  }
+  .input-container.glass-composer {
+    display: flex !important;
+    align-items: flex-end !important;
+    gap: 6px !important;
+    padding: 8px 10px !important;
+    border-radius: 22px !important;
+  }
+  .input-container .tool-btn {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    flex-shrink: 0;
+    padding: 0 !important;
+  }
+  .input-container textarea,
+  #message {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    font-size: 16px !important;
+    max-height: 120px !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 8px 4px !important;
+  }
+  .input-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .send-btn .send-label {
+    display: none !important; /* icon only on mobile */
+  }
+  .send-btn, #sendBtn, #stopBtn {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+  }
+  /* Collapse msg actions on mobile */
+  .msg-actions .msg-action-btn:nth-child(n+4) {
+    display: none;
+  }
+  .msg-actions::after {
+    content: none;
+  }
+}
+
+/* Stop button only when generating */
+#stopBtn[hidden],
+#stopBtn.hidden {
+  display: none !important;
+}
+#stopBtn:not([hidden]) {
+  display: inline-flex !important;
+  background: #c2410c !important;
+  color: #fff !important;
+}
+
+/* History item menu hit target */
+.history-item .chat-menu-btn,
+.history-item button.more-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  opacity: 0.7;
+}
+.history-item:hover .chat-menu-btn {
+  opacity: 1;
+}
+
+/* ===== v3.2.5 Math, toolbar, no inner message scrollbar ===== */
+.markdown-content .katex-display,
+.markdown-content .katex {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+.markdown-content .katex-display {
+  margin: 0.85em 0;
+  padding: 0.25em 0;
+  text-align: center;
+}
+.message-bubble,
+.message-bubble .markdown-content,
+.msg-long-body {
+  max-height: none !important;
+  overflow: visible !important;
+}
+.message-row .message-bubble {
+  overflow: visible !important;
+}
+@media (max-width: 768px) {
+  .theme-picker-label { display: none !important; }
+  .main-header .tool-circle-row,
+  .header-secondary-tools {
+    display: none !important;
+  }
+}
+.msg-avatar, .message-row .msg-avatar {
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 16px !important;
+  flex-shrink: 0;
+}
+.admin-only-tool[hidden] { display: none !important; }
+@media (max-width: 768px) {
+  .desktop-only-tool { display: none !important; }
+  .topbar-tools .topbar-chip-label { display: none !important; }
+}
+
+/* ===== v3.2.9 clean chrome ===== */
+.free-tier-bar[hidden] { display: none !important; }
+.header-more { position: relative; display: inline-flex; }
+.header-more-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  min-width: 180px;
+  background: var(--card-bg, #0f1a17);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 6px;
+  z-index: 80;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.header-more-panel[hidden] { display: none !important; }
+.header-more-panel a,
+.header-more-panel button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+}
+.header-more-panel a:hover,
+.header-more-panel button:hover {
+  background: rgba(255,255,255,0.08);
+}
+.theme-picker-btn { padding: 8px !important; min-width: 36px; }
+.theme-picker-label { display: none !important; }
+/* Sidebar: reliable mobile drawer */
+#sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 40;
+  display: none;
+}
+#sidebar-overlay.active { display: block !important; }
+body.sidebar-open #sidebar,
+#sidebar.open-mobile {
+  transform: translateX(0) !important;
+  z-index: 50 !important;
+}
+.main-header { z-index: 55 !important; position: sticky; top: 0; }
+.sidebar-footer .sidebar-link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  margin: 2px 0;
+  border-radius: 8px;
+  color: inherit;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+.sidebar-footer .sidebar-link:hover {
+  background: rgba(255,255,255,0.06);
+}
+/* Composer: clean single bar */
+.input-area.v3-composer {
+  gap: 0 !important;
+}
+.composer-hints:empty { display: none !important; }
