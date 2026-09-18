@@ -1,0 +1,21 @@
+{
+  "name": "Vision AI",
+  "short_name": "Vision AI",
+  "description": "See Beyond Limits — Multi-modal AI assistant",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#00C6FF",
+  "icons": [
+    {
+      "src": "/frontend/static/favicon/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/frontend/static/favicon/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

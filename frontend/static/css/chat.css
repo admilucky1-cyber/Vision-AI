@@ -1,0 +1,227 @@
+/* Chat layout — conversation rail + natural message height */
+#chatOutput, .chat-output, .messages-container, #messages {
+  max-width: min(1200px, calc(100vw - 48px));
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+.message-row, .message-item, .chat-message {
+  display: flex;
+  width: 100%;
+}
+.message-row.user, .message-item.user {
+  justify-content: flex-end;
+}
+.message-row.ai, .message-item.ai {
+  justify-content: flex-start;
+}
+.message-bubble {
+  height: auto !important;
+  max-height: none;
+  overflow: visible;
+  overflow-y: visible;
+  color: var(--text-primary);
+}
+.message-row.ai .message-bubble,
+.ai-message .message-bubble {
+  max-width: min(1100px, 100%);
+  width: auto;
+  background: var(--bubble-ai);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+.message-row.user .message-bubble,
+.user-message .message-bubble {
+  max-width: min(820px, 92%);
+  background: var(--bubble-user);
+  color: var(--text-inverse);
+}
+/* Only code blocks scroll horizontally */
+.message-bubble pre {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+.message-bubble img, .message-bubble video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+.input-container, .composer, .chat-input-bar, #inputArea {
+  max-width: min(1200px, calc(100vw - 24px));
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+  background: var(--bg-surface);
+  border-color: var(--border);
+}
+.unique-banner, .welcome-banner, .announcement-banner, #promoBanner {
+  display: none;
+}
+@media (max-width: 768px) {
+  #chatOutput, .chat-output, .messages-container {
+    max-width: 100%;
+    padding: 0 8px;
+  }
+  .message-row.ai .message-bubble,
+  .message-row.user .message-bubble {
+    max-width: 100%;
+  }
+}
+/* Kill forced inner scroll on AI body if legacy set max-height */
+.message-bubble .message-content,
+.message-bubble .markdown-body,
+.message-bubble .ai-content {
+  max-height: none;
+  overflow: visible;
+  height: auto;
+}
+
+/* Message action toolbar */
+.message-actions, .msg-actions, .ai-actions, .chat-msg-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+  opacity: 0.85;
+}
+.message-actions button, .msg-actions button, .ai-actions button, .msg-action-btn {
+  min-height: 36px;
+  min-width: 36px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-surface-raised);
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+}
+.message-actions button:hover, .msg-action-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+.model-used, .model-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-bottom: 6px;
+}
+
+.msg-long-body.msg-collapsed {
+  max-height: 28rem;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
+}
+.msg-long-body.msg-expanded-height {
+  max-height: none;
+  overflow: visible;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+.msg-show-more {
+  margin-top: 8px;
+}
+
+
+/* ===== v4.8.3 chat workspace (from modern-ui) ===== */
+.msg-user, .message.user, .chat-msg.user {
+  background: color-mix(in srgb, var(--color-accent) 14%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+  border-radius: var(--radius-lg);
+  box-shadow: none;
+}
+.msg-assistant, .message.assistant, .chat-msg.assistant {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.msg-actions, .message-actions {
+  opacity: 0.55;
+  transition: opacity var(--duration-fast) var(--ease);
+}
+.message:hover .msg-actions,
+.chat-msg:hover .message-actions,
+.msg-assistant:hover .msg-actions { opacity: 1; }
+
+.composer, .chat-input-wrap, #composer, .input-area, .chat-composer {
+  max-width: var(--composer-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+.input-area.composer {
+  padding: var(--space-3) var(--space-4) var(--space-5);
+  background: linear-gradient(to top, var(--color-bg) 70%, transparent);
+}
+.composer-shell, .input-container.composer-shell {
+  max-width: var(--composer-max);
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface-elevated) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-sm) !important;
+  backdrop-filter: none !important;
+}
+.composer-shell textarea#message {
+  flex: 1;
+  resize: none;
+  max-height: 160px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+  min-height: 48px;
+}
+.send-btn-v3 {
+  border-radius: var(--radius-md);
+  min-width: 44px;
+  height: 40px;
+}
+
+.welcome-empty, .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: min(52vh, 420px);
+  padding: var(--space-10) var(--space-6);
+  text-align: center;
+}
+.welcome-brand {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-3);
+}
+.welcome-empty h1, .empty-state h1 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.03em;
+  margin: 0 0 var(--space-3);
+  color: var(--color-text);
+}
+.suggestion-grid {
+  width: 100%;
+  max-width: 520px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+@media (max-width: 520px) {
+  .suggestion-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,150 @@
+/* App shell: sidebar + main */
+.app-shell, body > .app, #app, .layout {
+  min-height: 100vh;
+}
+#sidebar, .sidebar {
+  width: var(--sidebar-width);
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  color: var(--text-primary);
+  z-index: var(--z-sidebar);
+  transition: width var(--duration) var(--ease), transform var(--duration) var(--ease);
+}
+#sidebar.collapsed-true, #sidebar.rail-mode, .sidebar.collapsed-true {
+  width: var(--sidebar-rail);
+}
+.main-header, .top-header, header.app-header {
+  height: var(--header-height);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-4);
+}
+.header-brand img, .sidebar-logo img, .brand img {
+  width: 36px; height: 36px; object-fit: contain; border-radius: var(--radius-md);
+}
+@media (min-width: 1024px) {
+  .header-brand img, .sidebar-logo img { width: 40px; height: 40px; }
+}
+#sidebar-overlay, .sidebar-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: calc(var(--z-sidebar) - 1);
+  display: none;
+}
+body.sidebar-open #sidebar-overlay,
+body.sidebar-open .sidebar-overlay {
+  display: block;
+}
+@media (max-width: 900px) {
+  #sidebar, .sidebar {
+    position: fixed; inset: 0 auto 0 0;
+    transform: translateX(-105%);
+    width: min(86vw, 300px);
+  }
+  #sidebar.open-mobile, .sidebar.open-mobile {
+    transform: translateX(0);
+  }
+  #sidebar.collapsed-true, #sidebar.rail-mode {
+    width: min(86vw, 300px);
+  }
+}
+.page-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+}
+
+/* Header control priorities */
+.header-controls { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+@media (max-width: 1023px) {
+  .header-hide-tablet { display: none !important; }
+}
+@media (max-width: 767px) {
+  .header-hide-mobile { display: none !important; }
+  #chatTitle { font-size: 14px; max-width: 42vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .header-brand .brand-wordmark, .header-brand span:not(.logo-mark) { display: none; }
+}
+.header-brand img, .sidebar-logo img {
+  width: 34px; height: 34px; object-fit: contain;
+}
+@media (min-width: 1024px) {
+  .header-brand img, .sidebar-logo img { width: 40px; height: 40px; }
+}
+/* Profile / more menu popover */
+.profile-dropdown, .header-more-menu, #headerMoreMenu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  min-width: 200px;
+  max-width: min(92vw, 280px);
+  max-height: min(70vh, 420px);
+  overflow-y: auto;
+  background: var(--bg-surface-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  z-index: var(--z-dropdown);
+}
+
+#sidebar, .sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100dvh;
+}
+.history-list, #historyList {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+}
+.sidebar-footer, #sidebarFooter {
+  flex: 0 0 auto;
+  border-top: 1px solid var(--border);
+  padding: 8px;
+  background: var(--bg-surface);
+}
+
+
+/* ===== v4.8.3 layout chrome ===== */
+.sidebar, #sidebar {
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.main-header {
+  background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: none;
+  min-height: var(--header-height);
+  backdrop-filter: none;
+}
+.sidebar-link, .nav-item, .history-item {
+  border-radius: var(--radius-md);
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+.sidebar-link:hover, .nav-item:hover, .history-item:hover {
+  background: color-mix(in srgb, var(--color-text) 6%, transparent);
+}
+.sidebar-footer, #sidebarFooter {
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  backdrop-filter: none;
+}
+.sidebar-secondary-action,
+button.sidebar-secondary,
+.sidebar-link.sidebar-secondary {
+  opacity: 0.65;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-normal);
+}
+#sidebar-overlay {
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+}
