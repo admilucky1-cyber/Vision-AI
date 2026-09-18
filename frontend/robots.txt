@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /api/
+Disallow: /upload/
+Disallow: /docs
+Disallow: /redoc
+Allow: /
+Allow: /login.html
+Allow: /upgrade.html
+Sitemap: /sitemap.xml

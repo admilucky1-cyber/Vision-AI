@@ -1,0 +1,51 @@
+# Render Blueprint — https://render.com
+#
+# ⚠️ LIMITATION: this uses Render's native "python" runtime, which has no
+# way to install system/apt packages. That means pytesseract (scanned-PDF
+# OCR) and graphviz (flowchart/org-chart diagram rendering) will NOT work
+# here -- both are Python wrappers around system binaries (tesseract-ocr,
+# poppler-utils, graphviz) that this runtime can't install. Both features
+# degrade gracefully (no crash, just missing output) rather than erroring,
+# so this is easy to miss. For full functionality including OCR and
+# diagrams, deploy via the project's Dockerfile instead (Render supports
+# `runtime: docker` — see https://render.com/docs/docker), which installs
+# all three system dependencies.
+services:
+  - type: web
+    name: vision-ai
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python run.py
+    healthCheckPath: /health
+    envVars:
+      - key: DEBUG
+        value: "false"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        sync: false
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: HF_TOKEN
+        sync: false
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+    disk:
+      name: vision-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1
