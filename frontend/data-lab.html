@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-theme-preset="humanly">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="app-version" content="8.1.1">
+  <title>Data Lab — Vision AI v8.1.1</title>
+  <link rel="stylesheet" href="/static/css/tokens.css">
+  <link rel="stylesheet" href="/frontend/static/css/device-fit.css?v=811">
+  <link rel="stylesheet" href="/frontend/static/css/theme-controls-v68.css?v=811">
+  <link rel="stylesheet" href="/frontend/static/css/pages-shell.css?v=811">
+  <link rel="stylesheet" href="/frontend/static/css/page-layout-system.css?v=811">
+  <link rel="stylesheet" href="/static/css/nova-system.css">
+  <style>
+    body { margin:0; font-family: var(--font-family, system-ui, sans-serif); background: var(--nv-bg, #0b1220); color: var(--nv-text, #fafafa); }
+    .dl-wrap { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
+    .dl-header { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px; }
+    .dl-header h1 { margin:0; font-size:1.5rem; }
+    .dl-header a { color: var(--nv-text-secondary, #a1a1aa); text-decoration:none; }
+    .grid { display:grid; grid-template-columns: 1fr; gap:16px; }
+    @media(min-width:900px){ .grid { grid-template-columns: 320px 1fr; } }
+    .card { background: var(--nv-surface, #111827); border:1px solid var(--nv-border, rgba(255,255,255,.08)); border-radius:12px; padding:16px; }
+    .card h2 { margin:0 0 12px; font-size:1rem; color: var(--nv-text-secondary,#a1a1aa); font-weight:600; }
+    .btn { border:1px solid var(--nv-border,rgba(255,255,255,.1)); background: var(--nv-surface-2,#1e293b); color:inherit; border-radius:8px; padding:8px 12px; cursor:pointer; font-size:13px; }
+    .btn:hover { background: var(--nv-hover,#27272a); }
+    .btn-primary { background:#2563eb; border-color:#2563eb; }
+    .drop { border:2px dashed var(--nv-border,rgba(255,255,255,.15)); border-radius:12px; padding:28px; text-align:center; color: var(--nv-text-muted,#71717a); }
+    .drop.drag { border-color:#2563eb; color:#93c5fd; }
+    .ds-list { list-style:none; padding:0; margin:0; max-height:280px; overflow:auto; }
+    .ds-list li { padding:8px 10px; border-radius:8px; cursor:pointer; font-size:13px; }
+    .ds-list li:hover, .ds-list li.active { background: var(--nv-hover,#27272a); }
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+    th, td { text-align:left; padding:8px; border-bottom:1px solid var(--nv-border,rgba(255,255,255,.06)); }
+    th { color: var(--nv-text-secondary,#a1a1aa); }
+    .kpis { display:flex; flex-wrap:wrap; gap:10px; }
+    .kpi { flex:1; min-width:100px; background: var(--nv-surface-2,#1e293b); border-radius:10px; padding:12px; }
+    .kpi b { display:block; font-size:1.25rem; }
+    .kpi span { font-size:11px; color: var(--nv-text-muted,#71717a); }
+    input, select { background: var(--nv-surface-2,#1e293b); border:1px solid var(--nv-border,rgba(255,255,255,.1)); color:inherit; border-radius:8px; padding:8px; font-size:13px; width:100%; box-sizing:border-box; }
+    .row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+    .row > * { flex:1; min-width:120px; }
+    .muted { color: var(--nv-text-muted,#71717a); font-size:12px; }
+    #status { font-size:12px; color:#93c5fd; min-height:1.2em; }
+  </style>
+  <link rel="stylesheet" href="/frontend/static/css/vision-system.css?v=811">
+  <link rel="stylesheet" href="/frontend/static/css/ui-polish-v81.css?v=811">
+  <link rel="manifest" href="/frontend/manifest.webmanifest">
+  <meta name="theme-color" content="#0d9488">
+  <link rel="apple-touch-icon" href="/frontend/static/icons/icon-192.png">
+</head>
+<body class="page-mode" class="page-mode">
+  <div class="dl-wrap">
+    <div class="dl-header">
+      <div>
+        <h1>Data Lab — Vision AI</h1>
+        <div class="muted">Multi-file CSV · Excel · PDF · Clean · Query · Forecast · Dashboard</div>
+      </div>
+      <a href="/">← Back to Chat</a>
+    </div>
+    <div id="status"></div>
+    <div class="grid">
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h2>Upload (multiple files)</h2>
+          <div class="drop" id="drop">Drop CSV / Excel / PDF / JSON here<br><span class="muted">or click to browse</span></div>
+          <input type="file" id="fileInput" multiple accept=".csv,.tsv,.txt,.xlsx,.xls,.pdf,.json" hidden>
+          <div class="row" style="margin-top:10px">
+            <button class="btn btn-primary" id="btnUpload">Upload selected</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Datasets</h2>
+          <ul class="ds-list" id="dsList"></ul>
+          <button class="btn" id="btnRefresh" style="margin-top:8px;width:100%">Refresh</button>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h2>Actions</h2>
+          <div class="row">
+            <button class="btn" id="btnProfile">Profile</button>
+            <button class="btn" id="btnClean">Clean (dedupe + types)</button>
+            <button class="btn" id="btnDash">Dashboard</button>
+          </div>
+          <div class="row">
+            <input id="searchQ" placeholder="Search text in table…">
+            <button class="btn" id="btnQuery">Retrieve / Query</button>
+          </div>
+          <div class="row">
+            <input id="fcCol" placeholder="Forecast column (numeric)">
+            <input id="fcPeriods" type="number" value="12" min="1" max="365" style="max-width:100px">
+            <button class="btn" id="btnForecast">Forecast</button>
+          </div>
+
+          <div class="row">
+            <input id="trainTarget" placeholder="Target column to predict">
+            <select id="trainTask">
+              <option value="auto">auto</option>
+              <option value="regression">regression</option>
+              <option value="classification">classification</option>
+            </select>
+            <button class="btn btn-primary" id="btnTrain">Train model</button>
+          </div>
+          <div class="muted" id="trainResult"></div>
+          <div class="row">
+            <input id="predictJson" placeholder='Predict rows JSON e.g. [{"x":1,"y":2}]'>
+            <button class="btn" id="btnPredict">Predict</button>
+          </div>
+
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <h2>KPIs / Dashboard</h2>
+          <div class="kpis" id="kpis"></div>
+          <pre id="dashExtra" class="muted" style="overflow:auto;max-height:160px;white-space:pre-wrap"></pre>
+        </div>
+        <div class="card">
+          <h2>Preview / Results</h2>
+          <div style="overflow:auto;max-height:420px">
+            <table>
+              <thead id="thead"></thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+  const $ = (id) => document.getElementById(id);
+  let currentId = null;
+
+  function status(msg){ $('status').textContent = msg || ''; }
+
+  async function api(path, opts){
+    const res = await fetch(path, opts);
+    const data = await res.json().catch(() => ({}));
+    if(!res.ok) throw new Error(data.detail || res.statusText || 'Request failed');
+    return data;
+  }
+
+  function renderTable(columns, rows){
+    $('thead').innerHTML = '<tr>' + (columns||[]).map(c => `<th>${c}</th>`).join('') + '</tr>';
+    $('tbody').innerHTML = (rows||[]).map(r =>
+      '<tr>' + (columns||[]).map(c => `<td>${r[c] == null ? '' : String(r[c])}</td>`).join('') + '</tr>'
+    ).join('');
+  }
+
+  async function refreshList(){
+    const data = await api('/api/data-lab/datasets');
+    const list = $('dsList');
+    list.innerHTML = '';
+    (data.datasets||[]).forEach(ds => {
+      const li = document.createElement('li');
+      li.textContent = `${ds.name} (${ds.rows} × ${ds.columns?.length||0})`;
+      li.dataset.id = ds.id;
+      if(ds.id === currentId) li.classList.add('active');
+      li.onclick = async () => {
+        currentId = ds.id;
+        [...list.children].forEach(x => x.classList.remove('active'));
+        li.classList.add('active');
+        status('Loading preview…');
+        const p = await api(`/api/data-lab/datasets/${ds.id}/preview?n=40`);
+        renderTable(p.columns, p.rows);
+        status(`Dataset ${ds.name}`);
+      };
+      list.appendChild(li);
+    });
+  }
+
+  $('btnRefresh').onclick = () => refreshList().catch(e => status(e.message));
+  $('drop').onclick = () => $('fileInput').click();
+  ['dragenter','dragover'].forEach(ev => $('drop').addEventListener(ev, e => { e.preventDefault(); $('drop').classList.add('drag'); }));
+  ['dragleave','drop'].forEach(ev => $('drop').addEventListener(ev, e => { e.preventDefault(); $('drop').classList.remove('drag'); }));
+  $('drop').addEventListener('drop', e => {
+    $('fileInput').files = e.dataTransfer.files;
+  });
+
+  $('btnUpload').onclick = async () => {
+    const files = $('fileInput').files;
+    if(!files?.length){ status('Select files first'); return; }
+    const fd = new FormData();
+    [...files].forEach(f => fd.append('files', f));
+    status('Uploading…');
+    try {
+      const res = await fetch('/api/data-lab/upload', { method:'POST', body: fd });
+      const data = await res.json();
+      if(!res.ok) throw new Error(data.detail || 'Upload failed');
+      status(`Loaded ${data.count} dataset(s)` + (data.errors?.length ? `; errors: ${data.errors.length}` : ''));
+      await refreshList();
+      if(data.datasets?.[0]) {
+        currentId = data.datasets[0].id;
+        const p = await api(`/api/data-lab/datasets/${currentId}/preview?n=40`);
+        renderTable(p.columns, p.rows);
+      }
+    } catch(e){ status(e.message); }
+  };
+
+  $('btnProfile').onclick = async () => {
+    if(!currentId) return status('Select a dataset');
+    const p = await api(`/api/data-lab/datasets/${currentId}/profile`);
+    $('dashExtra').textContent = JSON.stringify(p, null, 2);
+    status('Profile ready');
+  };
+
+  $('btnClean').onclick = async () => {
+    if(!currentId) return status('Select a dataset');
+    status('Cleaning…');
+    const meta = await api('/api/data-lab/clean', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ dataset_id: currentId, drop_duplicates:true, infer_types:true, strip_strings:true, standardize_colnames:true })
+    });
+    currentId = meta.id;
+    status(`Cleaned → ${meta.rows} rows`);
+    await refreshList();
+    const p = await api(`/api/data-lab/datasets/${currentId}/preview?n=40`);
+    renderTable(p.columns, p.rows);
+  };
+
+  $('btnQuery').onclick = async () => {
+    if(!currentId) return status('Select a dataset');
+    const q = $('searchQ').value.trim();
+    const data = await api('/api/data-lab/query', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ dataset_id: currentId, search: q || null, limit: 100 })
+    });
+    renderTable(data.columns, data.rows);
+    status(`Matched ${data.total_matched} rows`);
+  };
+
+  $('btnForecast').onclick = async () => {
+    if(!currentId) return status('Select a dataset');
+    const col = $('fcCol').value.trim();
+    if(!col) return status('Enter numeric column name');
+    const periods = parseInt($('fcPeriods').value||'12',10);
+    const data = await api('/api/data-lab/forecast', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ dataset_id: currentId, column: col, periods })
+    });
+    $('dashExtra').textContent = JSON.stringify(data, null, 2);
+    status(`Forecast R²≈${data.r2}`);
+  };
+
+  $('btnDash').onclick = async () => {
+    if(!currentId) return status('Select a dataset');
+    const d = await api(`/api/data-lab/datasets/${currentId}/dashboard`);
+    const k = d.kpis || {};
+    $('kpis').innerHTML = Object.entries(k).map(([key,val]) =>
+      `<div class="kpi"><b>${val}</b><span>${key}</span></div>`
+    ).join('');
+    $('dashExtra').textContent = JSON.stringify({ histograms: d.histograms, categorical: d.categorical, correlation: d.correlation }, null, 2);
+    status('Dashboard generated');
+  };
+
+  
+  $('btnTrain').onclick = async () => {
+    if(!currentId) return status('Select a dataset');
+    const target = $('trainTarget').value.trim();
+    if(!target) return status('Enter target column');
+    status('Training small-data model…');
+    try {
+      const data = await api('/api/data-lab/train', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ dataset_id: currentId, target, task: $('trainTask').value })
+      });
+      window.__lastModel = data.model_id;
+      $('trainResult').textContent = JSON.stringify({model_id: data.model_id, algorithm: data.algorithm, metrics: data.metrics, note: data.note}, null, 2);
+      status('Model trained: ' + data.algorithm);
+    } catch(e) { status(e.message); }
+  };
+
+  
+  $('btnPredict').onclick = async () => {
+    if(!window.__lastModel) return status('Train a model first');
+    let rows;
+    try { rows = JSON.parse($('predictJson').value || '[]'); }
+    catch(e) { return status('Invalid JSON for rows'); }
+    try {
+      const data = await api('/api/data-lab/predict', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ model_id: window.__lastModel, rows })
+      });
+      $('trainResult').textContent = JSON.stringify(data, null, 2);
+      status('Prediction done');
+    } catch(e) { status(e.message); }
+  };
+
+  refreshList().catch(()=>{});
+  </script>
+  <script src="/frontend/static/js/page-behaviors.js?v=811" defer></script>
+</div><!-- page-shell -->
+  <script src="/frontend/static/js/vision-system.js?v=811"></script>
+<script src="/frontend/static/js/model-status.js?v=811" defer></script>
+</body>
+</html>
