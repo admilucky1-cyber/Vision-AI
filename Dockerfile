@@ -26,11 +26,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 RUN pip install --upgrade pip \
+    && pip install --no-cache-dir 'torch>=2.0.0' --index-url https://download.pytorch.org/whl/cpu \
     && pip install -r requirements.txt \
-    && pip install -U yt-dlp \
-    && (pip uninstall -y torch torchvision torchaudio 2>/dev/null || true) \
-    && pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu \
-    || echo "CPU torch optional skip"
+    && pip check
 ENV CUDA_VISIBLE_DEVICES=""
 ENV TOKENIZERS_PARALLELISM=false
 
