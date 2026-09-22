@@ -24,6 +24,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+from services.model_catalog import default_gemini_model
+
+GEMINI_MODEL = default_gemini_model()
+
 def product_version() -> str:
     try:
         p = Path(__file__).resolve().parents[1] / "VERSION"
@@ -138,12 +142,8 @@ LOCAL_LLM_ENABLED = (os.getenv("LOCAL_LLM_ENABLED") or "1").strip().lower() not 
 # MODELS
 # ==========================================================
 GEMINI_MODELS: Dict[str, Dict[str, Any]] = {
-    # Prefer 2.5 family when available; keep 1.5 as compatibility fallback
-    "gemini-2.5-flash": {"name": "Gemini 2.5 Flash", "tokens": 1_048_576, "priority": 1},
+    GEMINI_MODEL: {"name": GEMINI_MODEL, "tokens": 1_048_576, "priority": 1},
     "gemini-2.5-pro": {"name": "Gemini 2.5 Pro", "tokens": 1_048_576, "priority": 2},
-    "gemini-2.0-flash": {"name": "Gemini 2.0 Flash", "tokens": 1_048_576, "priority": 3},
-    "gemini-1.5-flash": {"name": "Gemini 1.5 Flash", "tokens": 2_000_000, "priority": 4},
-    "gemini-1.5-pro": {"name": "Gemini 1.5 Pro", "tokens": 2_000_000, "priority": 5},
 }
 
 OPENROUTER_MODELS: List[Dict[str, Any]] = [
@@ -625,13 +625,16 @@ def _provider_timeout(context: str = "", default: float = 28.0) -> float:
         return float(__import__("os").getenv("DOC_PROVIDER_TIMEOUT", "120"))
     return default
 
-def ask_gemini(question: str, context: str = "", model_id: str = "gemini-2.5-flash") -> Optional[str]:
-    if not GEMINI_AVAILABLE or not GOOGLE_API_KEY:
+def ask_gemini(question: str, context: str = "", model_id: Optional[str] = None,
+               api_key: Optional[str] = None) -> Optional[str]:
+    key = (api_key or GOOGLE_API_KEY or "").strip()
+    if not key:
         return None
+    model_id = model_id or GEMINI_MODEL
     try:
         import google.genai as genai
 
-        client = genai.Client(api_key=GOOGLE_API_KEY)
+        client = genai.Client(api_key=key, http_options={"timeout": 30000})
         system_prompt = assemble_dynamic_prompt(question, context)
         truncated = truncate_context(context, model_id, 50_000)
         prompt = (
@@ -742,6 +745,9 @@ def ask_groq(question: str, context: str = "", api_key: Optional[str] = None) ->
                 logger.warning(f"Groq {model_info['id']} empty body keys={list(data.keys())}")
             else:
                 logger.warning(f"Groq {model_info['id']} HTTP {resp.status_code}: {resp.text[:240]}")
+                if resp.status_code in (401, 402, 403):
+                    # Another model cannot repair an expired key or account restriction.
+                    return None
         except Exception as e:
             logger.debug(f"Groq {model_info['id']} failed: {e}")
             continue
@@ -788,7 +794,9 @@ def ask_openrouter(question: str, context: str = "", api_key: Optional[str] = No
                     if content:
                         return content
             else:
-                logger.debug(f"OpenRouter {model_info['id']} HTTP {resp.status_code}")
+                logger.warning(f"OpenRouter {model_info['id']} HTTP {resp.status_code}")
+                if resp.status_code in (401, 402):
+                    return None
         except Exception as e:
             logger.debug(f"OpenRouter {model_info['id']} failed: {e}")
             continue
@@ -813,11 +821,8 @@ def _build_provider_chain(backend: str, keys: Optional[Dict[str, str]] = None) -
     compat_key = keys.get("OPENAI_COMPAT_KEY") or OPENAI_COMPAT_KEY
     compat_model = keys.get("OPENAI_COMPAT_MODEL") or OPENAI_COMPAT_MODEL
 
-    g25_flash = ("gemini-2.5-flash", lambda q, c: ask_gemini(q, c, "gemini-2.5-flash"))
-    g25_pro = ("gemini-2.5-pro", lambda q, c: ask_gemini(q, c, "gemini-2.5-pro"))
-    g20_flash = ("gemini-2.0-flash", lambda q, c: ask_gemini(q, c, "gemini-2.0-flash"))
-    g15_flash = ("gemini-1.5-flash", lambda q, c: ask_gemini(q, c, "gemini-1.5-flash"))
-    g15_pro = ("gemini-1.5-pro", lambda q, c: ask_gemini(q, c, "gemini-1.5-pro"))
+    gemini_default = (GEMINI_MODEL, lambda q, c: ask_gemini(q, c, GEMINI_MODEL, api_key=g_key))
+    gemini_pro = ("gemini-2.5-pro", lambda q, c: ask_gemini(q, c, "gemini-2.5-pro", api_key=g_key))
     deepseek = ("deepseek", lambda q, c: ask_deepseek(q, c, api_key=ds_key))
     groq = ("groq", lambda q, c: ask_groq(q, c, api_key=groq_key))
     openrouter = ("openrouter", lambda q, c: ask_openrouter(q, c, api_key=or_key))
@@ -840,7 +845,7 @@ def _build_provider_chain(backend: str, keys: Optional[Dict[str, str]] = None) -
             ordered = []
             mapping = {
                 "groq": groq, "openrouter": openrouter, "deepseek": deepseek,
-                "gemini": g25_flash, "auto": None,
+                "gemini": gemini_default, "auto": None,
             }
             for cid in chain_ids:
                 if cid == "auto":
@@ -849,7 +854,7 @@ def _build_provider_chain(backend: str, keys: Optional[Dict[str, str]] = None) -
                 if item and item not in ordered:
                     ordered.append(item)
             if ordered:
-                return ordered + [x for x in [groq, openrouter, deepseek, g25_flash] if x not in ordered]
+                return ordered + [x for x in [groq, openrouter, deepseek, gemini_default] if x not in ordered]
     except Exception:
         pass
     if b in ("ollama", "local-ollama"):
@@ -860,22 +865,22 @@ def _build_provider_chain(backend: str, keys: Optional[Dict[str, str]] = None) -
         return [custom, ollama, lmstudio]
     if b == "auto":
         # Light & free first for low latency chat (user request: chat only light models)
-        chain = [groq, openrouter, deepseek, g25_flash]
+        chain = [groq, openrouter, deepseek, gemini_default]
         # Gemini Pro only if explicitly needed — skipped on auto to keep chat fast
         if LOCAL_LLM_ENABLED and (OPENAI_COMPAT_BASE or keys.get("OPENAI_COMPAT_BASE")):
             chain = [custom] + chain
         return chain
     if b in ("light", "fast", "free"):
-        return [groq, openrouter, deepseek, g25_flash]
+        return [groq, openrouter, deepseek, gemini_default]
     if b == "gemini":
-        return [g25_flash, g25_pro]
+        return [gemini_default, gemini_pro]
     if b == "deepseek":
         return [deepseek]
     if b == "groq":
         return [groq]
     if b == "openrouter":
         return [openrouter]
-    return [groq, g25_flash, openrouter, deepseek, g20_flash, custom]
+    return [groq, gemini_default, openrouter, deepseek, custom]
 
 
 def _context_already_has_search(context: str) -> bool:
@@ -1154,11 +1159,12 @@ def ask_ai(question: str, context: str = "", backend: str = "auto", key_override
     for provider_name, provider_func in providers:
         try:
             result = provider_func(q, context or "")
+            result = result.strip() if isinstance(result, str) else ""
             if result and _is_safety_refusal(result):
                 logger.warning(f"⚠️ {provider_name} safety-refusal — trying next provider")
                 errors.append(f"{provider_name}: safety refusal")
                 continue
-            if result and len(result) > 10 and not result.startswith("[Error"):
+            if result and not result.startswith("[Error"):
                 logger.info(f"✅ Success: {provider_name} ({len(result)} chars)")
                 if is_vague(result) and not _context_already_has_search(context or ""):
                     try:
@@ -1172,7 +1178,7 @@ def ask_ai(question: str, context: str = "", backend: str = "auto", key_override
                             )
                             if (
                                 refined
-                                and len(refined) > 10
+                                and refined.strip()
                                 and not is_vague(refined)
                                 and not _is_safety_refusal(refined)
                             ):
@@ -1287,7 +1293,7 @@ def list_available_models() -> List[Dict[str, Any]]:
 def test_provider(provider: str) -> Dict[str, Any]:
     test_query = "Say 'Hello' and nothing else."
     if provider == "gemini":
-        result = ask_gemini(test_query, "", "gemini-2.5-flash")
+        result = ask_gemini(test_query)
     elif provider == "deepseek":
         result = ask_deepseek(test_query)
     elif provider == "groq":

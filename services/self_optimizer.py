@@ -67,7 +67,9 @@ class AdvancedOptimizer:
         self.conversation_memory = []
         self._interaction_counter = 0
         self._auto_save_timer = None
-        self._lock = threading.Lock()
+        # Learning calls _save_all, and reports call other locked readers.
+        # A non-reentrant lock deadlocks every autosave and at shutdown.
+        self._lock = threading.RLock()
         
         logger.info("👁️ Vision AI Self-Learning Optimizer initialized")
 

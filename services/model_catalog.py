@@ -13,6 +13,9 @@ from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger("vision-ai.model_catalog")
 
+# Override in Railway when a model's availability changes for your account.
+GEMINI_DEFAULT_MODEL = (os.getenv("GEMINI_MODEL") or "gemini-3.6-flash").strip()
+
 # ---------------------------------------------------------------------------
 # Deprecation / migration (authoritative for retired IDs)
 # ---------------------------------------------------------------------------
@@ -45,6 +48,7 @@ GROQ_FALLBACK: List[Dict[str, Any]] = [
 ]
 
 GEMINI_FALLBACK: List[Dict[str, Any]] = [
+    {"id": GEMINI_DEFAULT_MODEL, "name": GEMINI_DEFAULT_MODEL, "tokens": 1_048_576, "status": "configured", "type": "chat", "provider": "gemini", "production": True},
     {"id": "gemini-2.5-flash", "name": "Gemini 2.5 Flash", "tokens": 1_000_000, "status": "active", "type": "chat", "provider": "gemini", "production": True},
     {"id": "gemini-2.5-pro", "name": "Gemini 2.5 Pro", "tokens": 1_000_000, "status": "active", "type": "chat", "provider": "gemini", "production": True},
     {"id": "gemini-2.5-flash-lite", "name": "Gemini 2.5 Flash-Lite", "tokens": 1_000_000, "status": "active", "type": "chat", "provider": "gemini", "production": True},
@@ -206,7 +210,7 @@ def default_groq_model() -> str:
 
 
 def default_gemini_model() -> str:
-    return "gemini-2.5-flash"
+    return GEMINI_DEFAULT_MODEL
 
 
 def snapshot(keys: Optional[Dict[str, str]] = None) -> Dict[str, Any]:

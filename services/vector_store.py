@@ -41,6 +41,8 @@ def _ensure_vector_deps():
     SentenceTransformer = _ST
     chromadb = _ch
     embedding_functions = _ef
+    if hasattr(_ef, "register_embedding_function"):
+        _ef.register_embedding_function(LocalEmbeddingFunction)
 
 # ==========================================================
 # LOGGING SETUP
@@ -89,8 +91,32 @@ class LocalEmbeddingFunction:
         self._model = None  # Lazy load the model
         self._embedding_cache = {}  # Cache for frequently used texts
     
-    def __call__(self, texts: List[str]) -> List[List[float]]:
+    @staticmethod
+    def name() -> str:
+        return "vision-ai-local"
+
+    def get_config(self) -> Dict[str, Any]:
+        return {"model_name": self.model_name}
+
+    def is_legacy(self) -> bool:
+        return False
+
+    def default_space(self) -> str:
+        return "cosine"
+
+    def supported_spaces(self) -> List[str]:
+        return ["cosine", "l2", "ip"]
+
+    @staticmethod
+    def build_from_config(config: Dict[str, Any]) -> "LocalEmbeddingFunction":
+        return LocalEmbeddingFunction(model_name=config["model_name"])
+
+    def embed_query(self, input: List[str]) -> List[List[float]]:
+        return self(input)
+
+    def __call__(self, input: List[str]) -> List[List[float]]:
         """Generate embeddings for a list of texts."""
+        texts = input
         _ensure_vector_deps()
         # Load the model only once on the first call
         if self._model is None:
@@ -183,6 +209,8 @@ class VectorStore:
 
     def _chunk_text(self, text: str, chunk_size: int = CHUNK_SIZE, overlap: int = CHUNK_OVERLAP) -> List[str]:
         """Split text into overlapping chunks with intelligent boundaries."""
+        if chunk_size <= 0 or overlap < 0 or overlap >= chunk_size:
+            raise ValueError("Require chunk_size > overlap >= 0")
         if not text or not text.strip():
             return []
             
@@ -197,20 +225,21 @@ class VectorStore:
             # Try to break at sentence/paragraph boundary
             if end < len(text):
                 # Look for period, newline, or space within last 100 chars
-                boundary = text.rfind(". ", start + chunk_size - 100, end)
+                boundary_start = max(start + overlap + 1, end - 100)
+                boundary = text.rfind(". ", boundary_start, end)
                 if boundary == -1:
-                    boundary = text.rfind("\n", start + chunk_size - 100, end)
+                    boundary = text.rfind("\n", boundary_start, end)
                 if boundary == -1:
-                    boundary = text.rfind(" ", start + chunk_size - 100, end)
+                    boundary = text.rfind(" ", boundary_start, end)
                 if boundary != -1:
                     end = boundary + 1
                     
             chunk = text[start:end].strip()
             if chunk:
                 chunks.append(chunk)
-            start = end - overlap
-            if start < 0:
-                start = 0
+            if end == len(text):
+                break
+            start = max(start + 1, end - overlap)
                 
         return chunks
 

@@ -429,12 +429,8 @@ def _gemini_describe_image(content: bytes, filename: str) -> Optional[str]:
     elif low.endswith(".gif"):
         mime = "image/gif"
 
-    models = [
-        "gemini-2.0-flash",
-        "gemini-2.5-flash",
-        "gemini-1.5-flash",
-        "gemini-1.5-flash-latest",
-    ]
+    from services.model_catalog import default_gemini_model
+    models = [default_gemini_model()]
     prompt = (
         "You are a careful visual analyst. Describe EVERYTHING visible in this image with high detail.\n"
         "- If screenshot: name the apps/windows, UI text, colors, layout.\n"
