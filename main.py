@@ -272,6 +272,12 @@ async def lifespan(app: FastAPI):
 
     yield
 
+    try:
+        from services.agent_orchestrator import agent_orchestrator
+        agent_orchestrator.stop_agents()
+    except Exception as agent_err:
+        logger.warning("Agent orchestrator shutdown: %s", agent_err)
+
     # ==========================================================
     # ✅ SHUTDOWN SAFETY
     # ==========================================================
@@ -471,10 +477,13 @@ if _railway:
 if "*" in _trusted or not _trusted or _trusted == [""]:
     _trusted = ["*"]
 else:
+    if "healthcheck.railway.app" not in _trusted:
+        _trusted.append("healthcheck.railway.app")
     if ".up.railway.app" not in _trusted:
         _trusted.append("*.up.railway.app")
-    if "localhost" not in _trusted:
-        _trusted.extend(["localhost", "127.0.1.1"])
+    for local_host in ("localhost", "127.0.0.1", "127.0.1.1"):
+        if local_host not in _trusted:
+            _trusted.append(local_host)
 try:
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=_trusted)
 except Exception as _th_err:
@@ -791,6 +800,14 @@ async def web_manifest():
 async def health_check():
     """Lightweight public health check (Railway / load balancers)."""
     return {"status": "healthy", "version": APP_VERSION}
+
+@app.get("/api/version", tags=["System"])
+async def api_version():
+    """One version source for the UI and deployment verification."""
+    return JSONResponse(
+        content={"version": APP_VERSION, "product": "Vision AI"},
+        headers={"Cache-Control": "no-store"},
+    )
 
 @app.get("/health/detailed", tags=["System"])
 async def health_check_detailed():
@@ -1151,4 +1168,3 @@ async def vision_self_heal(request: Request, exc: Exception):
             "hint": "Check /health and /api/rag/health. Large uploads index in the background.",
         },
     )
-
