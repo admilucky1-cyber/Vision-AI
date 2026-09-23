@@ -1,0 +1,36 @@
+# Vision AI — Railway slim (CPU). Avoid full CUDA torch pull.
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+python-dotenv>=1.0.0
+python-multipart>=0.0.9
+httpx>=0.27.0
+requests>=2.31.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+sqlalchemy>=2.0.0
+alembic>=1.13.0
+passlib[bcrypt]>=1.7.4
+bcrypt>=4.0.0
+python-jose[cryptography]>=3.3.0
+email-validator>=2.0.0
+slowapi>=0.1.9
+aiofiles>=23.0.0
+orjson>=3.9.0
+numpy>=1.24.0
+pandas>=2.0.0
+openpyxl>=3.1.0
+PyPDF2>=3.0.0
+pypdf>=4.0.0
+Pillow>=10.0.0
+python-docx>=1.0.0
+python-pptx>=0.6.21
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+yt-dlp>=2024.1.0
+youtube-transcript-api>=0.6.0
+google-genai>=0.5.0
+ddgs>=0.1.0
+# Optional RAG — install only if you have RAM (set INSTALL_RAG=1 in Docker build)
+# chromadb>=0.5.0
+# sentence-transformers>=2.2.0
+# torch --index-url https://download.pytorch.org/whl/cpu
