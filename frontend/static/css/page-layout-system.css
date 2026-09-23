@@ -1,0 +1,163 @@
+/* Vision AI v7.1.0 — Page layout system
+   Web equivalents of AppBar / Padding / Spacer / Container / widgets
+   Use on ALL secondary screens + consistent chat chrome spacing.
+*/
+
+:root {
+  --pl-pad-xs: 4px;
+  --pl-pad-sm: 8px;
+  --pl-pad-md: 16px;
+  --pl-pad-lg: 24px;
+  --pl-pad-xl: 32px;
+  --pl-gap: clamp(12px, 2vw, 20px);
+  --pl-radius: 12px;
+  --pl-appbar-h: 56px;
+  --pl-content-max: 1100px;
+  --pl-safe-l: env(safe-area-inset-left, 0px);
+  --pl-safe-r: env(safe-area-inset-right, 0px);
+  --pl-safe-t: env(safe-area-inset-top, 0px);
+  --pl-safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+/* ---- AppBar (page-topbar) ---- */
+.page-topbar,
+.app-bar,
+.pl-appbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: var(--pl-pad-sm);
+  min-height: calc(var(--pl-appbar-h) + var(--pl-safe-t));
+  padding: var(--pl-safe-t) max(var(--pl-pad-md), var(--pl-safe-r)) var(--pl-pad-sm) max(var(--pl-pad-md), var(--pl-safe-l));
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.pl-appbar-title,
+.page-topbar h1 {
+  flex: 1;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Container ---- */
+.pl-container,
+.page-container,
+.page-body,
+.dl-wrap,
+.wrap {
+  width: 100%;
+  max-width: var(--pl-content-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: max(var(--pl-pad-md), var(--pl-safe-l));
+  padding-right: max(var(--pl-pad-md), var(--pl-safe-r));
+  padding-bottom: max(var(--pl-pad-xl), var(--pl-safe-b));
+  box-sizing: border-box;
+}
+
+.pl-container-sm { max-width: 720px; }
+.pl-container-lg { max-width: 1280px; }
+.pl-container-fluid { max-width: 100%; }
+
+/* ---- Padding helpers ---- */
+.pl-p-0 { padding: 0 !important; }
+.pl-p-sm { padding: var(--pl-pad-sm) !important; }
+.pl-p-md { padding: var(--pl-pad-md) !important; }
+.pl-p-lg { padding: var(--pl-pad-lg) !important; }
+.pl-px-md { padding-left: var(--pl-pad-md); padding-right: var(--pl-pad-md); }
+.pl-py-md { padding-top: var(--pl-pad-md); padding-bottom: var(--pl-pad-md); }
+.pl-safe {
+  padding-left: max(var(--pl-pad-md), var(--pl-safe-l));
+  padding-right: max(var(--pl-pad-md), var(--pl-safe-r));
+  padding-bottom: max(var(--pl-pad-md), var(--pl-safe-b));
+}
+
+/* ---- Spacer ---- */
+.pl-spacer,
+.spacer {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+.pl-gap { gap: var(--pl-gap); }
+.pl-gap-sm { gap: var(--pl-pad-sm); }
+.pl-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pl-gap);
+}
+.pl-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--pl-gap);
+  flex-wrap: wrap;
+}
+
+/* ---- Card / surface widget ---- */
+.pl-card,
+.card {
+  border-radius: var(--pl-radius);
+  padding: var(--pl-pad-md);
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* ---- Screen shell: always scrollable ---- */
+body.page-mode,
+body.page-view,
+.page-shell {
+  min-height: 100dvh;
+  height: auto !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  display: flex;
+  flex-direction: column;
+}
+.page-shell > .page-body,
+.page-shell > main,
+.page-shell > .pl-container {
+  flex: 1 1 auto;
+}
+
+/* ---- Responsive breakpoints ---- */
+@media (max-width: 599px) {
+  :root { --pl-appbar-h: 52px; --pl-pad-md: 12px; }
+  .pl-row { gap: var(--pl-pad-sm); }
+}
+@media (min-width: 900px) {
+  .pl-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--pl-gap);
+  }
+}
+@media (min-width: 1100px) {
+  .pl-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--pl-gap);
+  }
+}
+
+/* Data Lab aligns to system */
+.dl-wrap {
+  max-width: var(--pl-content-max);
+  padding: var(--pl-pad-lg) max(var(--pl-pad-md), var(--pl-safe-l)) max(48px, var(--pl-safe-b)) max(var(--pl-pad-md), var(--pl-safe-r));
+}
+.dl-header {
+  display: flex;
+  align-items: center;
+  gap: var(--pl-pad-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--pl-pad-lg);
+  min-height: var(--pl-appbar-h);
+}

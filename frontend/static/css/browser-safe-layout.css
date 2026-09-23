@@ -1,0 +1,197 @@
+/* Vision AI v8.2.1 — Browser-safe layout (Chrome / Edge / Safari / Firefox / mobile)
+   Rules:
+   1. Never collapse main stage to 0 width
+   2. Sidebar is LEFT drawer on mobile, never steals main width when closed
+   3. Consistent gutters + safe-area padding on all edges
+   4. Floating mode pills stay inside padded zone
+   5. No horizontal page scroll
+*/
+
+:root {
+  --va-gutter: clamp(12px, 3vw, 24px);
+  --va-gutter-sm: clamp(10px, 2.5vw, 16px);
+  --va-edge: max(var(--va-gutter), env(safe-area-inset-right, 0px));
+  --va-edge-left: max(var(--va-gutter), env(safe-area-inset-left, 0px));
+  --va-edge-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  --va-edge-top: max(0px, env(safe-area-inset-top, 0px));
+}
+
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden !important;
+  overscroll-behavior-x: none;
+}
+
+/* Desktop: sidebar | main — main must grow */
+@media (min-width: 901px) {
+  body.nova-app,
+  body:has(.sidebar) {
+    display: grid !important;
+    grid-template-columns: var(--nv-sidebar-w, 272px) minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 100dvh);
+    min-height: 100dvh;
+  }
+  body.sidebar-collapsed {
+    grid-template-columns: 0 minmax(0, 1fr) !important;
+  }
+  .sidebar {
+    position: relative !important;
+    transform: none !important;
+    left: auto !important;
+    right: auto !important;
+    width: auto !important;
+    height: 100% !important;
+  }
+  .main-content,
+  main,
+  #main,
+  .chat-panel {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-column: 2;
+  }
+}
+
+/* Mobile / tablet: single column main; sidebar overlay from LEFT */
+@media (max-width: 900px) {
+  body.nova-app,
+  body {
+    display: block !important;
+    grid-template-columns: none !important;
+  }
+  .main-content,
+  main,
+  #main,
+  .chat-panel,
+  .workspace-main {
+    position: relative;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    padding-left: var(--va-edge-left);
+    padding-right: var(--va-edge);
+    box-sizing: border-box;
+  }
+  .sidebar,
+  #sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0 !important;
+    right: auto !important;
+    bottom: 0;
+    width: min(300px, 86vw) !important;
+    max-width: 86vw;
+    height: 100dvh !important;
+    transform: translateX(-105%) !important;
+    z-index: 200 !important;
+    box-shadow: none;
+  }
+  body.sidebar-open .sidebar,
+  body.sidebar-open #sidebar,
+  #sidebar.open-mobile {
+    transform: translateX(0) !important;
+    box-shadow: 8px 0 32px rgba(0,0,0,.35);
+  }
+  #sidebar-overlay,
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 190;
+    display: none;
+  }
+  body.sidebar-open #sidebar-overlay,
+  body.sidebar-open .sidebar-overlay {
+    display: block !important;
+  }
+  /* Body must not slide with drawer */
+  body.sidebar-open {
+    overflow: hidden;
+  }
+}
+
+/* Header padding — never flush to screen edge */
+.main-header,
+.app-header,
+.header-bar {
+  padding-left: max(12px, var(--va-edge-left)) !important;
+  padding-right: max(12px, var(--va-edge)) !important;
+  padding-top: var(--va-edge-top);
+  box-sizing: border-box;
+  gap: 8px;
+}
+
+/* Floating mode switcher (Chat / Image / Video) — keep off the edge */
+.workspace-modes,
+.mode-switcher,
+.mode-pills,
+.gen-mode-rail {
+  right: var(--va-edge) !important;
+  left: auto !important;
+  bottom: max(88px, calc(var(--va-edge-bottom) + 72px));
+  padding: 6px !important;
+  box-sizing: border-box;
+}
+
+/* Composer / input */
+.composer,
+.composer-shell,
+.chat-input-area,
+.message-input-wrap {
+  padding-left: var(--va-edge-left) !important;
+  padding-right: var(--va-edge) !important;
+  padding-bottom: var(--va-edge-bottom) !important;
+  box-sizing: border-box;
+}
+
+/* Messages area */
+#chatOutput,
+.chat-messages,
+.messages-container,
+.chat-stage {
+  padding-left: var(--va-gutter-sm) !important;
+  padding-right: var(--va-gutter-sm) !important;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Empty new-chat: still show welcome in padded center */
+.chat-empty,
+.welcome-panel,
+#welcomePanel {
+  padding: var(--va-gutter);
+  max-width: min(560px, 100%);
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+/* Icon buttons never clip */
+.icon-btn, .header-btn, .tray-btn {
+  flex-shrink: 0;
+}
+
+/* Desktop centered chat column with breathing room */
+@media (min-width: 901px) {
+  .chat-column,
+  .messages-inner,
+  #chatOutput {
+    max-width: min(900px, 100%);
+    margin-inline: auto;
+  }
+  .main-content {
+    padding-inline: clamp(8px, 1.5vw, 20px);
+  }
+}
+
+/* PWA / installed app */
+@media (display-mode: standalone), (display-mode: fullscreen) {
+  .main-header {
+    padding-top: max(8px, env(safe-area-inset-top, 0px));
+  }
+}
