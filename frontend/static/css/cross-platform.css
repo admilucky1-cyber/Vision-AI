@@ -1,0 +1,141 @@
+/* Vision AI — cross-platform / cross-browser safety layer v5.6.5
+   Windows, macOS, Linux, Android, iOS (Safari/Chrome/Firefox/Edge)
+*/
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  height: 100%;
+  height: -webkit-fill-available;
+}
+
+body {
+  min-height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* iOS rubber-band: keep app shell fixed */
+body.nova-app {
+  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  height: -webkit-fill-available;
+  overscroll-behavior: none;
+}
+
+.sidebar,
+.main-content,
+main.main-content {
+  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  height: -webkit-fill-available;
+  max-height: 100dvh;
+  max-height: -webkit-fill-available;
+}
+
+/* Fallback when :has() unsupported — JS sets html.sidebar-closed */
+html.sidebar-closed body.nova-app,
+html.sidebar-closed body {
+  grid-template-columns: 0 minmax(0, 1fr) !important;
+}
+html.sidebar-closed #sidebar {
+  width: 0 !important;
+  min-width: 0 !important;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+html.sidebar-closed #collapsedToolbar.active {
+  display: flex !important;
+}
+html.sidebar-closed .main-header {
+  padding-left: 132px;
+}
+
+/* Safe areas (iPhone notch / home bar) */
+.main-header {
+  padding-top: max(0px, env(safe-area-inset-top, 0px));
+}
+.input-area,
+#composerRoot {
+  padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+  padding-left: max(12px, env(safe-area-inset-left, 0px));
+  padding-right: max(12px, env(safe-area-inset-right, 0px));
+}
+
+/* iOS input zoom prevention + keyboard */
+#message,
+textarea#message,
+input.glass-input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"] {
+  font-size: 16px !important;
+  max-width: 100%;
+}
+
+/* Better mobile tap targets */
+.icon-btn,
+.header-btn,
+.tool-btn,
+.send-btn,
+.profile-trigger,
+.suggestion-chip {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.send-btn {
+  min-width: 48px;
+}
+
+/* Reduce motion for a11y / older devices */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+}
+
+/* Touch scroll momentum */
+#chatOutput,
+.history-list,
+.page-body {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Android Chrome address bar resize */
+@supports (height: 100dvh) {
+  body.nova-app,
+  .sidebar,
+  .main-content {
+    height: 100dvh;
+    max-height: 100dvh;
+  }
+}
+
+/* High contrast / forced colors */
+@media (forced-colors: active) {
+  .composer-shell,
+  .profile-dropdown,
+  .sidebar {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* Print safety */
+@media print {
+  .sidebar, .input-area, #collapsedToolbar { display: none !important; }
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-theme-preset="humanly">
+<head>
+  <script>
+  (function(){try{
+    var t=localStorage.getItem('vision_ai_theme')||'dark';
+    var p=localStorage.getItem('vision_theme_preset')||'humanly';
+    if(t==='system')t=(matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+    if(t!=='light'&&t!=='dark')t='dark';
+    document.documentElement.setAttribute('data-theme',t);
+    document.documentElement.setAttribute('data-theme-preset',p);
+    document.documentElement.style.colorScheme=t==='light'?'light':'dark';
+  }catch(e){
+    document.documentElement.setAttribute('data-theme','dark');
+    document.documentElement.setAttribute('data-theme-preset','humanly');
+  }})();
+  </script>
+  <style>
+  html,body{background-color:#0b1220!important;color:#e8eef7}
+  html[data-theme="light"],html[data-theme="light"] body{background-color:#f4f7fb!important;color:#0f172a}
+  </style>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
+  <meta name="color-scheme" content="dark light">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+
+  <meta name="app-version" content="8.7.4">
+  <title>Versions — Vision AI</title>
+  <script>
+  (function(){try{var t=localStorage.getItem('vision_ai_theme')||'dark';
+  if(t==='system')t=(matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+  document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');
+  document.documentElement.setAttribute('data-theme-preset','humanly');
+  }catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/frontend/static/css/device-fit.css?v=874">
+  <link rel="stylesheet" href="/frontend/static/css/theme-controls-v68.css?v=874">
+  <link rel="stylesheet" href="/frontend/static/css/page-layout-system.css?v=874">
+  <link rel="stylesheet" href="/frontend/static/css/nova-system.css?v=874">
+  <link rel="stylesheet" href="/frontend/static/css/cross-platform.css?v=874">
+  <link rel="stylesheet" href="/frontend/static/css/pages-shell.css?v=874">
+  <link rel="stylesheet" href="/frontend/static/css/humanly-global.css?v=874">
+  <link rel="stylesheet" href="/frontend/static/css/vision-system.css?v=874">
+  <link rel="stylesheet" href="/frontend/static/css/ui-polish-v81.css?v=874">
+  <link rel="manifest" href="/frontend/manifest.webmanifest">
+  <meta name="theme-color" content="#0d9488">
+  <link rel="apple-touch-icon" href="/frontend/static/icons/icon-192.png">
+  <link rel="stylesheet" href="/frontend/static/css/column-structure.css?v=874">
+  <link rel="stylesheet" href="/frontend/static/css/browser-safe-layout.css?v=874">
+  <link rel="stylesheet" href="/frontend/static/css/ads-monetize.css?v=874">
+  <link rel="stylesheet" href="/frontend/static/css/click-fix.css?v=874">
+  <link rel="stylesheet" href="/frontend/static/css/champion-ops.css?v=874">
+  <script src="/frontend/static/js/theme-unify.js?v=874"></script>
+  <link rel="stylesheet" href="/frontend/static/css/mobile-dense.css?v=874">
+</head>
+<body data-page="home" class="page-mode">
+<div class="page-shell">
+  <header class="page-topbar">
+    <a class="back" href="/">← Chat</a>
+    <h1>Versions</h1>
+  </header>
+  <main class="page-body">
+
+    <div class="page-card">
+      <h2>Vision AI</h2>
+      <p class="muted">Product version and workspace release notes.</p>
+      <div class="page-tile"><strong>Version</strong><span>5.8.1 Production</span></div>
+    </div>
+    <div class="page-card">
+      <h2>Recent</h2>
+      <p class="muted">SQLAlchemy preferences, settings API, Nova shell, fixed composer, collapsed sidebar tray, consistent secondary pages, Railway host fixes.</p>
+      <a class="btn-primary" href="/">Open workspace</a>
+    </div>
+
+  </main>
+</div>
+
+  <script src="/frontend/static/js/cross-platform.js?v=874"></script>
+  <script src="/frontend/static/js/page-behaviors.js?v=874" defer></script>
+  <script src="/frontend/static/js/vision-system.js?v=874"></script>
+</body>
+</html>

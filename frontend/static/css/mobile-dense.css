@@ -1,0 +1,130 @@
+/* Vision AI v8.7.4 — dense mobile layout (phone-first, no huge empty middle) */
+
+/* Kill forced desktop stretch on narrow screens */
+@media (max-width: 900px) {
+  html, body {
+    height: 100%;
+    max-width: 100vw;
+    overflow-x: hidden !important;
+  }
+
+  body {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 100dvh;
+  }
+
+  /* Sidebar = overlay only — never take permanent width */
+  .sidebar, #sidebar {
+    position: fixed !important;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: min(86vw, 300px) !important;
+    max-width: 300px !important;
+    z-index: 2000 !important;
+    transform: translateX(-105%) !important;
+    transition: transform 0.22s ease !important;
+  }
+  body.sidebar-open .sidebar,
+  body.sidebar-open #sidebar,
+  #sidebar.open-mobile {
+    transform: translateX(0) !important;
+  }
+
+  /* Main column fills viewport */
+  .main, .main-content, #main, .app-main, .workspace {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+  }
+
+  /* Header compact */
+  .topbar, .header, .chat-header, .app-header {
+    flex: 0 0 auto !important;
+    padding: 6px 8px !important;
+    gap: 6px !important;
+  }
+  .topbar button, .header button, .chat-header button {
+    min-width: 40px !important;
+    min-height: 40px !important;
+  }
+
+  /* Chat stage — use available space, not empty void */
+  .chat-stage, #chatStage {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 10px 12px !important;
+  }
+  .chat-container, #chatOutput {
+    max-width: 100% !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+  }
+  .welcome-empty, .empty-state, #welcomeEmpty {
+    padding: 16px 12px !important;
+    min-height: auto !important;
+  }
+
+  /* Composer pinned bottom — tight */
+  .input-area, .composer, #composerRoot {
+    flex: 0 0 auto !important;
+    position: sticky !important;
+    bottom: 0 !important;
+    padding: 6px 8px calc(8px + env(safe-area-inset-bottom)) !important;
+    gap: 6px !important;
+    background: var(--tc-bg, #0b1220);
+    z-index: 50;
+  }
+  .composer-shell, #composerShell {
+    gap: 6px !important;
+  }
+  .workspace-modes {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    margin: 0 !important;
+  }
+  .workspace-modes button {
+    min-height: 36px !important;
+    padding: 6px 12px !important;
+    font-size: 0.85rem !important;
+  }
+  textarea, #messageInput, .composer textarea {
+    min-height: 44px !important;
+    max-height: 120px !important;
+    font-size: 16px !important; /* prevent iOS zoom */
+  }
+
+  /* Message action buttons — wrap, smaller */
+  .message-actions, .msg-actions {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+  .message-actions button, .msg-actions button {
+    min-height: 32px !important;
+    padding: 4px 10px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Ops pill — don't cover composer */
+  #chOpsPill {
+    bottom: calc(72px + env(safe-area-inset-bottom)) !important;
+    left: 8px !important;
+    font-size: 10px !important;
+    opacity: 0.65 !important;
+  }
+}
+
+/* Extra-narrow phones */
+@media (max-width: 400px) {
+  .workspace-modes button { padding: 5px 8px !important; font-size: 0.78rem !important; }
+  .topbar .brand-text, .header .brand-text { display: none !important; }
+}

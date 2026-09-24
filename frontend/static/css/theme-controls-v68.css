@@ -1,0 +1,216 @@
+/* Vision AI v6.8.1 — Theme-aware buttons, composer, text
+   Fixes: input not following theme, text stuck, theme buttons blocked */
+
+/* ---- Semantic tokens (follow data-theme) ---- */
+html[data-theme="dark"] {
+  --tc-bg: #0b1220;
+  --tc-bg-elevated: #141c2e;
+  --tc-bg-input: #0f172a;
+  --tc-border: rgba(148, 163, 184, 0.22);
+  --tc-text: #e8eef7;
+  --tc-text-muted: #94a3b8;
+  --tc-accent: #2dd4bf;
+  --tc-accent-hover: #5eead4;
+  --tc-btn: #1a2738;
+  --tc-btn-hover: #243447;
+  --tc-danger: #f87171;
+  --tc-composer-bg: #111827;
+  --tc-composer-border: rgba(45, 212, 191, 0.25);
+}
+
+html[data-theme="light"] {
+  --tc-bg: #f4f7fb;
+  --tc-bg-elevated: #ffffff;
+  --tc-bg-input: #ffffff;
+  --tc-border: rgba(15, 23, 42, 0.12);
+  --tc-text: #0f172a;
+  --tc-text-muted: #64748b;
+  --tc-accent: #0d9488;
+  --tc-accent-hover: #0f766e;
+  --tc-btn: #e8eef5;
+  --tc-btn-hover: #d7e2ec;
+  --tc-danger: #dc2626;
+  --tc-composer-bg: #ffffff;
+  --tc-composer-border: rgba(13, 148, 136, 0.35);
+}
+
+/* ---- Global text follow theme ---- */
+html[data-theme="light"] body,
+html[data-theme="light"] .chat-main,
+html[data-theme="light"] .messages-container,
+html[data-theme="light"] #chatOutput {
+  color: var(--tc-text) !important;
+  background-color: var(--tc-bg);
+}
+
+html[data-theme="dark"] body,
+html[data-theme="dark"] .chat-main {
+  color: var(--tc-text);
+}
+
+/* ---- Composer / chat input (critical fix) ---- */
+.composer,
+.composer-wrap,
+.input-area,
+.input-area.composer,
+.composer-shell,
+.composer-inner,
+.composer-box,
+.v3-composer {
+  background: var(--tc-composer-bg) !important;
+  border-color: var(--tc-composer-border) !important;
+  color: var(--tc-text) !important;
+}
+
+#message,
+textarea#message,
+.composer textarea,
+.v3-composer textarea#message,
+.chat-input,
+input[type="text"].chat-field {
+  background: var(--tc-bg-input) !important;
+  color: var(--tc-text) !important;
+  border-color: var(--tc-border) !important;
+  caret-color: var(--tc-accent) !important;
+}
+
+#message::placeholder,
+textarea#message::placeholder,
+.composer textarea::placeholder {
+  color: var(--tc-text-muted) !important;
+  opacity: 0.85;
+}
+
+/* ---- Buttons unified ---- */
+button:not([disabled]),
+.btn,
+.icon-btn,
+.header-btn,
+.tray-btn,
+.msg-action-btn,
+.plan-btn,
+.send-btn,
+.theme-picker-btn,
+.theme-swatch,
+.theme-mode-row button {
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.icon-btn,
+.header-btn,
+.tray-btn,
+.theme-picker-btn,
+.msg-action-btn {
+  background: var(--tc-btn) !important;
+  color: var(--tc-text) !important;
+  border: 1px solid var(--tc-border) !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  cursor: pointer !important;
+  z-index: 5;
+}
+
+.icon-btn:hover,
+.header-btn:hover,
+.tray-btn:hover,
+.theme-picker-btn:hover,
+.msg-action-btn:hover {
+  background: var(--tc-btn-hover) !important;
+  color: var(--tc-text) !important;
+  border-color: var(--tc-accent) !important;
+}
+
+/* Primary send */
+.send-btn,
+button#sendBtn,
+.composer .send,
+button[type="submit"].send {
+  background: var(--tc-accent) !important;
+  color: #042f2e !important;
+  border: none !important;
+  font-weight: 600;
+}
+html[data-theme="light"] .send-btn,
+html[data-theme="light"] button#sendBtn {
+  color: #fff !important;
+}
+.send-btn:hover {
+  background: var(--tc-accent-hover) !important;
+}
+
+/* ---- Theme picker must not be blocked ---- */
+.theme-picker {
+  position: relative;
+  z-index: 10050 !important;
+  pointer-events: auto !important;
+}
+.theme-picker-btn {
+  pointer-events: auto !important;
+  z-index: 10051 !important;
+  min-width: 40px;
+  min-height: 40px;
+}
+.theme-picker-panel {
+  z-index: 10060 !important;
+  pointer-events: auto !important;
+  background: var(--tc-bg-elevated) !important;
+  color: var(--tc-text) !important;
+  border: 1px solid var(--tc-border) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+.theme-picker-panel button,
+.theme-swatch,
+.theme-mode-row button {
+  pointer-events: auto !important;
+  color: var(--tc-text) !important;
+  background: transparent !important;
+  border: 1px solid transparent;
+}
+.theme-swatch:hover,
+.theme-mode-row button:hover {
+  background: var(--tc-btn-hover) !important;
+  border-color: var(--tc-border) !important;
+}
+
+/* Unblock header controls under overlays */
+.main-header,
+.app-header,
+.chat-header,
+.header-bar {
+  z-index: 40;
+  pointer-events: auto;
+}
+.main-header button,
+.chat-header button,
+.header-actions button {
+  pointer-events: auto !important;
+}
+
+/* Message bubbles follow theme */
+html[data-theme="light"] .user-message,
+html[data-theme="light"] .msg-user {
+  background: #d1fae5 !important;
+  color: #064e3b !important;
+}
+html[data-theme="light"] .ai-message,
+html[data-theme="light"] .msg-ai,
+html[data-theme="light"] .bot-message {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid var(--tc-border);
+}
+html[data-theme="dark"] .ai-message,
+html[data-theme="dark"] .msg-ai {
+  color: var(--tc-text);
+}
+
+/* Sidebar */
+html[data-theme="light"] .sidebar {
+  background: #ffffff !important;
+  color: var(--tc-text) !important;
+  border-color: var(--tc-border) !important;
+}
+html[data-theme="light"] .sidebar a,
+html[data-theme="light"] .sidebar button {
+  color: var(--tc-text) !important;
+}

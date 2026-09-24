@@ -1,0 +1,141 @@
+/* Vision AI v7.2.0 — SINGLE system entry (CSS)
+   Loads order is enforced by HTML; this file is the canonical "apply once" layer
+   that guarantees layout + theme + fit even if a page misses an older sheet.
+*/
+
+@import url("/frontend/static/css/device-fit.css?v=720");
+@import url("/frontend/static/css/pages-shell.css?v=720");
+@import url("/frontend/static/css/page-layout-system.css?v=720");
+@import url("/frontend/static/css/theme-controls-v68.css?v=720");
+
+/* Final authority overrides */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+body.page-mode,
+body.page-view,
+.page-shell {
+  min-height: 100dvh;
+  height: auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+.pl-appbar, .page-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+#message, textarea#message, .composer textarea {
+  background: var(--tc-bg-input, var(--nv-bg, #0f172a)) !important;
+  color: var(--tc-text, var(--nv-text, #e8eef7)) !important;
+}
+
+/* ===== v7.3.0 BEST layer: utility kit (Bootstrap-like, zero dependency) ===== */
+.va-container {
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+  padding-inline: max(16px, env(safe-area-inset-left), env(safe-area-inset-right));
+  box-sizing: border-box;
+}
+.va-container-sm { max-width: 720px; }
+.va-container-lg { max-width: 1280px; }
+
+.va-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0;
+}
+.va-col { flex: 1 1 0; min-width: 0; box-sizing: border-box; }
+.va-col-12 { flex: 0 0 100%; max-width: 100%; }
+.va-col-6 { flex: 0 0 calc(50% - 8px); max-width: calc(50% - 8px); }
+.va-col-4 { flex: 0 0 calc(33.333% - 11px); max-width: calc(33.333% - 11px); }
+.va-col-3 { flex: 0 0 calc(25% - 12px); max-width: calc(25% - 12px); }
+@media (max-width: 767px) {
+  .va-col-6, .va-col-4, .va-col-3 { flex: 0 0 100%; max-width: 100%; }
+}
+
+.va-stack { display: flex; flex-direction: column; gap: 12px; }
+.va-stack-lg { gap: 20px; }
+.va-center { display: flex; align-items: center; justify-content: center; }
+.va-between { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+.va-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--tc-border, rgba(148,163,184,.25));
+  background: var(--tc-btn, #1a2738);
+  color: var(--tc-text, #e8eef7);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s, border-color .15s;
+}
+.va-btn:hover { background: var(--tc-btn-hover, #243447); border-color: var(--tc-accent, #2dd4bf); }
+.va-btn-primary {
+  background: var(--tc-accent, #2dd4bf);
+  border-color: transparent;
+  color: #042f2e;
+}
+html[data-theme="light"] .va-btn-primary { color: #fff; background: #0d9488; }
+.va-btn-ghost { background: transparent; }
+
+.va-card {
+  background: var(--tc-bg-elevated, #141c2e);
+  border: 1px solid var(--tc-border, rgba(148,163,184,.18));
+  border-radius: 12px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+html[data-theme="light"] .va-card {
+  background: #fff;
+  border-color: rgba(15,23,42,.1);
+}
+
+.va-mt-0 { margin-top: 0; }
+.va-mt-2 { margin-top: 8px; }
+.va-mt-3 { margin-top: 12px; }
+.va-mt-4 { margin-top: 16px; }
+.va-mb-3 { margin-bottom: 12px; }
+.va-mb-4 { margin-bottom: 16px; }
+.va-p-3 { padding: 12px; }
+.va-p-4 { padding: 16px; }
+.va-w-100 { width: 100%; }
+.va-text-muted { color: var(--tc-text-muted, #94a3b8); }
+.va-sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); border: 0;
+}
+
+/* Plans / secondary content always scrollable */
+.plans-grid, .settings-grid, .studio-grid, .dl-wrap {
+  padding-bottom: max(48px, env(safe-area-inset-bottom));
+}
+
+/* v8 model status pills */
+.va-model-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  max-width: min(48vw, 320px);
+  margin-left: auto;
+}
+.va-ms-pill {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,.25);
+  white-space: nowrap;
+}
+.va-ms-pill.ok { color: #34d399; border-color: rgba(52,211,153,.35); }
+.va-ms-pill.bad { color: #f87171; border-color: rgba(248,113,113,.35); }
