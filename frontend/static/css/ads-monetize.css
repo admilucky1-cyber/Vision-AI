@@ -1,0 +1,27 @@
+/* Ad slots — non-intrusive */
+.va-ad-slot {
+  margin: 10px 12px;
+  min-height: 0;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.va-ad-upgrade {
+  margin: 8px 12px 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(13,148,136,.2), rgba(45,212,191,.12));
+  border: 1px solid rgba(45,212,191,.35);
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.va-ad-upgrade a {
+  color: var(--tc-accent, #2dd4bf);
+  text-decoration: none;
+}
+.va-sponsor {
+  margin: 8px 12px;
+  font-size: 0.8rem;
+  opacity: 0.95;
+}

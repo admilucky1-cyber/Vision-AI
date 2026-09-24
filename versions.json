@@ -1,0 +1,491 @@
+{
+  "current": "5.7.1",
+  "released": [
+    {
+      "id": "5.7.1",
+      "tag": "v5.7.1",
+      "date": "2026-09-05",
+      "channel": "stable",
+      "summary": "Sketch Shell stabilization: canonical Nova CSS wiring, version/cache synchronization, UI cleanup, and test-suite alignment"
+    },
+    {
+      "id": "4.5.3",
+      "tag": "v4.5.3",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "Profile menu fixed (fixed pos, not clipped); hardened logout; header more menu"
+    },
+    {
+      "id": "4.5.2",
+      "tag": "v4.5.2",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "Single 900px sidebar breakpoint; one resize controller; SVG leak fix retained"
+    },
+    {
+      "id": "4.5.1",
+      "tag": "v4.5.1",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "Fix SVG stroke-width text leak (theme icon textContent); toast position; sidebar hamburger resize"
+    },
+    {
+      "id": "4.5.0",
+      "tag": "v4.5.0",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "Worker job claim/complete; full image param+LoRA propagation; artifacts; Studio UX v4.5"
+    },
+    {
+      "id": "4.4.0",
+      "tag": "v4.4.0",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "Show more for long replies; SVG history/theme icons; prompt drawer CSS; chat-ui token bridge"
+    },
+    {
+      "id": "4.3.2",
+      "tag": "v4.3.2",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "Chat action tokens; sticky sidebar footer; more-menu panel styles; version sync"
+    },
+    {
+      "id": "4.3.1",
+      "tag": "v4.3.1",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "SVG chrome icons; sidebar footer; header more collision; logo scale"
+    },
+    {
+      "id": "4.3.0",
+      "tag": "v4.3.0",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "Theme picker popover; chat rail width; no nested AI scroll; header priorities; mode+preset"
+    },
+    {
+      "id": "4.2.0",
+      "tag": "v4.2.0",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "CSS consolidation: archive 25 patch files; canonical tokens/themes/layout; theme sync; sidebar resize fix"
+    },
+    {
+      "id": "4.1.0",
+      "tag": "v4.1.0",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "Dynamic product identity from VERSION; design tokens; studio XSS-safe DOM; version sync"
+    },
+    {
+      "id": "4.0.0",
+      "tag": "v4.0.0",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "Master audit: worker auth, capabilities, job states, path safety, studio hardening"
+    },
+    {
+      "id": "3.9.0",
+      "tag": "v3.9.0",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "Model Studio API+UI; model/LoRA registry; Drive storage map; image/video/train job queue on top of v3.8.2 chat"
+    },
+    {
+      "id": "3.8.2",
+      "tag": "v3.8.2",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "Lazy chat imports so router always mounts; /chat/ping; POST /chat/send guaranteed path"
+    },
+    {
+      "id": "3.8.1",
+      "tag": "v3.8.1",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "POST /chat/send hard-mounted with prefix; stop SPA catch-all 405; /health/routes debug"
+    },
+    {
+      "id": "3.8.0",
+      "tag": "v3.8.0",
+      "date": "2026-08-16",
+      "channel": "stable",
+      "summary": "Chat 405 fixed; unified teal theme; no promo banner; versions synced"
+    },
+    {
+      "id": "3.7.2",
+      "tag": "v3.7.2",
+      "date": "2026-08-15",
+      "channel": "stable",
+      "summary": "Hard-wired POST /auth/login + /auth/token; multi-endpoint client; no SlowAPI on login"
+    },
+    {
+      "id": "3.7.1",
+      "tag": "v3.7.1",
+      "date": "2026-08-15",
+      "channel": "stable",
+      "summary": "Fix login 405 (shared limiter + JSON login); clean login page CSS"
+    },
+    {
+      "id": "3.7.0",
+      "tag": "v3.7.0",
+      "date": "2026-08-15",
+      "channel": "stable",
+      "summary": "Logout stays on login; guest 5/free 30 msgs; images paid-only; per-user chat history; profile footer"
+    },
+    {
+      "id": "3.6.7",
+      "tag": "v3.6.7",
+      "date": "2026-08-15",
+      "channel": "stable",
+      "summary": "Fix login.html served as index; real routes for all pages; logout clears guest"
+    },
+    {
+      "id": "3.6.6",
+      "tag": "v3.6.6",
+      "date": "2026-08-14",
+      "channel": "stable",
+      "summary": "Stop auth redirect blink loop; no redundant theme reapply; guest silent session"
+    },
+    {
+      "id": "3.6.5",
+      "tag": "v3.6.5",
+      "date": "2026-08-14",
+      "channel": "stable",
+      "summary": "Anti-FOUC: inline theme + critical dark bg before paint"
+    },
+    {
+      "id": "3.6.3",
+      "tag": "v3.6.3",
+      "date": "2026-08-14",
+      "channel": "stable",
+      "summary": "python run.py entrypoint — fixes Railway literal ${PORT:-8000}"
+    },
+    {
+      "id": "3.6.2",
+      "tag": "v3.6.2",
+      "date": "2026-08-14",
+      "channel": "stable",
+      "summary": "Railway healthcheck: ALLOWED_HOSTS no longer fatal; start.sh/Dockerfile harden"
+    },
+    {
+      "id": "3.6.1",
+      "tag": "v3.6.1",
+      "date": "2026-08-14",
+      "channel": "stable",
+      "summary": "Fix Railway PORT expansion via start.sh"
+    },
+    {
+      "id": "3.6.0",
+      "tag": "v3.6.0",
+      "date": "2026-08-13",
+      "channel": "stable",
+      "summary": "Security hardening: admin role-only, skills disabled, workers fail-closed, no key leak, downloads locked, stripe signed, quota reserve, stream XSS fix"
+    },
+    {
+      "id": "3.5.2",
+      "tag": "v3.5.2",
+      "date": "2026-08-13",
+      "channel": "stable",
+      "summary": "Desktop sidebar no blur/overlay; multi-client YouTube download without cookies"
+    },
+    {
+      "id": "3.5.1",
+      "tag": "v3.5.1",
+      "date": "2026-08-13",
+      "channel": "stable",
+      "summary": "Stream bugfix, cursor polish, production readiness pass"
+    },
+    {
+      "id": "3.5.0",
+      "tag": "v3.5.0",
+      "date": "2026-08-13",
+      "channel": "stable",
+      "summary": "SSE streaming chat for light turns (Groq/OR/DeepSeek), progressive UI"
+    },
+    {
+      "id": "3.4.1",
+      "tag": "v3.4.1",
+      "date": "2026-08-13",
+      "channel": "stable",
+      "summary": "Better responses, quota badge, prompt version sync, UI polish"
+    },
+    {
+      "id": "3.4.0",
+      "tag": "v3.4.0",
+      "date": "2026-08-13",
+      "channel": "stable",
+      "summary": "Guest 1 msg + free 10 msg server quotas, fail-closed, upgrade UX, response quality"
+    },
+    {
+      "id": "3.3.2",
+      "tag": "v3.3.2",
+      "date": "2026-08-13",
+      "channel": "stable",
+      "summary": "Looks refresh: download buttons, badges, tables, focus rings, cross-page CSS"
+    },
+    {
+      "id": "3.3.1",
+      "tag": "v3.3.1",
+      "date": "2026-08-13",
+      "channel": "stable",
+      "summary": "UI upgrade: Inter type, glass composer, refined bubbles, gradient accents"
+    },
+    {
+      "id": "3.3.0",
+      "tag": "v3.3.0",
+      "date": "2026-08-13",
+      "channel": "stable",
+      "summary": "Fast responsive shell, static cache, snappier chat budgets, mobile layout tokens"
+    },
+    {
+      "id": "3.2.9",
+      "tag": "v3.2.9",
+      "date": "2026-08-13",
+      "channel": "stable",
+      "summary": "Clean header ⋮ menu, hide free strip, sidebar links, better Colab prompts"
+    },
+    {
+      "id": "3.2.8",
+      "tag": "v3.2.8",
+      "date": "2026-08-13",
+      "channel": "stable",
+      "summary": "Mobile download nav, FB/TikTok/IG media download, large CSV/Excel/PPT sampling"
+    },
+    {
+      "id": "3.2.7",
+      "tag": "v3.2.7",
+      "date": "2026-08-13",
+      "channel": "stable",
+      "summary": "Plug solutions: download ?dl=1 in chat links, Colab 512/4steps wired in image_gen, batch_image client"
+    },
+    {
+      "id": "3.2.6",
+      "tag": "v3.2.6",
+      "date": "2026-08-12",
+      "channel": "stable",
+      "summary": "Mobile download via location.assign; always attachment headers; nixpacks ffmpeg"
+    },
+    {
+      "id": "3.2.5",
+      "tag": "v3.2.5",
+      "date": "2026-08-12",
+      "channel": "stable",
+      "summary": "KaTeX pre-render, yt-dlp --no-config, admin-only chips, no message scrollbar"
+    },
+    {
+      "id": "3.2.4",
+      "tag": "v3.2.4",
+      "date": "2026-08-12",
+      "channel": "stable",
+      "summary": "Mobile composer, sidebar density, expanded Prompt Studio, English-for-Latin STEM, simple Urdu, RTL"
+    },
+    {
+      "id": "3.2.3",
+      "tag": "v3.2.3",
+      "date": "2026-08-12",
+      "channel": "stable",
+      "summary": "Mobile download without blob (70MB fix), multi-key API rotation, anti-hallucination language, responsive shell"
+    },
+    {
+      "id": "3.2.2",
+      "tag": "v3.2.2",
+      "date": "2026-08-12",
+      "channel": "stable",
+      "summary": "English-default language, mobile YouTube download, KaTeX math fences, responsive chat typography"
+    },
+    {
+      "id": "3.2.1",
+      "tag": "v3.2.1",
+      "date": "2026-08-12",
+      "channel": "stable",
+      "summary": "Production hardening, KaTeX math, Prompt Studio fix, version alignment across codebase"
+    },
+    {
+      "id": "3.2.0",
+      "tag": "v3.2.0",
+      "date": "2026-08-12",
+      "channel": "stable",
+      "summary": "Complete exam-solve release: rag_cache module, full smoke suite, COMPLETE.md"
+    },
+    {
+      "id": "3.1.6",
+      "tag": "v3.1.6",
+      "date": "2026-08-12",
+      "channel": "stable",
+      "summary": "Exam polish: rag_files on cache reuse, larger doc completions, document-used toast"
+    },
+    {
+      "id": "3.1.5",
+      "tag": "v3.1.5",
+      "date": "2026-08-12",
+      "channel": "stable",
+      "summary": "Long exam solve timeouts: client 5min + provider 120s for documents"
+    },
+    {
+      "id": "3.1.4",
+      "tag": "v3.1.4",
+      "date": "2026-08-12",
+      "channel": "stable",
+      "summary": "Stable client session id for RAG cache; guest IP + refresh fixes"
+    },
+    {
+      "id": "3.1.3",
+      "tag": "v3.1.3",
+      "date": "2026-08-12",
+      "channel": "stable",
+      "summary": "Disk-backed RAG cache across uvicorn workers — follow-up solve works on Railway"
+    },
+    {
+      "id": "3.1.2",
+      "tag": "v3.1.2",
+      "date": "2026-08-12",
+      "channel": "stable",
+      "summary": "Follow-up solve reuses last upload (per-user cache); exam workflow reliability"
+    },
+    {
+      "id": "3.1.1",
+      "tag": "v3.1.1",
+      "date": "2026-08-12",
+      "channel": "stable",
+      "summary": "Production polish: README/TROUBLESHOOTING/env cleanup; smoke test for exam solve path"
+    },
+    {
+      "id": "3.1.0",
+      "tag": "v3.1.0",
+      "date": "2026-08-11",
+      "channel": "stable",
+      "summary": "Fix exam PDF solve hallucination: skip top-k RAG on full-document solve; keep full paper context"
+    },
+    {
+      "id": "3.0.9",
+      "tag": "v3.0.9",
+      "date": "2026-08-11",
+      "channel": "stable",
+      "summary": "CRITICAL: guest JWT auth fixed; soft free-model fallback when Groq empty; reliable chat"
+    },
+    {
+      "id": "3.0.5",
+      "tag": "v3.0.5",
+      "date": "2026-08-11",
+      "channel": "stable",
+      "summary": "UI polish, Student plan, global themes, hamburger fix, About version, expanded free models"
+    },
+    {
+      "id": "3.0.3",
+      "tag": "v3.0.3",
+      "date": "2026-08-11",
+      "channel": "stable",
+      "summary": "Chat container restore, composer pin, theme chip"
+    },
+    {
+      "id": "3.0.2",
+      "tag": "v3.0.2",
+      "date": "2026-08-11",
+      "channel": "stable",
+      "summary": "Mobile download + Prompt Studio"
+    },
+    {
+      "id": "3.0.1",
+      "tag": "v3.0.1",
+      "date": "2026-08-11",
+      "channel": "stable",
+      "summary": "Auth guest, agent, deploy harden"
+    },
+    {
+      "id": "3.0.0",
+      "tag": "v3.0.0",
+      "date": "2026-08-11",
+      "channel": "stable",
+      "summary": "Major UI + plans release"
+    }
+  ],
+  "versions": [
+    {
+      "id": "5.7.1",
+      "tag": "v5.7.1",
+      "date": "2026-09-05",
+      "channel": "stable",
+      "summary": "Sketch Shell stabilization: canonical Nova CSS wiring, version/cache synchronization, UI cleanup, and test-suite alignment",
+      "status": "current"
+    },
+    {
+      "id": "4.9.4",
+      "tag": "v4.9.4",
+      "status": "stable",
+      "released": "2026-08-21",
+      "summary": "Theme accent bridge, composer stop/layout, production UI fixes"
+    },
+    {
+      "id": "4.9.2",
+      "tag": "v4.9.2",
+      "status": "stable",
+      "released": "2026-08-21",
+      "summary": "Chat/profile/settings refine + ui-refine.css responsive precision"
+    },
+    {
+      "id": "4.9.1",
+      "tag": "v4.9.1",
+      "status": "stable",
+      "released": "2026-08-21",
+      "summary": "workspace-ui token aliases; full tokens preserved"
+    },
+    {
+      "id": "4.8.3",
+      "tag": "v4.8.3",
+      "status": "stable",
+      "released": "2026-08-21",
+      "summary": "CSS cleanup, vendor self-host, modern-ui migrated into components"
+    },
+    {
+      "id": "4.8.2",
+      "tag": "v4.8.2",
+      "status": "stable",
+      "released": "2026-08-20",
+      "summary": "Canonical tokens + legacy alias bridge; remove global transitions; version consistency"
+    },
+    {
+      "id": "4.8.1",
+      "tag": "v4.8.1",
+      "status": "stable",
+      "released": "2026-08-20",
+      "summary": "Complete modern UI: empty state, composer, settings layout, studio"
+    },
+    {
+      "id": "4.8.0",
+      "tag": "v4.8.0",
+      "status": "stable",
+      "released": "2026-08-20",
+      "summary": "Modern workspace design-system layer; backend frozen"
+    },
+    {
+      "id": "4.7.6",
+      "tag": "v4.7.6",
+      "status": "stable",
+      "released": "2026-08-20",
+      "summary": "Single sidebar controller, canonical VisionAuth tokens, no duplicate logout"
+    },
+    {
+      "id": "4.7.5",
+      "tag": "v4.7.5",
+      "status": "stable",
+      "released": "2026-08-20",
+      "summary": "Drive/LoRA hardening + worker validation + smoke tests"
+    },
+    {
+      "id": "4.7.4",
+      "tag": "v4.7.4",
+      "status": "stable",
+      "released": "2026-08-20",
+      "summary": "ProfileController, sidebar authority, API model migrations"
+    },
+    {
+      "id": "4.7.3",
+      "tag": "v4.7.3",
+      "status": "stable",
+      "released": "2026-08-20",
+      "summary": "P1 auth unify, sidebar controller API, models migrations in API"
+    }
+  ]
+}
