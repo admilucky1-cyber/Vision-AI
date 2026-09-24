@@ -1,0 +1,89 @@
+/* Vision AI v8.5 — Champion patterns: tokens, states, ops chrome */
+:root {
+  --ch-radius: 12px;
+  --ch-radius-sm: 8px;
+  --ch-space-1: 4px;
+  --ch-space-2: 8px;
+  --ch-space-3: 12px;
+  --ch-space-4: 16px;
+  --ch-space-5: 24px;
+  --ch-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ch-shadow: 0 8px 24px rgba(0,0,0,.18);
+  --ch-focus: 0 0 0 3px rgba(45, 212, 191, 0.45);
+}
+
+/* Focus visible (a11y — Stripe/Linear style) */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none !important;
+  box-shadow: var(--ch-focus) !important;
+}
+
+/* Empty / loading / error states */
+.ch-empty, .ch-error, .ch-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ch-space-3);
+  padding: var(--ch-space-5);
+  text-align: center;
+  color: var(--tc-text-muted, #94a3b8);
+  min-height: 120px;
+}
+.ch-empty strong, .ch-error strong {
+  color: var(--tc-text, #e8eef7);
+  font-size: 1.05rem;
+}
+.ch-error {
+  color: #fca5a5;
+}
+.ch-skeleton {
+  background: linear-gradient(90deg,
+    rgba(148,163,184,.12) 25%,
+    rgba(148,163,184,.22) 37%,
+    rgba(148,163,184,.12) 63%);
+  background-size: 400% 100%;
+  animation: ch-shimmer 1.2s ease infinite;
+  border-radius: var(--ch-radius-sm);
+  min-height: 14px;
+}
+@keyframes ch-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* Ops status pill (bottom-left, non-blocking) */
+#chOpsPill {
+  position: fixed;
+  left: max(10px, env(safe-area-inset-left));
+  bottom: max(10px, env(safe-area-inset-bottom));
+  z-index: 90;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(148,163,184,.25);
+  color: #cbd5e1;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  opacity: 0.85;
+  transition: opacity 0.2s var(--ch-ease);
+}
+#chOpsPill[data-status="ok"] { border-color: rgba(45,212,191,.45); color: #5eead4; }
+#chOpsPill[data-status="degraded"] { border-color: rgba(251,191,36,.5); color: #fbbf24; }
+#chOpsPill[data-status="down"] { border-color: rgba(248,113,113,.55); color: #f87171; }
+@media (max-width: 600px) {
+  #chOpsPill { font-size: 10px; padding: 4px 8px; opacity: 0.7; }
+}
+
+/* Toast polish */
+.toast, .va-toast, #toastContainer .toast {
+  border-radius: var(--ch-radius-sm) !important;
+  box-shadow: var(--ch-shadow);
+}

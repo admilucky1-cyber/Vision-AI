@@ -1,0 +1,19 @@
+# Used only if Railway does NOT use Dockerfile.
+# Prefer Settings → Build → Builder = Dockerfile (see railway.toml).
+
+[phases.setup]
+aptPkgs = [
+  "ffmpeg",
+  "curl",
+  "tesseract-ocr",
+  "poppler-utils",
+]
+
+[phases.install]
+cmds = [
+  "pip install -r requirements.txt",
+  "pip install -U yt-dlp",
+]
+
+[start]
+cmd = "python run.py"
