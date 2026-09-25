@@ -1,0 +1,21 @@
+
+#promptStudioDrawer, .prompt-studio-drawer, .ps-drawer {
+  position: fixed !important;
+  inset: 0 0 0 auto !important;
+  width: min(100vw, 720px) !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  overflow: auto !important;
+  padding: 16px !important;
+  box-sizing: border-box !important;
+}
+.ps-backdrop, .prompt-studio-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1190;
+}
+/* remove horizontal icon category strip */
+.ps-icon-row, .category-icon-row, .ps-tabs-icons { display: none !important; }
+
+#promptStudioDrawer, .prompt-studio-drawer {
+  width: min(100vw, 820px) !important;
+}
+.ps-subtitle, .ps-help-line { max-width: 100%; }
