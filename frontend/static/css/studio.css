@@ -1,0 +1,21 @@
+/* Studio page uses tokens */
+.studio-wrap, .wrap {
+  background: var(--bg-page);
+  color: var(--text-primary);
+}
+.panel, .studio-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+}
+.tabs button {
+  background: var(--bg-surface-raised);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: var(--radius-pill);
+}
+.tabs button.active {
+  background: var(--accent);
+  color: var(--text-inverse);
+  border-color: transparent;
+}

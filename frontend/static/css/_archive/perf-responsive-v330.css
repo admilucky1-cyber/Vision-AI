@@ -1,0 +1,212 @@
+/* Vision AI v3.3.0 — calculated speed + responsive shell
+   Goal: 60fps UI, stable mobile composer, less layout thrash
+*/
+
+:root {
+  --sidebar-w: 260px;
+  --header-h: 56px;
+  --composer-h: 72px;
+  --touch: 44px;
+  --radius: 14px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fast: 120ms;
+  --med: 200ms;
+}
+
+@media (min-width: 1100px) { :root { --sidebar-w: 280px; } }
+@media (max-width: 1099px) and (min-width: 769px) { :root { --sidebar-w: 240px; } }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+html, body {
+  height: 100%;
+  overscroll-behavior: none;
+}
+body {
+  margin: 0;
+  overflow: hidden; /* app shell scrolls inside panes */
+}
+
+/* GPU-friendly layers */
+.sidebar, #sidebar,
+.main-header,
+.input-area,
+.message-bubble {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Sidebar width from token */
+.sidebar, #sidebar {
+  width: var(--sidebar-w) !important;
+  max-width: var(--sidebar-w) !important;
+  will-change: transform;
+  transition: transform var(--med) var(--ease);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.main-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.main-header {
+  min-height: var(--header-h);
+  height: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  contain: layout style;
+}
+
+#chatTitle {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: clamp(13px, 2.2vw, 16px);
+}
+
+/* Chat scroll region only */
+.chat-container, #chatOutput {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 12px clamp(8px, 2vw, 20px) 16px;
+  scroll-behavior: smooth;
+  content-visibility: auto;
+}
+
+.message-row {
+  content-visibility: auto;
+  contain-intrinsic-size: 120px;
+  margin-bottom: 12px;
+}
+
+.message-bubble, .markdown-content {
+  max-width: min(850px, 100%);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Composer fixed to bottom of main column */
+.input-area, .input-area.v3-composer {
+  flex-shrink: 0;
+  padding: 8px 12px max(10px, env(safe-area-inset-bottom)) !important;
+  contain: layout style;
+}
+
+.input-container.glass-composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  min-height: 48px;
+  border-radius: 22px;
+  padding: 6px 8px;
+}
+
+#message, .input-area textarea {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-height: 160px;
+  font-size: 16px !important; /* stop iOS zoom */
+  line-height: 1.35;
+  resize: none;
+  border: none;
+  background: transparent;
+}
+
+button, .icon-btn, .send-btn, .topbar-chip, .sidebar-link {
+  min-height: var(--touch);
+  min-width: var(--touch);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--fast) var(--ease), opacity var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+button:active, .icon-btn:active, .send-btn:active {
+  transform: scale(0.97);
+}
+
+.send-btn, #sendBtn {
+  border-radius: 999px !important;
+  flex-shrink: 0;
+}
+
+/* Mobile: full-width drawer, no double scroll */
+@media (max-width: 768px) {
+  :root { --header-h: 52px; }
+  body.sidebar-open { overflow: hidden; }
+  .sidebar, #sidebar {
+    position: fixed !important;
+    left: 0; top: 0; bottom: 0;
+    width: min(86vw, 300px) !important;
+    max-width: min(86vw, 300px) !important;
+    transform: translateX(-105%);
+    z-index: 50;
+  }
+  #sidebar.open-mobile,
+  body.sidebar-open #sidebar {
+    transform: translateX(0) !important;
+  }
+  .main-header .topbar-chip-label,
+  .theme-picker-label { display: none !important; }
+  .header-brand-text { display: none; }
+  .model-selector {
+    max-width: 110px;
+    font-size: 12px;
+  }
+  .status #statusText { display: none; }
+  .send-btn .send-label { display: none !important; }
+  #sendBtn, #stopBtn {
+    width: 44px !important;
+    height: 44px !important;
+  }
+}
+
+/* Prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* KaTeX overflow without layout jump */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  padding: 0.2em 0;
+}
+
+/* Images in chat: responsive */
+.message-bubble img,
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+/* Header more panel fast */
+.header-more-panel {
+  animation: fadePop var(--fast) var(--ease);
+}
+@keyframes fadePop {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,129 @@
+/**
+ * Vision AI — solid UI patterns from mobile course practice
+ * (AppBar/Drawer spacing, Form column, List/Grid cards, 12px rhythm)
+ * No third-party course branding.
+ */
+
+:root {
+  --ui-space: 12px;
+  --ui-space-sm: 8px;
+  --ui-space-lg: 16px;
+  --ui-radius: 12px;
+  --ui-radius-lg: 16px;
+  --ui-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* AppBar-like top bars: consistent height & padding */
+.app-header, .topbar, .chat-header, .page-appbar {
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space-sm);
+  min-height: 52px;
+  padding: var(--ui-space-sm) var(--ui-space);
+  box-sizing: border-box;
+}
+
+/* Drawer / sidebar items — clear touch targets */
+.sidebar a, .sidebar .nav-item, .history-item {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space-sm);
+  padding: var(--ui-space-sm) var(--ui-space);
+  border-radius: var(--ui-radius);
+}
+
+/* Form column + validation feel */
+.form-column, form.va-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space);
+}
+.form-column .field-error,
+.va-column .field-error,
+.auth-msg.err {
+  color: #f87171;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+.form-column input:invalid:not(:placeholder-shown),
+.va-column input:invalid:not(:placeholder-shown) {
+  border-color: #f87171;
+}
+
+/* List pattern (ListView-like) */
+.ui-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space);
+  padding: var(--ui-space);
+}
+.ui-list-item {
+  min-height: 72px;
+  padding: var(--ui-space);
+  border-radius: var(--ui-radius);
+  box-shadow: var(--ui-shadow);
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space);
+}
+
+/* Grid pattern (GridView-like, 2 cols on mobile, more on desktop) */
+.ui-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ui-space);
+  padding: var(--ui-space);
+}
+@media (min-width: 720px) {
+  .ui-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1100px) {
+  .ui-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.ui-grid-card {
+  border-radius: var(--ui-radius-lg);
+  padding: var(--ui-space-lg);
+  box-shadow: var(--ui-shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ui-space-sm);
+  min-height: 120px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.ui-grid-card:active, .ui-grid-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Plans / skills / boost: use grid cards */
+.plans-grid, .skills-grid, .boost-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--ui-space);
+  padding: var(--ui-space);
+}
+.plan-card, .skill-card, .boost-card {
+  border-radius: var(--ui-radius-lg);
+  padding: var(--ui-space-lg);
+  box-shadow: var(--ui-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-sm);
+}
+
+/* Subtle enter animation (course FadeTransition idea) */
+@keyframes ui-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.chat-stage .message-row, .ui-grid-card, .plan-card {
+  animation: ui-fade-in 0.28s ease both;
+}
+
+/* Body padding under app bar */
+.page-main, .settings-main, .studio-main {
+  padding: var(--ui-space);
+}

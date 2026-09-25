@@ -1,0 +1,143 @@
+/**
+ * Vision AI v8.8.3 — Desktop layout + theme colors + input/sidebar recovery
+ */
+
+/* ========== THEME COLORS (chat + side + input) ========== */
+html[data-theme="dark"] {
+  --tc-bg: #0b1220;
+  --tc-surface: #111827;
+  --tc-surface-2: #1e293b;
+  --tc-text: #e8eef7;
+  --tc-text-muted: #94a3b8;
+  --tc-border: rgba(148, 163, 184, 0.22);
+  --tc-input-bg: rgba(15, 23, 42, 0.85);
+  --tc-accent: #2dd4bf;
+  --tc-sidebar: #0f172a;
+}
+html[data-theme="light"] {
+  --tc-bg: #f1f5f9;
+  --tc-surface: #ffffff;
+  --tc-surface-2: #e2e8f0;
+  --tc-text: #0f172a;
+  --tc-text-muted: #64748b;
+  --tc-border: rgba(15, 23, 42, 0.12);
+  --tc-input-bg: #ffffff;
+  --tc-accent: #0d9488;
+  --tc-sidebar: #f8fafc;
+}
+
+html, body {
+  background: var(--tc-bg) !important;
+  color: var(--tc-text) !important;
+}
+
+.sidebar, #sidebar {
+  background: var(--tc-sidebar) !important;
+  color: var(--tc-text) !important;
+  border-color: var(--tc-border) !important;
+}
+.sidebar a, .sidebar .nav-item, .history-item {
+  color: var(--tc-text) !important;
+}
+.main-content, main, .chat-stage, #chatStage, .chat-panel {
+  background: var(--tc-bg) !important;
+  color: var(--tc-text) !important;
+}
+.chat-header, .app-header, .topbar, .main-header {
+  background: var(--tc-surface) !important;
+  color: var(--tc-text) !important;
+  border-bottom: 1px solid var(--tc-border);
+}
+.composer, #composerRoot, .input-area {
+  background: var(--tc-surface) !important;
+  color: var(--tc-text) !important;
+  border-top: 1px solid var(--tc-border);
+}
+textarea, #messageInput, .composer textarea, .glass-input, input[type="text"], input[type="search"] {
+  background: var(--tc-input-bg) !important;
+  color: var(--tc-text) !important;
+  border: 1px solid var(--tc-border) !important;
+}
+textarea::placeholder, #messageInput::placeholder {
+  color: var(--tc-text-muted) !important;
+}
+.welcome-empty, #welcomeEmpty, .empty-state {
+  color: var(--tc-text) !important;
+}
+.welcome-empty p, #welcomeEmpty p, .col-subtitle {
+  color: var(--tc-text-muted) !important;
+}
+.message-row .bubble, .msg-content {
+  color: var(--tc-text);
+}
+
+/* Always clickable */
+.sidebar, #sidebar, button, a, textarea, input, select {
+  pointer-events: auto !important;
+}
+
+/* ========== DESKTOP MODE (restore sidebar | main) ========== */
+@media (min-width: 901px) {
+  body.nova-app,
+  body:has(#sidebar),
+  body:has(.sidebar) {
+    display: grid !important;
+    grid-template-columns: var(--nv-sidebar-w, 280px) minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 100dvh) !important;
+    min-height: 100dvh !important;
+    height: 100dvh !important;
+  }
+  body.sidebar-collapsed {
+    grid-template-columns: 0 minmax(0, 1fr) !important;
+  }
+  .sidebar, #sidebar {
+    position: relative !important;
+    transform: none !important;
+    translate: none !important;
+    left: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: 100% !important;
+    z-index: 5 !important;
+    overflow-y: auto !important;
+  }
+  .main-content, main, #main, .chat-panel, .workspace {
+    grid-column: 2 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  #sidebar-overlay, .sidebar-overlay {
+    display: none !important;
+  }
+  /* Undo mobile-only compact that leaked */
+  .chat-header, .app-header {
+    max-height: none !important;
+  }
+  .suggestion-grid {
+    display: grid !important;
+  }
+  .send-btn .send-label {
+    display: inline !important;
+  }
+}
+
+/* ========== MOBILE: keep overlay sidebar ========== */
+@media (max-width: 900px) {
+  body.nova-app {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .sidebar, #sidebar {
+    position: fixed !important;
+    transform: translateX(-105%) !important;
+    z-index: 2000 !important;
+  }
+  body.sidebar-open .sidebar,
+  body.sidebar-open #sidebar,
+  #sidebar.open-mobile {
+    transform: translateX(0) !important;
+  }
+}

@@ -1,0 +1,211 @@
+/**
+ * Vision AI v8.8.4 — Theme matching Practical Column Structure visual
+ * Hierarchy: Text → Inputs → Primary/Secondary buttons
+ * Soft surfaces, blue primary CTA, mobile-friendly cards
+ */
+
+/* Brand accents from reference UI */
+:root,
+html[data-theme="dark"] {
+  --col-primary: #2563eb;
+  --col-primary-hover: #1d4ed8;
+  --col-primary-text: #ffffff;
+  --col-card: #111827;
+  --col-page: #0b1220;
+  --col-muted: #94a3b8;
+  --col-title: #f1f5f9;
+  --col-field-bg: #1e293b;
+  --col-field-border: rgba(148, 163, 184, 0.28);
+  --col-radius: 14px;
+  --col-gap: 12px;
+}
+
+html[data-theme="light"] {
+  --col-primary: #2563eb;
+  --col-primary-hover: #1d4ed8;
+  --col-primary-text: #ffffff;
+  --col-card: #ffffff;
+  --col-page: #eef2ff;
+  --col-muted: #64748b;
+  --col-title: #0f172a;
+  --col-field-bg: #f8fafc;
+  --col-field-border: #e2e8f0;
+  --tc-bg: var(--col-page);
+  --tc-surface: var(--col-card);
+  --tc-text: var(--col-title);
+  --tc-text-muted: var(--col-muted);
+  --tc-input-bg: var(--col-field-bg);
+  --tc-accent: var(--col-primary);
+  --tc-sidebar: #f8fafc;
+}
+
+html[data-theme="light"] body {
+  background: linear-gradient(165deg, #eef2ff 0%, #e0e7ff 45%, #f8fafc 100%) !important;
+  color: var(--col-title) !important;
+}
+
+/* ===== Login / form pages = phone card from diagram ===== */
+body.login-page {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+body.login-page .glass-card {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 24px 20px 20px;
+  border-radius: 20px;
+  background: var(--col-card) !important;
+  box-shadow: 0 12px 40px rgba(37, 99, 235, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+  display: flex !important;
+  flex-direction: column !important;
+  gap: var(--col-gap) !important;
+  border: 1px solid var(--col-field-border);
+}
+body.login-page .brand,
+body.login-page .tagline {
+  text-align: center;
+  color: var(--col-title);
+}
+body.login-page .tagline {
+  color: var(--col-muted) !important;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+body.login-page #authForm,
+body.login-page .va-column {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  width: 100%;
+}
+body.login-page .glass-input,
+body.login-page input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--col-field-border) !important;
+  background: var(--col-field-bg) !important;
+  color: var(--col-title) !important;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+body.login-page .glass-btn,
+body.login-page button[type="submit"] {
+  width: 100%;
+  min-height: 48px;
+  border: none;
+  border-radius: 12px;
+  background: var(--col-primary) !important;
+  color: var(--col-primary-text) !important;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+body.login-page .glass-btn:hover {
+  background: var(--col-primary-hover) !important;
+}
+body.login-page .google-btn,
+body.login-page .glass-link {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 12px;
+  text-align: center;
+}
+body.login-page .divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--col-muted);
+  font-size: 12px;
+}
+body.login-page .divider::before,
+body.login-page .divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--col-field-border);
+}
+
+/* ===== Universal column forms (settings, upgrade, etc.) ===== */
+.va-column,
+.column-structure,
+.shell-column,
+form.va-column {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: var(--col-gap);
+  max-width: 420px;
+  margin-inline: auto;
+  width: 100%;
+}
+.va-column .col-title,
+.shell-title {
+  color: var(--col-title);
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 0;
+}
+.va-column .col-subtitle,
+.shell-sub {
+  color: var(--col-muted);
+  margin: 0;
+  font-size: 0.9rem;
+}
+.va-column input,
+.va-column select,
+.va-column textarea {
+  min-height: 48px;
+  border-radius: 12px;
+  border: 1px solid var(--col-field-border);
+  background: var(--col-field-bg);
+  color: var(--col-title);
+  padding: 12px 14px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+.va-column button[type="submit"],
+.va-column .btn-primary,
+.shell-actions .primary {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 12px;
+  background: var(--col-primary) !important;
+  color: #fff !important;
+  font-weight: 700;
+  border: none;
+}
+
+/* ===== Chat page: same tokens, keep density ===== */
+html[data-theme="light"] .sidebar,
+html[data-theme="light"] #sidebar {
+  background: #fff !important;
+  border-right: 1px solid var(--col-field-border);
+}
+html[data-theme="light"] .composer,
+html[data-theme="light"] #composerRoot {
+  background: #fff !important;
+}
+html[data-theme="light"] .send-btn#sendBtn,
+html[data-theme="light"] #sendBtn {
+  background: var(--col-primary) !important;
+  color: #fff !important;
+}
+html[data-theme="light"] .mode-tab[aria-selected="true"],
+html[data-theme="light"] .workspace-modes button.active {
+  background: var(--col-primary) !important;
+  color: #fff !important;
+}
+
+/* Primary action chips */
+.btn-primary, .glass-btn, button.primary {
+  background: var(--col-primary);
+  color: #fff;
+  border-radius: 12px;
+}

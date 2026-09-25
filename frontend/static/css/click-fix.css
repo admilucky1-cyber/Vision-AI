@@ -1,0 +1,46 @@
+/* Vision AI v8.3.4 — Click recovery: nothing should block taps/clicks */
+#sidebar-overlay:not(.active),
+body:not(.sidebar-open) #sidebar-overlay,
+body:not(.sidebar-open) .sidebar-overlay {
+  display: none !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  z-index: -1 !important;
+}
+
+/* Interactive controls always receive events */
+button, a, input, textarea, select, label,
+.icon-btn, .header-btn, .send-btn, #sendBtn, #stopBtn,
+.sidebar-link, .new-chat-btn, .mode-pills button,
+.composer, .composer-inner, #message {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 5;
+}
+
+.composer, .composer-shell, .input-area, #composerRoot {
+  z-index: 30 !important;
+  pointer-events: auto !important;
+}
+
+.main-header, .app-header {
+  z-index: 40 !important;
+  pointer-events: auto !important;
+}
+
+/* Kill ghost full-screen blockers */
+body::before,
+body::after {
+  pointer-events: none !important;
+}
+
+/* Disabled send must still look clickable when re-enabled */
+#sendBtn:not([disabled]) {
+  cursor: pointer !important;
+  opacity: 1 !important;
+}
+
+/* v8.4.0 — extra safety */
+html.va-no-clicks-block * {
+  pointer-events: auto !important;
+}

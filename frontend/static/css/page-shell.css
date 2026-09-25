@@ -1,0 +1,147 @@
+/**
+ * Vision AI v8.8 — Page Shell (Practical Column Structure)
+ * Text → Inputs → Buttons (top to bottom). Mobile-first. Anti-regression.
+ */
+:root {
+  --shell-gap: 12px;
+  --shell-radius: 12px;
+  --shell-max: 420px;
+  --shell-pad: max(12px, env(safe-area-inset-left));
+}
+
+/* Global: no horizontal overflow (old flaw) */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Column primitive */
+.va-column,
+.column-structure,
+.shell-column {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch;
+  gap: var(--shell-gap);
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+.va-column--wide, .shell-column--wide { max-width: min(720px, 100%); }
+.va-column--page, .shell-column--page { max-width: min(960px, 100%); }
+
+/* 1. Text */
+.shell-title, .va-column .col-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  color: var(--tc-text, #e8eef7);
+}
+.shell-sub, .va-column .col-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--tc-text-muted, #94a3b8);
+  line-height: 1.45;
+}
+
+/* 2. Inputs full width */
+.va-column input,
+.va-column select,
+.va-column textarea,
+.shell-column input,
+.shell-column select,
+.shell-column textarea {
+  width: 100%;
+  min-height: 44px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  font-size: 16px; /* no iOS zoom */
+}
+
+/* 3. Buttons stacked */
+.va-column .col-actions,
+.shell-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.va-column button[type="submit"],
+.va-column .btn-primary,
+.shell-actions .primary {
+  width: 100%;
+  min-height: 44px;
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+/* Page body content stack */
+body.page-mode .page-main,
+body.page-mode main,
+.settings-page .settings-main,
+.studio-page .studio-main,
+.upgrade-page .plans-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shell-gap);
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 16px var(--shell-pad) 24px;
+  box-sizing: border-box;
+}
+
+/* Cards as vertical columns */
+.settings-section,
+.plan-card,
+.payment-card,
+.account-card,
+.skill-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 100%;
+}
+
+/* Login matches screenshot hierarchy */
+body.login-page .glass-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+  margin: 24px auto;
+  padding: 20px 16px;
+}
+body.login-page #authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Chat mobile densify locked (old spread flaw) */
+@media (max-width: 900px) {
+  .chat-stage, #chatStage {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 8px 10px;
+  }
+  .composer, #composerRoot {
+    flex: 0 0 auto;
+    padding: 6px 8px calc(8px + env(safe-area-inset-bottom));
+  }
+  .sidebar, #sidebar {
+    position: fixed !important;
+    z-index: 2000;
+  }
+}
+
+/* Never cover clicks (old dead-button flaw) */
+button, a, [role="button"], input, select, textarea {
+  pointer-events: auto;
+  touch-action: manipulation;
+}
