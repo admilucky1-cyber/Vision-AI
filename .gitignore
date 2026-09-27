@@ -18,3 +18,9 @@ data/rag_cache/
 
 data/quota_ledger.json
 data/users.json
+data/*.db
+data/*.db-*
+data/*keys*.json
+data/*vault*.json
+*.pem
+*.key
